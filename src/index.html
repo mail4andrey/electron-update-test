@@ -3,7 +3,17 @@
   <head>
     <meta charset="UTF-8">
     <title>Electron Auto Update Example</title>
-    <style>
+    
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <!-- <style>
       body {
         box-sizing: border-box;
         margin: 0;
@@ -25,12 +35,17 @@
       .hidden {
         display: none;
       }
-    </style>
+    </style> -->
   </head>
   <body>
-    <h1>💖 Hello World!2</h1>
-    <p>Welcome to your Electron application.</p>
-    <div id="notification" class="hidden">
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id='root'>
+      Loading
+    </div>
+    <!-- We are using node <script>document.write(process.versions.node)</script>,
+    Chrome <script>document.write(process.versions.chrome)</script>,
+    and Electron <script>document.write(process.versions.electron)</script>. -->
+    <!-- <div id="notification" class="hidden">
       <p id="message"></p>
       <button id="close-button" onClick="closeNotification()">
         Close
@@ -38,8 +53,8 @@
       <button id="restart-button" onClick="restartApp()" class="hidden">
         Restart
       </button>
-    </div>
-    <script>
+    </div> -->
+    <!-- <script>
       const { ipcRenderer } = require('electron');
       const version = document.getElementById('version');
       
@@ -70,6 +85,6 @@
       function restartApp() {
         ipcRenderer.send('restart_app');
       }
-    </script>
+    </script> -->
   </body>
 </html>

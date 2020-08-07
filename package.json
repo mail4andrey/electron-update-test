@@ -1,7 +1,7 @@
 {
-  "name": "my-new-app",
-  "productName": "my-new-app",
-  "version": "1.0.1",
+  "name": "electron-update-test",
+  "productName": "electron-update-test",
+  "version": "1.0.3",
   "description": "My Electron application description",
   "main": ".webpack/main",
   "repository": "github:mail4andrey/electron-update-test",
@@ -10,7 +10,10 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "eslint --ext .ts ."
+    "lint": "eslint --ext .ts .",
+
+		"generate-barrels": "barrelsby -c barrelsby.json --singleQuotes",
+		"sort-package.json": "sort-package-json"
   },
   "keywords": [],
   "author": {
@@ -25,22 +28,32 @@
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "my_new_app"
-          }
+            "name": "electron-update-test"
+          },
+          "platforms": [
+            "win32"
+          ]
         },
         {
           "name": "@electron-forge/maker-zip",
           "platforms": [
-            "darwin"
+            "darwin",
+            "win32"
           ]
         },
         {
           "name": "@electron-forge/maker-deb",
-          "config": {}
+          "config": {},
+          "platforms": [
+            "linux"
+          ]
         },
         {
           "name": "@electron-forge/maker-rpm",
-          "config": {}
+          "config": {},
+          "platforms": [
+            "linux"
+          ]
         }
       ],
       "plugins": [
@@ -53,7 +66,7 @@
               "entryPoints": [
                 {
                   "html": "./src/index.html",
-                  "js": "./src/renderer.ts",
+                  "js": "./src/renderer.tsx",
                   "name": "main_window"
                 }
               ]
@@ -71,8 +84,12 @@
     "@electron-forge/maker-zip": "^6.0.0-beta.52",
     "@electron-forge/plugin-webpack": "^6.0.0-beta.52",
     "@marshallofsound/webpack-asset-relocator-loader": "^0.5.0",
+    "@types/react": "^16.9.44",
+    "@types/react-dom": "^16.9.8",
+    "@types/react-router-dom": "^5.1.5",
     "@typescript-eslint/eslint-plugin": "^2.34.0",
     "@typescript-eslint/parser": "^2.34.0",
+    "barrelsby": "^2.2.0",
     "css-loader": "^3.6.0",
     "electron": "9.1.2",
     "eslint": "^6.8.0",
@@ -84,7 +101,12 @@
     "typescript": "^3.9.7"
   },
   "dependencies": {
+    "electron-log": "^4.2.2",
     "electron-squirrel-startup": "^1.0.0",
+    "mobx": "^5.15.4",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-router-dom": "^5.2.0",
     "update-electron-app": "^1.5.0"
   }
 }

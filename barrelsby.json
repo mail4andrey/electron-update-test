@@ -1,0 +1,9 @@
+{
+	"baseUrl": "/",
+	"directory": "src",
+	"delete": true,
+	"location": "all",
+	"name": "index",
+	"structure": "flat",
+	"include": [".(ts|tsx)$"]
+}

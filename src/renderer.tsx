@@ -25,7 +25,24 @@
  *  });
  * ```
  */
-
+import React from 'react';
+import ReactDOM from 'react-dom';
 import './index.css';
+import App from './App';
+import Profile from './Profile';
+import { MemoryRouter, Route } from "react-router-dom";
 
-console.log('👋 This message is being logged by "renderer.js", included via webpack');
+// console.log('👋 This message is being logged by "renderer.js", included via webpack');
+
+ReactDOM.render(
+  <React.StrictMode>
+      <MemoryRouter>
+        <div className="App">
+          <Route path='/' exact={true} component={App} />
+          <Route path="/profile" exact component={Profile} />
+          {/* <Route path="/Profile" exact component={Profile} /> */}
+        </div>
+      </MemoryRouter>
+  </React.StrictMode>,
+  document.getElementById('root')
+);

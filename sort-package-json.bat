@@ -1,0 +1,1 @@
+npm run sort-package.json

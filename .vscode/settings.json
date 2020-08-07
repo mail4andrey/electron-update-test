@@ -1,0 +1,23 @@
+{
+    "javascript.preferences.quoteStyle": "single",
+    "typescript.preferences.quoteStyle": "single",
+	"cSpell.language": "en,ru",
+    "cSpell.words": [
+        "andrey",
+        "submenu"
+    ],
+	"typescript.tsdk": "node_modules\\typescript\\lib",
+	"eslint.alwaysShowStatus": true,
+	"eslint.format.enable": true,
+	"eslint.lintTask.enable": true,
+	"editor.codeActionsOnSave": {
+		"source.fixAll": true
+	},
+	"editor.defaultFormatter": "dbaeumer.vscode-eslint",
+	"eslint.validate": [
+		"javascript",
+		"javascriptreact",
+		"typescriptreact",
+		"typescript",
+	],
+}
