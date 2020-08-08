@@ -3,7 +3,9 @@
  */
 
 export * from 'App';
+export * from 'main';
 export * from 'Profile';
 export * from 'renderer';
 export * from 'update';
 export * from 'windows';
+export * from 'elements/index';

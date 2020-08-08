@@ -15,22 +15,22 @@
 		"skipDefaultLibCheck": true,
 		"strict": true,
 		"strictNullChecks": true,
-		"types": [
+		//"types": [
 			"webpack-env",
 			"node",
 			"jest",
 			"jquery"
 		],
-		"typeRoots": [
+		//"typeRoots": [
 			"node_modules/@types",
 			"src/@types"
 		],
-		"allowJs": true,
-		"experimentalDecorators": true,
-		"emitDecoratorMetadata": true,
-		"noImplicitAny": false, //надо бы true
-		"esModuleInterop": true,
-		"strictPropertyInitialization": true
+		//"allowJs": true,
+		//"experimentalDecorators": true,
+		//"emitDecoratorMetadata": true,
+		//"noImplicitAny": false, //надо бы true
+		//"esModuleInterop": true,
+		//"strictPropertyInitialization": true
 	},
 	"compileOnSave": false,
 	"exclude": [

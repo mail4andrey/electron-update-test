@@ -340,7 +340,7 @@ module.exports = {
 		'valid-typeof': ['error'],
 		'arrow-body-style': ['error', 'as-needed'], //+
 		'arrow-parens': ['error', 'as-needed'],
-		camelcase: 'error',
+		// camelcase: 'error',
 		// 'comma-dangle': 'off',
 		// curly: 'error',
 		'default-case': 'error',
@@ -524,9 +524,9 @@ module.exports = {
 		'@typescript-eslint/adjacent-overload-signatures': 'error',
 		'@typescript-eslint/array-type': 'error',
 		'@typescript-eslint/await-thenable': 'error',
-		'@typescript-eslint/ban-ts-ignore': 'error',
+		// '@typescript-eslint/ban-ts-ignore': 'error',
 		'@typescript-eslint/ban-types': 'error',
-		'@typescript-eslint/class-name-casing': 'error',
+		// '@typescript-eslint/class-name-casing': 'error',
 		'@typescript-eslint/consistent-type-assertions': 'error',
 		'@typescript-eslint/consistent-type-definitions': 'error',
 		'@typescript-eslint/explicit-member-accessibility': [
@@ -595,7 +595,7 @@ module.exports = {
 		// использовать readonly где возможно
 		'@typescript-eslint/prefer-readonly': 'error',
 		'@typescript-eslint/no-explicit-any': 'off',
-		'@typescript-eslint/camelcase': ['error', { properties: 'never' }],
+		// '@typescript-eslint/camelcase': ['error', { properties: 'never' }],
 		'@typescript-eslint/explicit-function-return-type': [
 			'error',
 			{
@@ -660,7 +660,19 @@ module.exports = {
 
 		'@typescript-eslint/restrict-template-expressions': 'off',
 		'@typescript-eslint/restrict-plus-operands': 'off',
-		'promise/always-return': 'off'
+		'promise/always-return': 'off',
+
+		// новые
+		// "@typescript-eslint/naming-convention": [
+		// 	"error",
+		// 	{ "selector": "variableLike", "format": ["camelCase"] }
+		//   ]
+		'@typescript-eslint/prefer-readonly-parameter-types': [
+			'off',
+			// {
+			// 	checkParameterProperties: false
+			// }
+		]
 	},
 	settings: {
 		"react": {

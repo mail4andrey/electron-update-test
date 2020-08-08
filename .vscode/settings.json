@@ -20,4 +20,6 @@
 		"typescriptreact",
 		"typescript",
 	],
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": false,
 }

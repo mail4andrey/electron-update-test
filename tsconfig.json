@@ -1,21 +1,43 @@
 {
-  "compilerOptions": {
-    "jsx": "react",
-    "allowJs": true,
-    "module": "commonjs",
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "noImplicitAny": true,
-    "sourceMap": true,
-    "baseUrl": ".",
-    "outDir": "dist",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "paths": {
-      "*": ["node_modules/*"]
-    }
-  },
-  "include": [
-    "src/**/*"
-  ]
+	"compilerOptions": {
+		"jsx": "react",
+		"allowJs": true,
+		"module": "es2015",
+		"skipLibCheck": true,
+		"esModuleInterop": true,
+		"noImplicitAny": true,
+		"sourceMap": true,
+		"baseUrl": "./src",
+		"outDir": "dist",
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		// "paths": {
+		// 	"*": ["node_modules/*"]
+		// },
+		"experimentalDecorators": true,
+		"strict": true,
+		"strictNullChecks": true,
+		"strictPropertyInitialization": true,
+		"emitDecoratorMetadata": true,
+		// "noImplicitAny": false, //надо бы true
+		"types": [
+			"webpack-env",
+			"node"
+		],
+		"typeRoots": [
+			"node_modules/@types",
+			"src/@types"
+		],
+		"paths": {
+			"~/*": [
+				"*"
+			]
+		},
+		"target": "es6",
+		"lib": [ "es2019", "DOM", "ES6" ,"DOM.Iterable", "ScriptHost"],
+		"skipDefaultLibCheck": true,
+	},
+	"include": [
+		"src/**/*"
+	]
 }
