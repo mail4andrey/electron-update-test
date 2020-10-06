@@ -91,7 +91,7 @@
     "awesome-typescript-loader": "^5.2.1",
     "barrelsby": "2.2.0",
     "css-loader": "4.2.1",
-    "electron": "9.2.0",
+    "electron": "9.3.0",
     "eslint": "7.6.0",
     "eslint-config-prettier": "6.11.0",
     "eslint-plugin-import": "2.22.0",
