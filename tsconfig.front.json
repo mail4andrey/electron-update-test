@@ -1,0 +1,45 @@
+{
+	"compilerOptions": {
+		"jsx": "react",
+		"allowJs": true,
+		"module": "es2015",
+		"skipLibCheck": true,
+		"esModuleInterop": true,
+		"noImplicitAny": true,
+		"sourceMap": true,
+		"baseUrl": "./src/src-front",
+		"outDir": "dist-front",
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		// "paths": {
+		// 	"*": ["node_modules/*"]
+		// },
+		"experimentalDecorators": true,
+		"strict": true,
+		"strictNullChecks": true,
+		"strictPropertyInitialization": true,
+		"emitDecoratorMetadata": true,
+		// "noImplicitAny": false, //надо бы true
+		"types": [
+			//откл для запуска фронта
+			// "webpack-env",
+			"node"
+		],
+		"typeRoots": [
+			"node_modules/@types",
+			"src/src-front/@types"
+		],
+		"paths": {
+			"~/*": [
+				"*"
+			]
+		},
+		"target": "es6",
+		"lib": [ "es2019", "DOM", "ES6" ,"DOM.Iterable", "ScriptHost"],
+		"skipDefaultLibCheck": true,
+	},
+	"include": [
+		"src/src-front/**/*",
+		"src/elements/**/*"
+	]
+}

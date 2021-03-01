@@ -1,4 +1,24 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import cors from 'cors';
 import { app, BrowserWindow, ipcMain } from 'electron';
+import express from 'express';
+
+
+import { ApplicationSettingsController } from './application/ApplicationSettingsController';
+import { ApplicationSettingsStore } from './application/ApplicationSettingsStore';
+import { createWindow } from './ApplicationWindow';
+import { ElectronCommands } from './ElectronCommands';
+import { MailService } from './helpers/EmailHelper';
+import { FilesHelper } from './helpers/FilesHelper';
+import { EmailSecndingModel as EmailSendingModel } from './settings/EmailSendingModel';
+
+// import fs from 'fs';
+import http from 'http';
+import path from 'path';
+
+// import { createWindow } from './windows';
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
 
 // import { autoUpdater } from 'electron-updater';
@@ -14,28 +34,33 @@ require('update-electron-app')({
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
 	app.quit();
 }
-let mainWindow: BrowserWindow;
+// let mainWindow: BrowserWindow;
+
+// /** ss */
+// function createWindow(): BrowserWindow {
+// 	return createWindow();
+// }
 
 /**
  *
  */
-const createWindow = () => {
-	// Create the browser window.
-	mainWindow = new BrowserWindow({
-		height: 600,
-		width: 800,
-	});
+// const createWindow0 = () => {
+// 	// Create the browser window.
+// 	mainWindow = new BrowserWindow({
+// 		height: 600,
+// 		width: 800,
+// 	});
 
-	// and load the index.html of the app.
-	mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
+// 	// and load the index.html of the app.
+// 	mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
-	// Open the DevTools.
-	mainWindow.webContents.openDevTools();
+// 	// Open the DevTools.
+// 	mainWindow.webContents.openDevTools();
 
-	// mainWindow.once('ready-to-show', () => {
-	//   autoUpdater.checkForUpdatesAndNotify();
-	// });
-};
+// 	// mainWindow.once('ready-to-show', () => {
+// 	//   autoUpdater.checkForUpdatesAndNotify();
+// 	// });
+// };
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -76,3 +101,57 @@ ipcMain.on('app_version', event => {
 // ipcMain.on('restart_app', () => {
 //   autoUpdater.quitAndInstall();
 // });
+
+
+/** ddd */
+ipcMain.handle(ElectronCommands.sendEmail, async (_event: Event, email: EmailSendingModel): Promise<void> => {
+	try {
+		console.log(email);
+		await MailService.sendMail(email);
+	} catch (error) {
+		console.error(error);
+	}
+});
+
+
+const expressApp = express();
+const router = express.Router();
+expressApp.use(cors());
+// expressApp.use(express.static('public'));
+// expressApp.use(express.static('main_window'));
+expressApp.use(express.static(path.join(__dirname, 'front')));
+
+router.get('/files', (req, res) => {
+	const settings = ApplicationSettingsController.loadDefaultSettings(app);
+	const { pathSources } = settings;
+	console.log(ApplicationSettingsStore.settings);
+	console.log(settings);
+	const files = FilesHelper.getFiles(pathSources);
+	res.type('application/json');
+	res.send(files);
+});
+router.get('/file', (req, res) => {
+	// console.log(req);
+	const filename = req.query.name as string;
+	// const filename = req.params.name;
+	console.log(filename);
+	// if (fs.existsSync(filename)) {
+	res.sendFile(filename);
+	// }
+});
+router.get('/hc', (req, res) => {
+	res.send(`Ok ${new Date()}`);
+});
+router.get('/', (req, res) => {
+	res.sendFile(path.join(__dirname, 'front', 'front.html'));
+});
+// router.get('/front.js', (req, res) => {
+// 	res.sendFile(path.join(__dirname, 'front', 'front.js'));
+// });
+// router.get('/favicon.ico', (req, res) => {
+// 	res.sendFile(path.join(__dirname, 'front', 'favicon.ico'));
+// });
+
+expressApp.use('/', router);
+
+http.createServer(expressApp).listen(8001);

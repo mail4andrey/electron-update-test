@@ -9,7 +9,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = env => {
 	console.log('env: ', env);
 	/** адрес сервера, для rest api запросов */
-	const serverUrl = env.server_url;
+	const serverUrl = env.server_url || 'http://127.0.0.1:8001';
 	/** режим сборки - development / production */
 	const buildMode = env.build_mode || 'development';
 	/** путь, в котором лежат Sources в браузере */
@@ -26,16 +26,17 @@ module.exports = env => {
 		},
 		/** Точка входа приложения */
 		entry: {
-			main: ['core-js', 'react-hot-loader/patch', './src/boot.tsx']
+			main: ['core-js', './src/src-front/boot.tsx']
+			// main: ['core-js', 'react-hot-loader/patch', './src/boot.tsx']
 		},
 		resolve: {
 			extensions: ['.js', '.jsx', '.ts', '.tsx'],
-			modules: ['./src', 'node_modules'],
-			alias: { 'react-dom': '@hot-loader/react-dom'  }
+			modules: ['./src/src-front','./src/elements', 'node_modules'],
+			// alias: { 'react-dom': '@hot-loader/react-dom'  }
 		},
 		output: {
-			path: path.resolve(__dirname, 'dist'),
-			filename: '[name].js',
+			path: path.resolve(__dirname, 'dist-front'),
+			filename: 'front.js',
 			publicPath: publicPath
 			// publicPath: ''
 		},
@@ -56,10 +57,34 @@ module.exports = env => {
 						path.resolve(__dirname, 'node_modules/@tinkoff-ui/icon')
 					]
 				},
+				// {
+				// 	test: /\.(ts|tsx)?$/,
+				// 	// test: /\.ts$/,
+				// 	include: [
+				// 		path.resolve(__dirname, 'src-front')
+				// 	],
+				// 	use: [{
+				// 		loader: 'ts-loader',
+				// 		options: {
+				// 			configFile: "tsconfig.front.json"
+				// 		}
+				// 	}],
+				// 	// exclude: /node_modules/,
+				// },
 				{
 					test: /\.(ts|tsx)?$/,
-					include: /src/,
-					use: 'awesome-typescript-loader?silent=true'
+					// include: /src/,
+					include: [
+						path.resolve(__dirname, 'src/src-front'),
+						path.resolve(__dirname, 'src/elements'),
+					],
+					loader: 'awesome-typescript-loader',
+					options: {
+						configFileName: "tsconfig.front.json"
+					}
+					// use: [{
+					// }],
+					// use: 'awesome-typescript-loader?silent=true'
 				},
 				{
 					test: /\.(png|woff|woff2|eot|ttf|jpg|jpeg|gif)$/,
@@ -92,56 +117,69 @@ module.exports = env => {
 					}
 				},
 				{
-					/** Собираем все css файлы */
 					test: /\.css$/,
-					use: [
-						MiniCssExtractPlugin.loader,
-						{
-							loader: 'css-loader',
-							options: {
-								sourceMap: true,
-								importLoaders: 2,
-								modules: {
-									localIdentName: '[name]__[local]___[hash:base64:5]'
-								}
-							}
-						}
-					],
-					include: [
-						path.resolve(__dirname, 'node_modules/@platform-ui/')
-					]
+					use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
 				},
-				{
-					/** Собираем все scss файлы */
-					test: /\.scss$/,
-					use: [
-						MiniCssExtractPlugin.loader,
-						'css-loader',
-						'postcss-loader',
-						'sass-loader'
-					]
-				}
+				// {
+				// 	/** Собираем все css файлы */
+				// 	test: /\.css$/,
+				// 	use: [
+				// 		MiniCssExtractPlugin.loader,
+				// 		{
+				// 			loader: 'css-loader',
+				// 			options: {
+				// 				sourceMap: true,
+				// 				importLoaders: 2,
+				// 				modules: {
+				// 					localIdentName: '[name]__[local]___[hash:base64:5]'
+				// 				}
+				// 			}
+				// 		}
+				// 	],
+				// 	include: [
+				// 		path.resolve(__dirname, 'src/content'),
+				// 		// path.resolve(__dirname, 'node_modules/@platform-ui/')
+				// 	]
+				// },
+				// {
+				// 	/** Собираем все scss файлы */
+				// 	test: /\.scss$/,
+				// 	use: [
+				// 		MiniCssExtractPlugin.loader,
+				// 		'css-loader',
+				// 		'postcss-loader',
+				// 		'sass-loader'
+				// 	]
+				// }
 			]
 		},
+		/** Настройка для локального запуска фронта */
 		devServer: {
-			contentBase: path.join(__dirname, './dist/')
+			disableHostCheck: true,
+			port: 8080,
+			historyApiFallback: {
+				index: 'front.html'
+			}
 		},
+		// devServer: {
+		// 	contentBase: path.join(__dirname, './dist-front/')
+		// },
 		plugins: [
 			new HtmlWebpackPlugin({
 				hash: true,
-				template: './src/index.html',
-				filename: 'index.html',
+				template: './src/src-front/front.html',
+				filename: 'front.html',
 				basePath: basePath,
-				favicon: './src/favicon.ico',
+				favicon: './src/src-front/favicon.ico',
 				// basePath: '/'
 			}),
 			new CheckerPlugin(),
 			/** Копируем файлы в папку сборки */
-			new CopyWebpackPlugin([
-				{
-					from: '*.config'
-				}
-			]),
+			// new CopyWebpackPlugin([
+			// 	{
+			// 		from: '*.config'
+			// 	}
+			// ]),
 			/** Собираем все стили в один файл */
 			new MiniCssExtractPlugin({
 				filename: 'site.css'
@@ -155,8 +193,8 @@ module.exports = env => {
 				}
 			}),
 			new webpack.ProvidePlugin({
-				'window.jQuery': require.resolve('jquery'),
-				'window.$': require.resolve('jquery')
+				// 'window.jQuery': require.resolve('jquery'),
+				// 'window.$': require.resolve('jquery')
 			})
 		]
 	};

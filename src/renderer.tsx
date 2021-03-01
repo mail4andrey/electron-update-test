@@ -28,14 +28,17 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import './content/style/index.css';
 import { MemoryRouter, Route } from 'react-router-dom';
 
 import { App } from './App';
-import Profile from './Profile';
+import { Layout } from './Layout';
+import { Profile } from './Profile';
+import { SettingsComponent } from './settings/SettingsComponent';
 // console.log('👋 This message is being logged by "renderer.js", included via webpack');
 ReactDOM.render(
-	<React.StrictMode>
+	// <React.StrictMode>
+	<Layout>
 		<MemoryRouter>
 			<div className="App">
 				<Route
@@ -46,9 +49,15 @@ ReactDOM.render(
 					path="/profile"
 					exact
 					component={Profile} />
+				<Route
+					path="/settings"
+					exact
+					component={SettingsComponent} />
 				{/* <Route path="/Profile" exact component={Profile} /> */}
 			</div>
 		</MemoryRouter>
-	</React.StrictMode>,
+	</Layout>
+	// </React.StrictMode>s
+	,
 	document.getElementById('root')
 );

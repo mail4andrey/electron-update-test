@@ -1,4 +1,5 @@
 const path = require('path');
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
 	/**
@@ -22,4 +23,14 @@ module.exports = {
 		modules: ['./src', 'node_modules'],
 	},
 	context: path.resolve(__dirname),
+
+	plugins: [
+	  new CopyPlugin({
+		patterns: [
+			{ from: "dist-front", to: "front" },
+			// { from: "src/front/", to: "dest" },
+			// { from: "src/front", to: "dest" }
+		],
+	  }),
+	],
 };

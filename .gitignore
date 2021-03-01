@@ -87,3 +87,6 @@ typings/
 
 # Electron-Forge
 out/
+dist-front/favicon.ico
+dist-front/front.html
+dist-front/front.js

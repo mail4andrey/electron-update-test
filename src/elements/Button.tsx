@@ -14,6 +14,7 @@ export interface IButtonProps {
 
 	/** Событие при нажатии на кнопку */
 	onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+	size?: 'large' | 'medium' | 'small';
 }
 /** Кнопка */
 export class Button extends React.PureComponent<IButtonProps> {
@@ -22,7 +23,6 @@ export class Button extends React.PureComponent<IButtonProps> {
 		return (
 			<UiButton
 				{...this.props}
-				size='large'
 			/>
 		);
 	}

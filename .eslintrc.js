@@ -45,6 +45,9 @@ module.exports = {
 		// 'unicorn'
 	],
 	rules: {
+		// новые правила
+		'@typescript-eslint/no-invalid-this': 'off',
+
 		// prettier отключен, так как любит все переформатировать под себя
 		// 'prettier/prettier': ['warn'], //prettier
 
@@ -180,8 +183,8 @@ module.exports = {
 					// 'index',
 					// путь с ./
 					'sibling',
-					// 'builtin',
-					// 'parent',
+					'builtin',
+					'parent',
 					'unknown'
 				],
 				pathGroups: [
