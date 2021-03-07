@@ -61,7 +61,8 @@ module.exports = env => {
 				// 	test: /\.(ts|tsx)?$/,
 				// 	// test: /\.ts$/,
 				// 	include: [
-				// 		path.resolve(__dirname, 'src-front')
+				// 		path.resolve(__dirname, 'src-front'),
+				// 		path.resolve(__dirname, 'src/elements'),
 				// 	],
 				// 	use: [{
 				// 		loader: 'ts-loader',
@@ -77,14 +78,12 @@ module.exports = env => {
 					include: [
 						path.resolve(__dirname, 'src/src-front'),
 						path.resolve(__dirname, 'src/elements'),
+						path.resolve(__dirname, 'src/helpers'),
 					],
 					loader: 'awesome-typescript-loader',
 					options: {
 						configFileName: "tsconfig.front.json"
 					}
-					// use: [{
-					// }],
-					// use: 'awesome-typescript-loader?silent=true'
 				},
 				{
 					test: /\.(png|woff|woff2|eot|ttf|jpg|jpeg|gif)$/,

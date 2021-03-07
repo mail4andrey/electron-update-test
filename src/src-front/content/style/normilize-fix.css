@@ -1,0 +1,53 @@
+// нормализация под наше приложение/дизайн
+html {
+	font: 13px/18px haas,
+		pragmatica,
+		-apple-system,
+		BlinkMacSystemFont,
+		Roboto,
+		'Helvetica Neue',
+		Arial,
+		sans-serif;
+	overflow: hidden;
+}
+
+ul {
+	margin-block-start: 1px;
+	margin-block-end: 1px;
+}
+
+// Отключаем нормализацию для кнопок
+/** из normalize-scss
+* 1. Prevent a WebKit bug where (2) destroys native `audio` and `video`
+*    controls in Android 4.
+* 2. Correct the inability to style clickable types in iOS and Safari.
+*/
+button,
+html [type="button"],
+[type="reset"],
+[type="submit"] {
+	-webkit-appearance: inherit;
+}
+
+// Убираем рамку у объектов для Chrome, так как она проставляется через user agent stylesheet
+html,
+body,
+div,
+span,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+pre,
+code {
+	outline: none;
+	outline-color: initial;
+	outline-style: none;
+	outline-width: initial;
+}

@@ -1,21 +1,23 @@
 import { observable } from 'mobx';
 
-/**
- *
- */
+/** */
 export class KioskViewFileViewModel {
-	@observable
+	// @observable
 	public filename?: string;
 
-	@observable
+	// @observable
 	public dirname?: string;
 
-	@observable
+	// @observable
 	public fullpath?: string;
 
-	@observable
+	public fileSize?: number;
+
+	// @observable
 	public extension?: string;
 
-	@observable
+	public featured?: boolean;
+
+	// @observable
 	public isSelected?: boolean;
 }

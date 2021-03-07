@@ -10,6 +10,7 @@ export interface IIconButtonProps {
 	color?: 'inherit' | 'primary' | 'secondary' | 'default';
 	size?: 'small' | 'medium';
 	edge?: 'start' | 'end' | false;
+	className?: string;
 
 	/** Событие при нажатии на кнопку */
 	// onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;

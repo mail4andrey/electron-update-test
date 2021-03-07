@@ -21,4 +21,7 @@ export class EmailSecndingModel {
 
 	/** */
 	public content?: string;
+
+	/** */
+	public attachments?: string[];
 }

@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import bodyParser from 'body-parser';
 import cors from 'cors';
 import { app, BrowserWindow, ipcMain } from 'electron';
 import express from 'express';
@@ -10,9 +12,9 @@ import { ApplicationSettingsController } from './application/ApplicationSettings
 import { ApplicationSettingsStore } from './application/ApplicationSettingsStore';
 import { createWindow } from './ApplicationWindow';
 import { ElectronCommands } from './ElectronCommands';
-import { MailService } from './helpers/EmailHelper';
+import { EmailHelper } from './helpers/EmailHelper';
 import { FilesHelper } from './helpers/FilesHelper';
-import { EmailSecndingModel as EmailSendingModel } from './settings/EmailSendingModel';
+import { EmailSecndingModel, EmailSecndingModel as EmailSendingModel } from './settings/EmailSendingModel';
 
 // import fs from 'fs';
 import http from 'http';
@@ -107,7 +109,7 @@ ipcMain.on('app_version', event => {
 ipcMain.handle(ElectronCommands.sendEmail, async (_event: Event, email: EmailSendingModel): Promise<void> => {
 	try {
 		console.log(email);
-		await MailService.sendMail(email);
+		await EmailHelper.sendMail(email);
 	} catch (error) {
 		console.error(error);
 	}
@@ -117,6 +119,7 @@ ipcMain.handle(ElectronCommands.sendEmail, async (_event: Event, email: EmailSen
 const expressApp = express();
 const router = express.Router();
 expressApp.use(cors());
+expressApp.use(bodyParser.json());
 // expressApp.use(express.static('public'));
 // expressApp.use(express.static('main_window'));
 expressApp.use(express.static(path.join(__dirname, 'front')));
@@ -129,6 +132,39 @@ router.get('/files', (req, res) => {
 	const files = FilesHelper.getFiles(pathSources);
 	res.type('application/json');
 	res.send(files);
+});
+router.post('/filesByEmail', async (req, res) => {
+	console.log('filesByEmail', req);
+	console.log('filesByEmail', req.body);
+	const settings = ApplicationSettingsController.loadDefaultSettings(app);
+	const { email } = settings;
+	const sendTo = req.body.email as string;
+	const sendFiles = req.body.files as string[];
+	const request = new EmailSecndingModel();
+	request.login = email.login;
+	request.password = email.password;
+	request.server = email.server;
+	request.subject = email.subject;
+	request.content = email.content;
+	request.to = sendTo;
+	request.attachments = sendFiles;
+	try {
+		await EmailHelper.sendMail(request);
+	} catch (error) {
+		console.error(error);
+	}
+	res.send();
+});
+router.post('/filesToPrint', (req, res) => {
+	console.log('filesToPrint', req);
+	const settings = ApplicationSettingsController.loadDefaultSettings(app);
+	// const { email } = settings;
+	// const sendTo = req.query.email as string;
+	// const sendFiles = req.query.files as string[];
+	// const request = new EmailSecndingModel();
+	// request.attachments = sendFiles;
+	// EmailHelper.sendMail(request);
+	res.send();
 });
 router.get('/file', (req, res) => {
 	// console.log(req);

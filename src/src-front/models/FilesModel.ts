@@ -9,4 +9,6 @@ export class FilesModel {
 	public fullpath?: string;
 
 	public extension?: string;
+
+	public fileSize?: number;
 }

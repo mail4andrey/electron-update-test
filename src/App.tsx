@@ -3,16 +3,13 @@ import React from 'react';
 
 import { BaseRoutedComponent } from './common/BaseRoutedComponent';
 import { IMainRoutedProps } from './common/props/IMainRoutedProps';
-
-// import { ButtonGroup, Button } from './elements';
-
 import { Button } from './elements/Button';
 import { ButtonGroup } from './elements/ButtonGroup';
 import { LeftContainer } from './elements/ommons/LeftContainer';
 import { OneLine } from './elements/ommons/OneLine';
 import { RightContainer } from './elements/ommons/RightContainer';
 import { SettingsLocalization } from './settings/SettingsLocalization';
-import { KioskView } from './views/KioskView';
+import { ApplicationFront } from './src-front/ApplicationFront';
 
 
 /** Основное окно приложения */
@@ -36,7 +33,8 @@ export class App extends BaseRoutedComponent<IMainRoutedProps> {
 						</ButtonGroup>
 					</RightContainer>
 				</OneLine>
-				<KioskView/>
+
+				<ApplicationFront/>
 				{/* <Link to='/settings'>{'Settings'}</Link>
 				<Link to='/profile'>{'Go back to profile'}</Link>
 				<div>

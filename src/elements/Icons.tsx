@@ -6,7 +6,9 @@ import {
 	PlaylistAdd as UiPlaylistAdd,
 	Remove as UiRemove,
 	Print as UiPrint,
-	Mail as UiMail
+	PrintTwoTone as UiPrintTwoTone,
+	Mail as UiMail,
+	Send as UiSend
 } from '@material-ui/icons';
 import React from 'react';
 
@@ -73,11 +75,34 @@ export class Print extends React.PureComponent<IIconProps> {
 }
 
 /** */
+export class PrintTwoTone extends React.PureComponent<IIconProps> {
+	/** Отображение */
+	public render(): React.ReactNode {
+		return (
+			<UiPrintTwoTone
+				{...this.props}
+			/>
+		);
+	}
+}
+
+/** */
 export class Mail extends React.PureComponent<IIconProps> {
 	/** Отображение */
 	public render(): React.ReactNode {
 		return (
 			<UiMail
+				{...this.props}
+			/>
+		);
+	}
+}
+/** */
+export class Send extends React.PureComponent<IIconProps> {
+	/** Отображение */
+	public render(): React.ReactNode {
+		return (
+			<UiSend
 				{...this.props}
 			/>
 		);

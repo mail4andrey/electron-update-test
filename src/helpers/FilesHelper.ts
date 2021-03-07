@@ -1,7 +1,8 @@
-import { FilesModel } from './FilesModel';
 
 import fs from 'fs';
 import path from 'path';
+
+import { FilesModel } from '../src-front/models/FilesModel';
 
 /** */
 export class FilesHelper {
@@ -19,11 +20,17 @@ export class FilesHelper {
 
 			// const files = await glob(`${directory}*.mp4`);
 			const filesView = files.map((file: string) => {
+				const fullpath = path.join(directory, file);
 				const fileView = new FilesModel();
 				fileView.filename = file;
 				fileView.extension = path.extname(file);
-				fileView.fullpath = path.join(directory, file);
+				fileView.fullpath = fullpath;
 				fileView.dirname = directory;
+				const stats = fs.statSync(fullpath);
+				const fileSizeInBytes = stats.size;
+				// Convert the file size to megabytes (optional)
+				// const fileSizeInMegabytes = fileSizeInBytes / (1024*1024);
+				fileView.fileSize = fileSizeInBytes;
 				return fileView;
 			});
 			allFiles.push(...filesView);

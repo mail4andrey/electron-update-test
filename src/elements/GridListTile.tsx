@@ -5,6 +5,8 @@ import React from 'react';
 export interface IGridListTileProps {
 	/** Содержимое */
 	children?: React.ReactNode;
+	cols?: number;
+	rows?: number;
 	// alignContent?: 'stretch' | 'center' | 'flex-start' | 'flex-end' | 'space-between' | 'space-around';
 	// alignItems?: 'flex-start' | 'center' | 'flex-end'| 'stretch' | 'baseline';
 	// container?: boolean;

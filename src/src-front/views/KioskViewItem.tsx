@@ -1,10 +1,20 @@
 import { observer } from 'mobx-react';
-import React from 'react';
+import React, { CanvasHTMLAttributes, LiHTMLAttributes, VideoHTMLAttributes } from 'react';
+
 
 import { KioskViewFileViewModel } from './KioskViewFileViewModel';
+import { KioskViewItemEventProps } from './KioskViewItemEventProps';
 
-import { Grid } from '../../elements/Grid';
+import { Checkbox } from '../../elements/Checkbox';
+import { GridListTile } from '../../elements/GridListTile';
+import { GridListTileBar } from '../../elements/GridListTileBar';
+import { IconButton } from '../../elements/IconButton';
+import { Mail, Print, PrintTwoTone } from '../../elements/Icons';
+import { OneLine } from '../../elements/ommons/OneLine';
+import { RightContainer } from '../../elements/ommons/RightContainer';
+import { Tooltip } from '../../elements/Tooltip';
 import { UrlHelper } from '../helpers/UrlHelper';
+import { KioskLocalization } from '../localization/KioskLocalization';
 
 export enum Size {
 	small = 'small',
@@ -24,6 +34,9 @@ export interface KioskViewItemProps {
 	// onEmailTestSend?: (event: React.MouseEvent<Element, MouseEvent>) => void;
 
 	// onChange?: (event: ITextFieldChangeEventProps, email: EmailSettingsModel) => void;
+	onSelect?: (event: React.ChangeEvent<HTMLInputElement>, value: KioskViewItemEventProps) => void;
+	onSendClick?: (event: React.MouseEvent<Element, MouseEvent>, value?: string) => void;
+	onPrintClick?: (event: React.MouseEvent<Element, MouseEvent>, value?: string) => void;
 }
 
 // @provider(KioskViewController, KioskViewStore)
@@ -32,6 +45,18 @@ export interface KioskViewItemProps {
 export class KioskViewItem extends React.PureComponent<KioskViewItemProps> {
 	/** Первое включение видео */
 	private firstPlay = true;
+
+	/** Средний кадр видео в base64 */
+	private middleImage?: string;
+
+	/** */
+	private readonly videoRef = React.createRef<HTMLVideoElement>();
+
+	/** */
+	private readonly canvasRef = React.createRef<HTMLCanvasElement>();
+
+	/** */
+	// private readonly imageRef = React.createRef<HTMLImageElement>();
 	// @inject
 	// private readonly controller!: KioskViewController;
 
@@ -55,13 +80,54 @@ export class KioskViewItem extends React.PureComponent<KioskViewItemProps> {
 		const filename = encodeURI(file.fullpath ?? '');
 		const url = UrlHelper.getUrl(`file?name=${filename}`);
 		const sizeNumber = this.getSize(size);
-
-		return (
-			<Grid
-				item
-				// key={file.fullpath}
+		const emailIcon = (
+			<IconButton
+				aria-label={`send ${file.filename}`}
+				className='icon'
+				onClick={this.onSendClick}
 			>
-				<div className='padding-12px'>
+				<Mail />
+			</IconButton>
+		);
+		const printIcons = (
+			<>
+				<Tooltip title={KioskLocalization.printMiddleFrame}>
+					<IconButton
+						aria-label={`print ${file.filename}` }
+						className='icon'
+						onClick={this.onPrintMiddleFrameClick}
+					>
+						<Print />
+					</IconButton></Tooltip>
+				<Tooltip title={KioskLocalization.printCurrentFrame}>
+					<IconButton
+						aria-label={`print ${file.filename}` }
+						className='icon'
+						onClick={this.onPrintCurrentFrameClick}
+					>
+						<PrintTwoTone />
+					</IconButton>
+				</Tooltip>
+			</>
+		);
+		const checkBox = (
+			<Checkbox
+				checked={file.isSelected}
+				onChange={this.onSelect}
+				color='secondary'
+			/>
+		);
+		return (
+			// <Grid
+			// 	item
+			// key={file.fullpath}
+			// >
+			// <GridListTile
+			// 	cols={cols}
+			// 	rows={cols}
+			// >
+			<div className='grid-tile background-gray'>
+				<div className='0video 0padding-12px'>
 					<video
 						controls={true}
 						width={sizeNumber}
@@ -69,8 +135,11 @@ export class KioskViewItem extends React.PureComponent<KioskViewItemProps> {
 						// controlsList="nodownload"
 						preload="metadata"
 						// id={file.fullpath}
-						onLoadedMetadata={this.onLoadedMetadata}
+						onLoadedMetadata={this.onVideoLoadedMetadata}
+						onTimeUpdate={this.onVideoTimeUpdate}
 						onPlay={this.onPlay}
+						ref={this.videoRef}
+						crossOrigin='anonymous'
 					>
 						<source
 							// type={`video/${file.extension}`}
@@ -82,22 +151,66 @@ export class KioskViewItem extends React.PureComponent<KioskViewItemProps> {
 						/> */}
 						{/* <source type="video/webm" src="http://media.w3.org/2010/05/sintel/trailer.webm" id="webm"></source>
 						<source type="video/ogg" src="http://media.w3.org/2010/05/sintel/trailer.ogv" id="ogv"></source> */}
-						<p>Your user agent does not support the HTML5 Video element.</p>
+						{/* <p>Your user agent does not support the HTML5 Video element.</p> */}
 					</video>
+					<canvas
+						style={{ display: 'none' }}
+						ref={this.canvasRef}
+					/>
+					{/* <img
+						ref={this.imageRef}
+						crossOrigin='anonymous'
+					/> */}
 					{/* <img
 						src={file.fullpath}
 					/> */}
-					<div>
+					{/* <div>
 						{file.filename}
-					</div>
+					</div> */}
 					{/* {file.fullpath} */}
+					<div className='grid-tile-bar'>
+						<OneLine>
+							{checkBox}
+							<RightContainer>
+								{emailIcon}
+								{printIcons}
+							</RightContainer>
+						</OneLine>
+					</div>
 				</div>
-			</Grid>
+				<div className='grid-tile-bar-title padding-left-12px padding-bottom-6px'>
+					{file.filename}
+				</div>
+				{/* <div className='grid-tile-bar-subtitle padding-left-12px padding-bottom-6px'>
+					{file.dirname}
+				</div> */}
+				<div className='grid-tile-bar-subtitle padding-left-12px padding-bottom-6px'>
+					{KioskLocalization.fileSizeInMb(file.fileSize)}
+				</div>
+				{/* <GridListTileBar
+					titlePosition="top"
+					title={checkBox}
+					subtitle={<span>{file.dirname}</span>}
+					className='titleBar-top'
+					actionIcon={(
+						<OneLine>
+							{emailIcon}
+							{printIcon}
+						</OneLine>
+					)}
+				/> */}
+				{/* <GridListTileBar
+					title={file.filename}
+					subtitle={<span>{file.dirname}</span>}
+					className='titleBar-bottom'
+				/> */}
+				{/* </GridListTile> */}
+			</div>
 		);
 	}
 
 	/** Событие после загрузки данных о видеофайле */
-	private readonly onLoadedMetadata = (event: any): void => {
+	private readonly onVideoLoadedMetadata = (event: any): void => {
 	// private readonly onLoadedMetadata = (event: {target?: {duration?: number; currentTime?: number; };}): void => {
 		// console.dir(event);
 		// console.dir(event.target?.duration);
@@ -107,6 +220,14 @@ export class KioskViewItem extends React.PureComponent<KioskViewItemProps> {
 
 		const middle = event.target.duration / 2;
 		event.target.currentTime = middle;
+	};
+
+	/** Событие после загрузки данных о видеофайле */
+	private readonly onVideoTimeUpdate = (event: any): void => {
+		// console.dir(event);
+		if (this.firstPlay) {
+			this.middleImage = this.getVideoFrame();
+		}
 	};
 
 	/** Событие при воспроизведении */
@@ -121,6 +242,30 @@ export class KioskViewItem extends React.PureComponent<KioskViewItemProps> {
 		this.firstPlay = false;
 		event.target.currentTime = 0;
 	};
+
+	/** Получаем кадр из видео */
+	private getVideoFrame(): string {
+		const video = this.videoRef.current!;
+		// const video = event.target;
+		const canvas = this.canvasRef.current!;
+		// const image = this.imageRef.current!;
+		canvas.height = Number(video.videoHeight);
+		canvas.width = Number(video.videoWidth);
+		const context = canvas.getContext('2d');
+		// context!.drawImage(video, 0, 0);
+		context!.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+		// context!.canvas.toBlob(
+		// 	blob => {
+		// 		resolve(blob);
+		// 	},
+		// 	'image/jpeg',
+		// 	0.75 /* quality */
+		// );
+		// image.src = canvas.toBlob();
+		// console.log(canvas);
+		// image.src = canvas.toDataURL('image/jpeg', 1);
+		return canvas.toDataURL('image/jpeg', 1);
+	}
 
 	/** */
 	private getSize(size?: Size): number {
@@ -137,16 +282,50 @@ export class KioskViewItem extends React.PureComponent<KioskViewItemProps> {
 		}
 	}
 
-	// /** */
-	// private readonly onContentChange = (event: ITextFieldChangeEventProps): void => {
-	// 	const { onChange } = this.props;
-	// 	const { value } = event.target;
-	// 	this.email.content = value;
-	// 	if (onChange) {
-	// 		const email = { ...this.email };
-	// 		onChange(event, email);
-	// 	}
-	// };
+	/** */
+	private readonly onSelect = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean): void => {
+		const { onSelect } = this.props;
+		if (onSelect) {
+			const value = { checked, id: this.props.file.fullpath } as KioskViewItemEventProps;
+			onSelect(event, value);
+		}
+	};
+
+	/** */
+	private readonly onSendClick = (event: React.MouseEvent<Element, MouseEvent>): void => {
+		const { onSendClick } = this.props;
+		if (onSendClick) {
+			const value = this.props.file.fullpath;
+			onSendClick(event, value);
+		}
+	};
+
+	/** */
+	private readonly onPrintMiddleFrameClick = (event: React.MouseEvent<Element, MouseEvent>): void => {
+		const { onPrintClick } = this.props;
+		if (onPrintClick) {
+			const value = this.middleImage;
+			onPrintClick(event, value);
+		}
+	};
+
+	/** */
+	private readonly onPrintCurrentFrameClick = (event: React.MouseEvent<Element, MouseEvent>): void => {
+		const { onPrintClick } = this.props;
+		if (onPrintClick) {
+			const value = this.getVideoFrame();
+			onPrintClick(event, value);
+		}
+	};
+
+	/** */
+	private readonly onPrintCurrentClick = (event: React.MouseEvent<Element, MouseEvent>): void => {
+		const { onPrintClick } = this.props;
+		if (onPrintClick) {
+			const value = this.middleImage;
+			onPrintClick(event, value);
+		}
+	};
 
 	// /** */
 	// private readonly onEmailTestSend = async (_event: React.MouseEvent<HTMLButtonElement, MouseEvent>): Promise<void> => {

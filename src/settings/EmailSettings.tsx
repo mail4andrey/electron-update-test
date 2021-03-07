@@ -1,4 +1,4 @@
-// import { ipcRenderer } from 'electron';
+import { ipcRenderer } from 'electron';
 import { observer } from 'mobx-react';
 import React from 'react';
 
@@ -166,6 +166,6 @@ export class EmailSettings extends React.PureComponent<EmailSettingsProps> {
 		email.to = this.email.login;
 		email.subject = this.email.subject;
 		email.content = this.email.content;
-		// await ipcRenderer.invoke(ElectronCommands.sendEmail, email);
+		await ipcRenderer.invoke(ElectronCommands.sendEmail, email);
 	};
 }
