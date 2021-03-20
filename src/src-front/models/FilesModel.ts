@@ -1,14 +1,20 @@
-/**
- *
- */
-export class FilesModel {
-	public filename?: string;
+/** */
+export interface PathSourceFilesModel {
 
-	public dirname?: string;
+	dirname?: string;
 
-	public fullpath?: string;
+	files?: PathSourceFileModel[];
+}
 
-	public extension?: string;
+/** */
+export interface PathSourceFileModel {
+	filename?: string;
 
-	public fileSize?: number;
+	dirname?: string;
+
+	fullpath?: string;
+
+	extension?: string;
+
+	fileSize?: number;
 }

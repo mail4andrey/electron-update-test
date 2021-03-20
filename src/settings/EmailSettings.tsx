@@ -2,50 +2,53 @@ import { ipcRenderer } from 'electron';
 import { observer } from 'mobx-react';
 import React from 'react';
 
-import { EmailSecndingModel } from './EmailSendingModel';
+
+import { EmailSendingModel } from './EmailSendingModel';
 import { EmailSettingsModel } from './EmailSettingsModel';
 import { SettingsLocalization } from './SettingsLocalization';
 
 import { ElectronCommands } from '../ElectronCommands';
 import { Button } from '../elements/Button';
+import { FormControl } from '../elements/FormControl';
+import { Mail } from '../elements/Icons';
 import { InputLabel } from '../elements/InputLabel';
 import { ITextFieldChangeEventProps, TextField } from '../elements/TextField';
+import { Typography } from '../elements/Typography';
+import { EmailProxy } from '../helpers/EmailProxy';
 
 
 /** */
 export interface EmailSettingsProps {
-	email?: EmailSettingsModel;
+	settings?: EmailSettingsModel;
 
-	onEmailTestSend?: (event: React.MouseEvent<Element, MouseEvent>) => void;
-
-	onChange?: (event: ITextFieldChangeEventProps, email: EmailSettingsModel) => void;
+	onChange?: (event: ITextFieldChangeEventProps, settings: EmailSettingsModel) => void;
 }
 
 // @provider(SettingsController, SettingsStore)
 @observer
 /** */
 export class EmailSettings extends React.PureComponent<EmailSettingsProps> {
+
 	/** */
-	public email = { ...this.props.email ?? new EmailSettingsModel() };
+	private readonly client = new EmailProxy();
+
+	/** */
+	private settings = { ...this.props.settings ?? new EmailSettingsModel() };
 
 	/** Отображение */
 	public render(): React.ReactNode {
-		const { onEmailTestSend } = this.props;
-		const { login, password, server, subject, content } = this.email;
+		const { login, password, server, subject, content } = this.settings;
 		return (
-			// <Grid
-			// 	container
-			// 	direction="column"
-			// 	justify="center"
-			// 	alignItems="center"
-			// >
 			<div className=''>
-				<div>
-					<InputLabel>
-						{SettingsLocalization.emailTab.title}
-					</InputLabel>
-				</div>
-				<div>
+				<Typography
+					variant='h5'
+				>
+					{SettingsLocalization.emailTab.title}
+				</Typography>
+				<FormControl
+					fullWidth={true}
+					margin='dense'
+				>
 					<TextField
 						label={SettingsLocalization.emailTab.server}
 						value={server}
@@ -53,8 +56,11 @@ export class EmailSettings extends React.PureComponent<EmailSettingsProps> {
 						fullWidth={true}
 						required={true}
 					/>
-				</div>
-				<div>
+				</FormControl>
+				<FormControl
+					fullWidth={true}
+					margin='dense'
+				>
 					<TextField
 						label={SettingsLocalization.emailTab.login}
 						value={login}
@@ -62,8 +68,11 @@ export class EmailSettings extends React.PureComponent<EmailSettingsProps> {
 						fullWidth={true}
 						required={true}
 					/>
-				</div>
-				<div>
+				</FormControl>
+				<FormControl
+					fullWidth={true}
+					margin='dense'
+				>
 					<TextField
 						label={SettingsLocalization.emailTab.password}
 						value={password}
@@ -71,33 +80,42 @@ export class EmailSettings extends React.PureComponent<EmailSettingsProps> {
 						fullWidth={true}
 						required={true}
 					/>
-				</div>
-				<div>
+				</FormControl>
+				<FormControl
+					fullWidth={true}
+					margin='dense'
+				>
 					<TextField
 						label={SettingsLocalization.emailTab.subject}
 						value={subject}
 						onChange={this.onSubjectChange}
 						fullWidth={true}
 					/>
-				</div>
-				<div>
+				</FormControl>
+				<FormControl
+					fullWidth={true}
+					margin='dense'
+				>
 					<TextField
 						label={SettingsLocalization.emailTab.content}
 						value={content}
 						onChange={this.onContentChange}
 						fullWidth={true}
 					/>
-				</div>
-				<div>
+				</FormControl>
+				<FormControl
+					fullWidth={true}
+					margin='dense'
+				>
 					<Button
 						onClick={this.onEmailTestSend}
 						color='primary'
-						size='small'
+						variant='contained'
+						startIcon={<Mail />}
 					>
 						{SettingsLocalization.emailTab.testSendButton}
 					</Button>
-					{/* </div> */}
-				</div>
+				</FormControl>
 			</div>
 		);
 	}
@@ -106,9 +124,9 @@ export class EmailSettings extends React.PureComponent<EmailSettingsProps> {
 	private readonly onServerChange = (event: ITextFieldChangeEventProps): void => {
 		const { onChange } = this.props;
 		const { value } = event.target;
-		this.email.server = value;
+		this.settings.server = value;
 		if (onChange) {
-			const email = { ...this.email };
+			const email = { ...this.settings };
 			onChange(event, email);
 		}
 	};
@@ -117,9 +135,9 @@ export class EmailSettings extends React.PureComponent<EmailSettingsProps> {
 	private readonly onLoginChange = (event: ITextFieldChangeEventProps): void => {
 		const { onChange } = this.props;
 		const { value } = event.target;
-		this.email.login = value;
+		this.settings.login = value;
 		if (onChange) {
-			const email = { ...this.email };
+			const email = { ...this.settings };
 			onChange(event, email);
 		}
 	};
@@ -128,9 +146,9 @@ export class EmailSettings extends React.PureComponent<EmailSettingsProps> {
 	private readonly onPasswordChange = (event: ITextFieldChangeEventProps): void => {
 		const { onChange } = this.props;
 		const { value } = event.target;
-		this.email.password = value;
+		this.settings.password = value;
 		if (onChange) {
-			const email = { ...this.email };
+			const email = { ...this.settings };
 			onChange(event, email);
 		}
 	};
@@ -139,9 +157,9 @@ export class EmailSettings extends React.PureComponent<EmailSettingsProps> {
 	private readonly onSubjectChange = (event: ITextFieldChangeEventProps): void => {
 		const { onChange } = this.props;
 		const { value } = event.target;
-		this.email.subject = value;
+		this.settings.subject = value;
 		if (onChange) {
-			const email = { ...this.email };
+			const email = { ...this.settings };
 			onChange(event, email);
 		}
 	};
@@ -150,22 +168,27 @@ export class EmailSettings extends React.PureComponent<EmailSettingsProps> {
 	private readonly onContentChange = (event: ITextFieldChangeEventProps): void => {
 		const { onChange } = this.props;
 		const { value } = event.target;
-		this.email.content = value;
+		this.settings.content = value;
 		if (onChange) {
-			const email = { ...this.email };
+			const email = { ...this.settings };
 			onChange(event, email);
 		}
 	};
 
 	/** */
 	private readonly onEmailTestSend = async (_event: React.MouseEvent<HTMLButtonElement, MouseEvent>): Promise<void> => {
-		const email = new EmailSecndingModel();
-		email.server = this.email.server;
-		email.login = this.email.login;
-		email.password = this.email.password;
-		email.to = this.email.login;
-		email.subject = this.email.subject;
-		email.content = this.email.content;
-		await ipcRenderer.invoke(ElectronCommands.sendEmail, email);
+		try {
+			await this.client.sendMailTest(this.settings);
+		} catch (error) {
+
+		}
+		// const email = new EmailSendingModel();
+		// email.server = this.email.server;
+		// email.login = this.email.login;
+		// email.password = this.email.password;
+		// email.to = this.email.login;
+		// email.subject = this.email.subject;
+		// email.content = this.email.content;
+		// await ipcRenderer.invoke(ElectronCommands.sendEmail, email);
 	};
 }

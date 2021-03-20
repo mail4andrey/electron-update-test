@@ -1,6 +1,6 @@
 
 /** Модель отправки письма */
-export class EmailSecndingModel {
+export class EmailSendingModel {
 	/** */
 	public server?: string;
 

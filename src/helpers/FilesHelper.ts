@@ -2,40 +2,44 @@
 import fs from 'fs';
 import path from 'path';
 
-import { FilesModel } from '../src-front/models/FilesModel';
+import { PathSourceFileModel, PathSourceFilesModel } from '../src-front/models/FilesModel';
 
 /** */
 export class FilesHelper {
 	/** */
-	public static getFiles(directories?: string[]): FilesModel[] {
+	public static getFiles(directories?: string[]): PathSourceFilesModel[] {
 		if (!directories) {
 			return [];
 		}
 
-		const allFiles: FilesModel[] = [];
-		for (const directory of directories) {
-			const files = fs.readdirSync(directory, { withFileTypes: true })
+		const result: PathSourceFilesModel[] = [];
+		for (const dirname of directories) {
+			const files = fs.readdirSync(dirname, { withFileTypes: true })
 				.filter((item: fs.Dirent) => !item.isDirectory())
 				.map((item: fs.Dirent) => item.name);
 
-			// const files = await glob(`${directory}*.mp4`);
-			const filesView = files.map((file: string) => {
-				const fullpath = path.join(directory, file);
-				const fileView = new FilesModel();
-				fileView.filename = file;
-				fileView.extension = path.extname(file);
-				fileView.fullpath = fullpath;
-				fileView.dirname = directory;
+			const filesView = files.map((filename: string) => {
+				const fullpath = path.join(dirname, filename);
+				const extension = path.extname(filename);
 				const stats = fs.statSync(fullpath);
-				const fileSizeInBytes = stats.size;
-				// Convert the file size to megabytes (optional)
-				// const fileSizeInMegabytes = fileSizeInBytes / (1024*1024);
-				fileView.fileSize = fileSizeInBytes;
+				const fileSize = stats.size;
+				const fileView = {
+					filename,
+					extension,
+					fullpath,
+					dirname,
+					fileSize
+				} as PathSourceFileModel;
 				return fileView;
 			});
-			allFiles.push(...filesView);
+			const pathSourceFilesModel = {
+				dirname,
+				files: filesView
+			} as PathSourceFilesModel;
+			result.push(pathSourceFilesModel);
 		}
 
-		return allFiles.sort((a: FilesModel, b: FilesModel) => a.filename.localeCompare(b.filename) * -1);
+		// .sort((a: PathSourceFilesModel, b: PathSourceFilesModel) => a.filename.localeCompare(b.filename) * -1);
+		return result;
 	}
 }

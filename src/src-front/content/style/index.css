@@ -1,3 +1,13 @@
+body {
+	/* background: darkgrey; */
+	/* background: linear-gradient(to top, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 70%, rgba(0,0,0,0) 100%); */
+	/* background: linear-gradient(to bottom, rgba(180,180,180,0.3) 0%, rgba(180,180,180,0.1) 70%, rgba(180,180,180,0) 100%); */
+	/* min-width: 800px; */
+	/* background: linear-gradient(to bottom right, blue, pink); */
+	overflow-x: hidden;
+	box-sizing: border-box;
+	font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+}
 /* body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   margin: auto;
@@ -5,6 +15,9 @@
   padding: 2rem;
   background-color: whitesmoke;
 } */
+.box-sizing-border-box {
+	box-sizing: border-box;
+}
 
 .oneline {
 	display: flex;
@@ -30,6 +43,12 @@
 	flex-grow: 1;
 }
 
+.width100prc {
+	width: 100%;
+}
+.height100prc {
+	height: 100%;
+}
 .width100px {
 	width: 100px;
 }
@@ -37,11 +56,23 @@
 	height: 100px;
 }
 
+.padding-6px {
+	padding: 6px;
+}
 .padding-12px {
 	padding: 12px;
 }
+.padding-left-6px {
+	padding-left: 6px;
+}
 .padding-left-12px {
 	padding-left: 12px;
+}
+.padding-left-32px {
+	padding-left: 32px;
+}
+.padding-right-12px {
+	padding-right: 12px;
 }
 .padding-bottom-6px {
 	padding-bottom: 6px;
@@ -49,13 +80,13 @@
 
 
 .icon {
-	color: 'rgba(255, 255, 255, 0.54)',
+	color: rgba(255, 255, 255, 0.54)
 }
 .titleBar-bottom {
-	background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 70%, rgba(0,0,0,0) 100%)
+	background: linear-gradient(to top, rgba(150,150,150,0.7) 0%, rgba(150,150,150,0.3) 70%, rgba(150,150,150,0) 100%)
 }
 .titleBar-top {
-	background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)
+	background: linear-gradient(to bottom, rgba(150,150,150,0.7) 0%, rgba(150,150,150,0.3) 70%, rgba(150,150,150,0) 100%)
 }
 .video {
     position: absolute; 
@@ -98,15 +129,20 @@
 	align-items: center;
 	font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 	top: 0;
-	background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%);
+	background: linear-gradient(to bottom, rgba(150,150,150,0.7) 0%, rgba(150,150,150,0.3) 70%, rgba(150,150,150,0) 100%)
 }
 
 .grid-tile-bar-title {
-    overflow: hidden;
-    font-size: 1rem;
-    line-height: 24px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+	font-size: 1rem;
+	line-height: 24px;
+	display: flex;
+}
+.grid-tile-bar-title-cut-text {
+	width: 0px;
+	flex-grow: 1;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
 }
 .grid-tile-bar-subtitle {
     overflow: hidden;
@@ -123,8 +159,104 @@
 	background: darkgrey;
 }
 
-body {
-	/* background: darkgrey; */
-	/* background: linear-gradient(to top, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 70%, rgba(0,0,0,0) 100%); */
-	background: linear-gradient(to bottom, rgba(180,180,180,0.3) 0%, rgba(180,180,180,0.1) 70%, rgba(180,180,180,0) 100%);
+
+.kiosk-item-image {
+	/* width: 100%;
+	height: 100%; */
+	/* position: static;
+	left: 0;
+	top: 0; */
+	filter: blur(10px);
+}
+.position-relative {
+	position: relative;
+}
+.position-absolute {
+	position: absolute;
+}
+.top-0 {
+	top: 0;
+}
+.left-0 {
+	left: 0;
+}
+.display-none {
+	display: none;
+}
+
+.transform-rotate-180deg {
+	transform: rotate(-180deg);
+}
+
+
+.video00 {
+	/* height: 100vh;
+	width: 90%;
+	/* object-fit: fill; */
+	/* object-fit: cover; */
+	/* use "cover" to avoid distortion */
+	/* position: absolute; */
+
+	
+  /* Make video to at least 100% wide and tall */
+  min-width: 100%; 
+  min-height: 100%; 
+
+  /* Setting width & height to auto prevents the browser from stretching or squishing the video */
+  width: auto;
+  height: auto;
+
+  /* Center the video */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.min-width-200px {
+	min-width: 200px;
+}
+
+
+
+.loader-default-height {
+	height: 200px;
+}
+.loader-vertical-center {
+	transform: translateY(-50%);
+	top: 50%;
+	position: relative;
+	min-height: 65px;
+}
+
+/* Выравнивание элемента по центру */
+.centered-container {
+	margin: auto;
+}
+.width40px {
+	width: 40px;
+}
+
+
+.vertical-center {
+	/* position: absolute; */
+	/* left: calc(50% - 20px);
+	top: calc(50% - 20px); */
+	margin: 0;
+	position: absolute;
+	top: 50%;
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+}
+.height-100vh {
+	height: 100vh;
+}
+.width-100vw {
+	width: 100vw;
+}
+.height-min-100vh {
+	min-height: 100vh;
+}
+.width-min-100vw {
+	min-width: 100vw;
 }

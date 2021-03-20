@@ -1,6 +1,8 @@
+import { DesignSettingsModel } from './DesignSettingsModel';
 import { EmailSettingsModel } from './EmailSettingsModel';
+import { PrintSettingsModel } from './PrintSettingsModel';
 
-/** Можель настроек приложения */
+/** Модель настроек приложения */
 export class SettingsModel {
 	/** Патерн выборки файлов из папок */
 	public filesPattern?: string;
@@ -9,10 +11,16 @@ export class SettingsModel {
 	public pathSources?: string[] = [];
 
 	/** */
-	public email = new EmailSettingsModel();
+	public emailSettings = new EmailSettingsModel();
 
 	/** */
-	public printer?: string;
+	public printSettings?: PrintSettingsModel;
+
+	/** */
+	public designSettings?: DesignSettingsModel;
+
+	/** */
+	// public language?: LanguageEnum;
 
 	/** */
 	public viewSetting?: string;

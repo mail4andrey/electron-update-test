@@ -1,16 +1,26 @@
 /* eslint-disable @typescript-eslint/no-extraneous-class */
 /* eslint-disable max-classes-per-file */
+
+import { DesignSizeEnum } from './DesignSettingsModel';
+import { PrintFitOnPageEnum, PrintLayoutEnum } from './PrintSettingsModel';
+
 /**
  *
  */
 export class SettingsLocalization {
 	/** Вкладка Источники */
-	public static sourceTab = class {
+	public static pathSourceTab = class {
 		public static filesPattern = 'Файлы';
 
 		public static title = 'Источники';
 
 		public static pathSource = 'Источник';
+
+		public static pathSelectButtonTitle = 'Выбрать папку';
+
+		public static pathRemoveButtonTitle = 'Удалить папку';
+
+		public static pathAddButtonTitle = 'Добавить папку';
 	};
 
 	/** Вкладка email */
@@ -30,15 +40,68 @@ export class SettingsLocalization {
 		public static testSendButton = 'Отправить пробное письмо';
 	};
 
+	/** Вкладка Печать */
+	public static printerTab = class {
+
+		public static title = 'Печать';
+
+		public static printerName = 'Принтер';
+
+		public static layoutName = 'Ориентация';
+
+		public static fitOnPageName = 'Заполнение';
+
+		public static testPrintButton = 'Распечатать пустую страницу';
+
+		/** Ориентация */
+		public static layoutEnum = (value?: PrintLayoutEnum): string => {
+			switch (value) {
+				case PrintLayoutEnum.portrait:
+					return 'Портретная';
+				default:
+				case PrintLayoutEnum.landscape:
+					return 'Горизонтальная';
+			}
+		};
+
+		/** Заполнение */
+		public static fitOnPageEnum = (value?: PrintFitOnPageEnum): string => {
+			switch (value) {
+				case PrintFitOnPageEnum.contain:
+					return 'Все изображение';
+				default:
+				case PrintFitOnPageEnum.cover:
+					return 'На всю страницу';
+			}
+		};
+	};
+
+	/** Вкладка Дизайн */
+	public static designTab = class {
+
+		public static title = 'Дизайн';
+
+		public static backgroundName = 'Фон';
+
+		public static sizeName = 'Размер';
+
+		/** Размер */
+		public static sizeEnum = (value?: DesignSizeEnum): string => {
+			switch (value) {
+				// case DesignSizeEnum.large:
+				// 	return 'Большой';
+				case DesignSizeEnum.small:
+					return 'Малый';
+				default:
+				case DesignSizeEnum.medium:
+					return 'Средний';
+			}
+		};
+	};
+
 	public static title = 'Настройки';
 
 	// public static cancel = 'Отмена';
-
-	public static pathSelectButtonTitle = 'Выбрать папку';
-
-	public static pathRemoveButtonTitle = 'Удалить папку';
-
-	public static pathAddButtonTitle = 'Добавить папку';
 
 	public static saveButton = 'Сохранить';
 

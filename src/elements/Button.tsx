@@ -1,20 +1,56 @@
-import { Button as UiButton } from '@material-ui/core';
+import { Button as UiButton, PropTypes } from '@material-ui/core';
 import React from 'react';
 
 /** Свойства кнопки */
 export interface IButtonProps {
 	/** Содержимое */
 	children?: React.ReactNode;
-
-	/** Тип кнопки */
-	color?: 'inherit' | 'primary' | 'secondary' | 'default' | undefined;
-
-	/** Тип */
+	/**
+	 * The color of the component. It supports those theme colors that make sense for this component.
+	 */
+	color?: PropTypes.Color;
+	/**
+	 * If `true`, the button will be disabled.
+	 */
+	disabled?: boolean;
+	/**
+	 * If `true`, no elevation is used.
+	 */
+	disableElevation?: boolean;
+	/**
+	 * If `true`, the  keyboard focus ripple will be disabled.
+	 */
+	disableFocusRipple?: boolean;
+	/**
+	 * Element placed after the children.
+	 */
+	endIcon?: React.ReactNode;
+	/**
+	 * If `true`, the button will take up the full width of its container.
+	 */
+	fullWidth?: boolean;
+	/**
+	 * The URL to link to when the button is clicked.
+	 * If defined, an `a` element will be used as the root node.
+	 */
+	href?: string;
+	/**
+	 * The size of the button.
+	 * `small` is equivalent to the dense button styling.
+	 */
+	size?: 'small' | 'medium' | 'large';
+	/**
+	 * Element placed before the children.
+	 */
+	startIcon?: React.ReactNode;
+	/**
+	 * The variant to use.
+	 */
 	variant?: 'text' | 'outlined' | 'contained';
 
 	/** Событие при нажатии на кнопку */
 	onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-	size?: 'large' | 'medium' | 'small';
+
 }
 /** Кнопка */
 export class Button extends React.PureComponent<IButtonProps> {

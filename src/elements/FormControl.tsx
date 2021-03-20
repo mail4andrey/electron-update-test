@@ -8,6 +8,11 @@ export interface IFormControlProps {
 
 	/** Тип */
 	variant?: 'filled' | 'outlined' | 'standard';
+
+	fullWidth?: boolean;
+	margin?: 'dense' | 'none' | 'normal';
+
+	className?: string;
 }
 /** Кнопка */
 export class FormControl extends React.PureComponent<IFormControlProps> {

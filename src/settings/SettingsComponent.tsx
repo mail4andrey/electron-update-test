@@ -3,28 +3,27 @@ import React from 'react';
 import { inject, provider } from 'react-ioc';
 
 
+import { DesignSettings } from './DesignSettings';
 import { EmailSettings } from './EmailSettings';
+import { PathSourceSettings } from './PathSourceSettings';
+import { PrintSettings } from './PrintSettings';
 import { SettingsController } from './SettingsController';
 import { SettingsLocalization } from './SettingsLocalization';
 import { SettingsStore } from './SettingsStore';
 
+import { ApplicationSettingsController } from '../application/ApplicationSettingsController';
 import { BaseRoutedComponent } from '../common/BaseRoutedComponent';
 import { IMainRoutedProps } from '../common/props/IMainRoutedProps';
+import { AppBar } from '../elements/AppBar';
 import { Button } from '../elements/Button';
 import { ButtonGroup } from '../elements/ButtonGroup';
-import { PathSelector } from '../elements/combine/PathSelector';
-import { Grid } from '../elements/Grid';
-import { IconButton } from '../elements/IconButton';
-import { PlaylistAdd } from '../elements/Icons';
-import { InputLabel } from '../elements/InputLabel';
-import { LeftContainer } from '../elements/ommons/LeftContainer';
+import { Folder, FormatSize, Mail, Print } from '../elements/Icons';
 import { OneLine } from '../elements/ommons/OneLine';
 import { RightContainer } from '../elements/ommons/RightContainer';
 import { Tab } from '../elements/Tab';
 import { TabPanel } from '../elements/TabPanel';
 import { Tabs } from '../elements/Tabs';
-import { ITextFieldChangeEventProps, TextField } from '../elements/TextField';
-import { Tooltip } from '../elements/Tooltip';
+import { ITextFieldChangeEventProps } from '../elements/TextField';
 
 
 /** */
@@ -62,33 +61,22 @@ export class SettingsComponent extends BaseRoutedComponent<IMainRoutedProps> {
 		this.controller.loadSettings();
 	}
 
+	/** */
+	// public componentWillUnmount(): void {
+	// 	ApplicationSettingsController.saveDefaultSettings();
+	// }
 
 	/** Отображение */
 	public render(): React.ReactNode {
 		// const classes = useStyles();
 
-		const { onPathSourceAdd, onPathSourceDelete, onPathSourceChange, onEmailSettingsChange } = this.controller;
+		const { onPathSourceAdd, onPathSourceDelete, onPathSourceChange, onEmailSettingsChange, onPrintSettingsChange, onDesignSettingsChange } = this.controller;
 		const { settings, tabSelected } = this.store;
-		const paths = this.store.settings.pathSources?.map((path: string, index: number) => (
-			<div
-				key={index}
-			>
-				<PathSelector
-					id={index}
-					// label={SettingsLocalization.pathSource}
-					path={path}
-					onChange={onPathSourceChange}
-					onDelete={onPathSourceDelete}
-				/>
-			</div>
-		));
 		return (
 			<div>
-				<OneLine>
-					<LeftContainer>
-						<h1>{SettingsLocalization.title}</h1>
-					</LeftContainer>
-					<RightContainer>
+				<OneLine className='padding-left-12px box-sizing-border-box'>
+					<h1>{SettingsLocalization.title}</h1>
+					<RightContainer className='padding-right-12px'>
 						<ButtonGroup>
 							<Button
 								color='primary'
@@ -112,12 +100,19 @@ export class SettingsComponent extends BaseRoutedComponent<IMainRoutedProps> {
 						</ButtonGroup>
 					</RightContainer>
 				</OneLine>
-				<div
+				{/* <div
 					className='flex-grow-1'
+				> */}
+
+				<AppBar
+					position='static'
+					color='transparent'
+					// color="default"
 				>
 					<Tabs
-						orientation='vertical'
+						// orientation='vertical'
 						variant='scrollable'
+						scrollButtons="on"
 						// variant="fullWidth"
 						indicatorColor="primary"
 						textColor="primary"
@@ -127,70 +122,67 @@ export class SettingsComponent extends BaseRoutedComponent<IMainRoutedProps> {
 						onChange={this.onTabChange}
 					>
 						<Tab
-							label={SettingsLocalization.sourceTab.title}
+							label={SettingsLocalization.pathSourceTab.title}
 							index={0}
 							// id = 'simple-tab-0'
 							// 'aria-controls'= 'simple-tabpanel-0'
+							icon={<Folder/>}
 						/>
 						<Tab
 							label={SettingsLocalization.emailTab.title}
 							index={1}
+							icon={<Mail/>}
+						/>
+						<Tab
+							label={SettingsLocalization.printerTab.title}
+							index={2}
+							icon={<Print/>}
+						/>
+						<Tab
+							label={SettingsLocalization.designTab.title}
+							index={3}
+							icon={<FormatSize/>}
 						/>
 					</Tabs>
 					<TabPanel
 						value={tabSelected}
 						index={0}
 					>
-						<Grid
-							container
-							spacing={1}
-							alignItems='center'
-						>
-							<Grid item>
-								<TextField
-									label={SettingsLocalization.sourceTab.filesPattern}
-									value={settings.filesPattern}
-									onChange={this.onFilesPatternChange}
-									fullWidth={true}
-									required={true}
-								/>
-							</Grid>
-							<Grid item>
-								<IconButton
-									size='small'
-									onClick={onPathSourceAdd}
-								>
-									<Tooltip
-										title={SettingsLocalization.pathAddButtonTitle}
-									>
-										<PlaylistAdd />
-									</Tooltip>
-								</IconButton>
-							</Grid>
-							<Grid item>
-								<InputLabel>
-									{SettingsLocalization.sourceTab.pathSource}
-								</InputLabel>
-							</Grid>
-						</Grid>
-						<div>
-							{paths}
-						</div>
+						<PathSourceSettings
+							settings={settings.pathSources}
+							onPathSourceAdd={onPathSourceAdd}
+							onPathSourceChange={onPathSourceChange}
+							onPathSourceDelete={onPathSourceDelete}
+						/>
 					</TabPanel>
 					<TabPanel
 						value={tabSelected}
 						index={1}
 					>
 						<EmailSettings
-							email={settings.email}
+							settings={settings.emailSettings}
 							onChange={onEmailSettingsChange}
-							// emailLogin={settings.email?.emailLogin}
-							// emailPassword={settings.email?.emailPassword}
-							// emailServer={settings.email?.emailServer}
 						/>
 					</TabPanel>
-				</div>
-
+					<TabPanel
+						value={tabSelected}
+						index={2}
+					>
+						<PrintSettings
+							settings={settings.printSettings}
+							onChange={onPrintSettingsChange}
+						/>
+					</TabPanel>
+					<TabPanel
+						value={tabSelected}
+						index={3}
+					>
+						<DesignSettings
+							settings={settings.designSettings}
+							onChange={onDesignSettingsChange}
+						/>
+					</TabPanel>
+				</AppBar>
 				{/* <OneLine>
 					<Tooltip
 						title={SettingsLocalization.pathAddButtonTitle}

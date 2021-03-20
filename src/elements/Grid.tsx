@@ -3,6 +3,7 @@ import React from 'react';
 
 /** Свойства кнопки */
 export interface IGridProps {
+	className?: string;
 	/** Содержимое */
 	children?: React.ReactNode;
 	alignContent?: 'stretch' | 'center' | 'flex-start' | 'flex-end' | 'space-between' | 'space-around';

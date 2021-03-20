@@ -1,11 +1,11 @@
 import * as nodemailer from 'nodemailer';
 
-import { EmailSecndingModel } from '../settings/EmailSendingModel';
+import { EmailSendingModel } from '../settings/EmailSendingModel';
 
 /** */
 export class EmailHelper {
 	/** */
-	public static async sendMail(email?: EmailSecndingModel): Promise<void> {
+	public static async sendMail(email?: EmailSendingModel): Promise<void> {
 		if (!email) {
 			return;
 		}

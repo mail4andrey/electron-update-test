@@ -2,13 +2,16 @@ import { ITextFieldChangeEventProps } from 'elements/TextField';
 import { inject } from 'react-ioc';
 
 
+import { DesignSettingsModel } from './DesignSettingsModel';
 import { EmailSettingsModel } from './EmailSettingsModel';
+import { PrintSettingsModel } from './PrintSettingsModel';
 import { SettingsModel } from './SettingsModel';
 import { SettingsStore } from './SettingsStore';
 import { SettingsViewModel } from './SettingsViewModel';
 
 import { ApplicationSettingsController } from '../application/ApplicationSettingsController';
 import { ApplicationSettingsStore } from '../application/ApplicationSettingsStore';
+import { ISelectChangeEventProps } from '../elements/Select';
 import { MapperHelper } from '../helpers/MapperHelper';
 
 
@@ -19,6 +22,7 @@ export class SettingsController {
 
 	/** */
 	public loadSettings = (): void => {
+		ApplicationSettingsController.loadDefaultSettings();
 		this.store.settings = MapperHelper.Map(ApplicationSettingsStore.settings, SettingsViewModel);
 	};
 
@@ -46,8 +50,18 @@ export class SettingsController {
 	};
 
 	/** */
-	public readonly onEmailSettingsChange = (_event: ITextFieldChangeEventProps, email: EmailSettingsModel): void => {
-		this.store.settings.email = email;
+	public readonly onEmailSettingsChange = (_event: ITextFieldChangeEventProps, settings: EmailSettingsModel): void => {
+		this.store.settings.emailSettings = settings;
+	};
+
+	/** */
+	public readonly onPrintSettingsChange = (_event: ISelectChangeEventProps, settings: PrintSettingsModel): void => {
+		this.store.settings.printSettings = settings;
+	};
+
+	/** */
+	public readonly onDesignSettingsChange = (_event: ISelectChangeEventProps | undefined, settings: DesignSettingsModel): void => {
+		this.store.settings.designSettings = settings;
 	};
 
 	/** */

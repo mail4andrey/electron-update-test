@@ -40,7 +40,62 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id='root'>
-      Loading
+
+		<style>
+			@keyframes circular-rotate {
+				0% {
+					transform-origin: 50% 50%;
+				}
+				100% {
+					transform: rotate(360deg);
+				}
+			}
+			@keyframes circular-dash {
+				0% {
+					stroke-dasharray: 1px, 200px;
+					stroke-dashoffset: 0px;
+				}
+				50% {
+					stroke-dasharray: 100px, 200px;
+					stroke-dashoffset: -15px;
+				}
+				100% {
+					stroke-dasharray: 100px, 200px;
+					stroke-dashoffset: -125px;
+				}
+			}
+		</style>
+		<div
+			style="
+				width: 40px;
+				position: absolute;
+				left: calc(50vw - 20px);
+				top: calc(50vh - 20px);
+			"
+		>
+			<div
+				role="progressbar"
+				style="width: 40px;height: 40px;color: #3f51b5;animation: circular-rotate 1.4s linear infinite;"
+			>
+				<svg
+					viewBox="22 22 44 44"
+				>
+					<circle
+						cx="44"
+						cy="44"
+						r="20.2"
+						fill="none"
+						stroke-width="3.6"
+						style="
+							animation: circular-dash 1.4s ease-in-out infinite;
+							stroke-dasharray: 80px, 200px;
+							stroke-dashoffset: 0px;
+							stroke: currentColor;
+						"
+					/>
+				</svg>
+			</div>
+		</div>
     </div>
     <!-- We are using node <script>document.write(process.versions.node)</script>,
     Chrome <script>document.write(process.versions.chrome)</script>,

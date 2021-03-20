@@ -1,4 +1,5 @@
 // import { remote } from 'electron';
+import { remote } from 'electron';
 import { observer } from 'mobx-react';
 import React from 'react';
 // import { inject, provider } from 'react-ioc';
@@ -45,7 +46,7 @@ export class PathSelector extends React.PureComponent<PathSelectorProps> {
 			: (
 				<InputAdornment position='end'>
 					<Tooltip
-						title={SettingsLocalization.pathRemoveButtonTitle}
+						title={SettingsLocalization.pathSourceTab.pathRemoveButtonTitle}
 					>
 						<IconButton
 							size='small'
@@ -59,7 +60,7 @@ export class PathSelector extends React.PureComponent<PathSelectorProps> {
 		const selectFolder = (
 			<InputAdornment position='start'>
 				<Tooltip
-					title={SettingsLocalization.pathSelectButtonTitle}
+					title={SettingsLocalization.pathSourceTab.pathSelectButtonTitle}
 				>
 					<IconButton
 						size='small'
@@ -102,19 +103,19 @@ export class PathSelector extends React.PureComponent<PathSelectorProps> {
 
 	/** */
 	private readonly onSelectFolder = async (_event: React.MouseEvent<Element, MouseEvent>): Promise<void> => {
-		// const mainWindow = remote.getCurrentWindow();
-		// // const { dialog } = require('electron').remote;
-		// const result = await remote.dialog.showOpenDialog(mainWindow, {
-		// 	title: SettingsLocalization.pathSelectButtonTitle,
-		// 	properties: ['openDirectory']
-		// });
-		// if (!result.canceled) {
-		// 	const path = result.filePaths.length > 0 ? result.filePaths[0] : '';
-		// 	const { onChange, id } = this.props;
-		// 	if (onChange) {
-		// 		const onCahngeEvent = { target: { value: path } } as ITextFieldChangeEventProps;
-		// 		onChange(onCahngeEvent, id);
-		// 	}
-		// }
+		const mainWindow = remote.getCurrentWindow();
+		// const { dialog } = require('electron').remote;
+		const result = await remote.dialog.showOpenDialog(mainWindow, {
+			title: SettingsLocalization.pathSourceTab.pathSelectButtonTitle,
+			properties: ['openDirectory']
+		});
+		if (!result.canceled) {
+			const path = result.filePaths.length > 0 ? result.filePaths[0] : '';
+			const { onChange, id } = this.props;
+			if (onChange) {
+				const onCahngeEvent = { target: { value: path } } as ITextFieldChangeEventProps;
+				onChange(onCahngeEvent, id);
+			}
+		}
 	};
 }

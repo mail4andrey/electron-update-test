@@ -4,7 +4,7 @@ import { ApplicationSettingsController } from './application/ApplicationSettings
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
 
-let mainWindow: BrowserWindow | null = null;
+// let mainWindow: BrowserWindow | null = null;
 
 /**
  *
@@ -15,7 +15,7 @@ export function createWindow(): BrowserWindow {
 	//   if (mainWindow) return mainWindow;
 
 	// Create the browser window.
-	mainWindow = new BrowserWindow({
+	const mainWindow = new BrowserWindow({
 		width: 1024,
 		height: 768,
 		// other
@@ -144,5 +144,6 @@ export function createWindow(): BrowserWindow {
 	]);
 	Menu.setApplicationMenu(menu);
 
+	mainWindow.focus();
 	return mainWindow;
 }

@@ -1,26 +1,36 @@
 import { observable } from 'mobx';
 
-import { KioskViewFileViewModel } from './KioskViewFileViewModel';
+import { KioskViewFilesViewModel } from './KioskViewFileViewModel';
+import { VideoItemSizeEnum } from './SizeEnum';
+import { SortOrderEnum } from './SortOrderEnum';
+
+import { LanguageEnum } from '../models/LanguageEnum';
 
 /** */
 export class KioskViewStore {
 	@observable
-	public loading = false;
+	public loaded = false;
 
 	@observable
-	public filesSelected = 0;
+	public groupsFiles: KioskViewFilesViewModel[] = [];
+
+	// @observable
+	// public openAlert?: string;
+
+	// @observable
+	// public alerts?: string;
 
 	@observable
-	public files: KioskViewFileViewModel[] = [];
+	public sortOrder?: SortOrderEnum;
 
 	@observable
-	public openAlert?: string;
+	public language?: LanguageEnum;
+
+	// @observable
+	// public sending = false;
 
 	@observable
-	public alerts?: string;
-
-	@observable
-	public sending = false;
+	public currentItemSize? = VideoItemSizeEnum.small;
 
 	public email?: string;
 }

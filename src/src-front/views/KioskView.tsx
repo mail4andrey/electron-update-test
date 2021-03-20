@@ -3,32 +3,36 @@ import { ProviderContext, withSnackbar } from 'notistack';
 import React from 'react';
 import { inject, provider } from 'react-ioc';
 
-
+import { KioskItemLanguageIcon } from './KioskItemLanguageIcon';
+import { KioskItemSizeIcon } from './KioskItemSizeIcon';
+import { KioskItemSortOrderIcon } from './KioskItemSortOrderIcon';
+import { KioskItemStateEnum } from './KioskItemStateEnum';
 import { KioskViewController } from './KioskViewController';
-import { KioskViewFileViewModel } from './KioskViewFileViewModel';
-import { KioskViewItem } from './KioskViewItem';
+import { KioskViewFilesViewModel, KioskViewFileViewModel } from './KioskViewFileViewModel';
+import { KioskViewGroupItems } from './KioskViewGroupItems';
 import { KioskViewStore } from './KioskViewStore';
 
 import { AppBar } from '../../elements/AppBar';
 import { Badge } from '../../elements/Badge';
-import { Grid } from '../../elements/Grid';
 import { IconButton } from '../../elements/IconButton';
 import { Mail, Print, Send } from '../../elements/Icons';
 import { InputAdornment } from '../../elements/InputAdornment';
 import { Loader } from '../../elements/Loader';
 import { OneLine } from '../../elements/ommons/OneLine';
+import { RightContainer } from '../../elements/ommons/RightContainer';
 import { TextField } from '../../elements/TextField';
 import { Toolbar } from '../../elements/Toolbar';
 import { Tooltip } from '../../elements/Tooltip';
 import { Typography } from '../../elements/Typography';
-import { ArrayHelper } from '../../helpers/ArrayHelper';
+import { DesignSizeEnum } from '../../settings/DesignSettingsModel';
+import { PrintSendingItemModel } from '../../settings/PrintSendingItemModel';
 import { KioskLocalization } from '../localization/KioskLocalization';
 
 
 /** */
 export interface KioskViewProps extends ProviderContext {
 	// email?: EmailSettingsModel;
-
+	size?: DesignSizeEnum;
 }
 
 /**
@@ -47,9 +51,12 @@ class KioskView extends React.PureComponent<KioskViewProps> {
 
 	/** */
 	public async componentDidMount(): Promise<void> {
-		// this.history = useHistory();
-		// this.store.settings
-		await this.controller.loadFiles();
+		await this.controller.init();
+	}
+
+	/** */
+	public async componentWillUnmount(): Promise<void> {
+		await this.controller.dispose();
 	}
 
 
@@ -58,83 +65,99 @@ class KioskView extends React.PureComponent<KioskViewProps> {
 
 	/** Отображение */
 	public render(): React.ReactNode {
-		const { files, loading, email, filesSelected } = this.store;
+		const { groupsFiles, loaded, email, currentItemSize, sortOrder, language } = this.store;
+		const { size } = this.props;
 
-		if (loading) {
-			return <Loader />;
-		}
+		// if (!loaded) {
+		// 	return <Loader />;
+		// }
 
-		const fileSizes = this.getFilesSize(files);
+		const fileSizes = this.getFilesSize(groupsFiles);
+		// const sortMultiplexer = sortOrder === SortOrderEnum.desc ? -1 : 1;
 
-		const filesGrouped = ArrayHelper.groupBy(files, (file: KioskViewFileViewModel) => file.dirname!);
-		const filesView: JSX.Element[] = [];
-		for (const filesInGroup of filesGrouped) {
-			const [key, filesInGroupArray] = filesInGroup;
-			// filesInGroup[0]
-			// }
-			// filesGrouped.forEach((filesInGroup: KioskViewFileViewModel[], key: string) => {
-			// const filesView = filesGrouped.map((filesInGroup: KioskViewFileViewModel[]) => {
-			const filesInGroupView = filesInGroupArray.map((file: KioskViewFileViewModel) => (
-				<Grid
-					key={file.fullpath}
-					item={true}
-				>
-					<KioskViewItem
-						file={file}
-						onSelect={this.controller.onSelectItem}
-						onSendClick={this.onSendByEmailItemClick}
-						onPrintClick={this.onPrintItemClick}
-					/>
-				</Grid>
-			));
-			const filesGroupView = (
-				<Grid
-					key={key}
-					container={true}
-					spacing={1}
-					alignContent='stretch'
-					direction='column'
-				>
-					<Grid
-						item={true}
-					>
-						<Typography>
-							{key}
-						</Typography>
-					</Grid>
-					<Grid
-						container={true}
-						spacing={1}
-						alignItems='baseline'
-						justify='space-evenly'
-						// direction='column'
-					>
-						{filesInGroupView}
-					</Grid>
-				</Grid>
-			);
-			filesView.push(filesGroupView);
-		}
+		const groupItems = groupsFiles.map((groupFiles: KioskViewFilesViewModel, index: number) => (
+			<KioskViewGroupItems
+				key={index}
+				size={size}
+				groupFiles={groupFiles}
+				currentItemSize={currentItemSize}
+				sortOrder={sortOrder}
+				onPrintItemClick={this.onPrintItemClick}
+				onSendByEmailItemClick={this.onSendByEmailItemClick}
+				onSelectItemClick={this.controller.onSelectItem}
+			/>
+		));
 
-		// const filesView = files.map((file: KioskViewFileViewModel) => (
-		// 	<Grid
-		// 		key={file.fullpath}
-		// 		item={true}
-		// 	>
-		// 		{/* <GridListTile
-		// 			key={file.fullpath}
-		// 			cols={cols}
-		// 		> */}
+		// const filesGrouped = ArrayHelper.groupBy(files, (file: KioskViewFileViewModel) => file.dirname!);
+		// const filesView: JSX.Element[] = [];
+		// const direction = currentItemSize === VideoItemSizeEnum.column
+		// 	? 'column'
+		// 	: 'row';
+		// for (const filesInGroup of filesGrouped) {
+		// 	const [key, filesInGroupArray] = filesInGroup;
+		// 	// filesInGroup[0]
+		// 	// }
+		// 	// filesGrouped.forEach((filesInGroup: KioskViewFileViewModel[], key: string) => {
+		// 	// const filesView = filesGrouped.map((filesInGroup: KioskViewFileViewModel[]) => {
+		// 	const filesInGroupArraySorted = filesInGroupArray.sort((a: KioskViewFileViewModel, b: KioskViewFileViewModel) => a.filename!.localeCompare(b.filename!) * sortMultiplexer);
+		// 	const filesInGroupView = filesInGroupArraySorted.map((file: KioskViewFileViewModel) => (
+		// 		// <Grid
+		// 		// 	item={true}
+		// 		// >
 		// 		<KioskViewItem
+		// 			key={file.fullpath}
 		// 			file={file}
+		// 			size={currentItemSize}
+		// 			buttonSize={size}
 		// 			onSelect={this.controller.onSelectItem}
 		// 			onSendClick={this.onSendByEmailItemClick}
 		// 			onPrintClick={this.onPrintItemClick}
 		// 		/>
-		// 	</Grid>
-		// ));
-		// const { onEmailTestSend } = this.props;
-		// const { login, password, server, subject, content } = this.email;
+		// 		// </Grid>
+		// 	));
+		// 	const filesGroupView = (
+		// 		<Grid
+		// 			key={key}
+		// 			container={true}
+		// 			spacing={1}
+		// 			alignContent='stretch'
+		// 			direction='column'
+		// 		>
+		// 			<Grid
+		// 				item={true}
+		// 			>
+		// 				<Typography
+		// 					align='center'
+		// 				>
+		// 					{key}
+		// 				</Typography>
+		// 			</Grid>
+		// 			<Grid
+		// 				container={true}
+		// 				spacing={1}
+		// 				alignItems='center'
+		// 				justify='space-evenly'
+		// 				direction={direction}
+		// 			>
+		// 				{filesInGroupView}
+		// 			</Grid>
+		// 		</Grid>
+		// 	);
+		// 	filesView.push(filesGroupView);
+		// }
+
+		const allFiles = this.store.groupsFiles
+			.flatMap((file: KioskViewFilesViewModel) => file.files);
+
+		const anyFileVisible = allFiles
+			.some((file: KioskViewFileViewModel) => file.state === KioskItemStateEnum.Show || file.state === KioskItemStateEnum.Loading);
+
+		const loader = !loaded || !anyFileVisible
+			? <Loader verticalCentered={true} />
+			: null;
+
+		const filesSelected = allFiles
+			.filter((file: KioskViewFileViewModel) => file.isSelected).length;
 		const emailIcon = (
 			<InputAdornment position='start'>
 				<Tooltip
@@ -158,7 +181,7 @@ class KioskView extends React.PureComponent<KioskViewProps> {
 						color='secondary'
 					>
 						<IconButton
-							size='small'
+							size={size}
 							onClick={this.onSendByEmailClick}
 						>
 							<Send />
@@ -167,6 +190,7 @@ class KioskView extends React.PureComponent<KioskViewProps> {
 				</Tooltip>
 			</InputAdornment>
 		);
+
 		const printButton = (
 			<Tooltip
 				title={KioskLocalization.print}
@@ -176,7 +200,7 @@ class KioskView extends React.PureComponent<KioskViewProps> {
 					color='secondary'
 				>
 					<IconButton
-						size='small'
+						size={size}
 						onClick={this.onPrintClick}
 					>
 						<Print />
@@ -184,8 +208,9 @@ class KioskView extends React.PureComponent<KioskViewProps> {
 				</Badge>
 			</Tooltip>
 		);
+
 		return (
-			<>
+			<div>
 				{/* <CssBaseline /> */}
 				<AppBar
 					position='sticky'
@@ -193,7 +218,7 @@ class KioskView extends React.PureComponent<KioskViewProps> {
 					<Toolbar>
 						<OneLine>
 							<TextField
-								// label={label}
+								// label={KioskLocalization.labelEmailTo}
 								value={email}
 								onChange={this.controller.onChangeEmail}
 								fullWidth={true}
@@ -203,6 +228,24 @@ class KioskView extends React.PureComponent<KioskViewProps> {
 								}}
 							/>
 							{printButton}
+							<RightContainer
+								className='padding-left-32px'
+							>
+								<OneLine>
+									<KioskItemSortOrderIcon
+										sortOrder={sortOrder}
+										onClick={this.controller.onSortOrderChange}
+									/>
+									<KioskItemSizeIcon
+										currentSize={currentItemSize}
+										onClick={this.controller.onItemSizeChange}
+									/>
+									<KioskItemLanguageIcon
+										language={language}
+										onClick={this.controller.onLanguageChange}
+									/>
+								</OneLine>
+							</RightContainer>
 						</OneLine>
 					</Toolbar>
 				</AppBar>
@@ -219,21 +262,30 @@ class KioskView extends React.PureComponent<KioskViewProps> {
 					cols={5}
 					spacing={5}
 				> */}
-				{filesView}
+				{/* <div
+					className='padding-12px'
+				> */}
+				{loader}
+				{groupItems}
+				{/* </div> */}
 				{/* </Grid> */}
-			</>
+			</div>
 		);
 	}
 
 	/** zz */
 	private readonly onSendByEmailItemClick = async (_event: React.MouseEvent<Element, MouseEvent>, value?: string): Promise<void> => {
-		const filesSelected = this.store.files.filter((file: KioskViewFileViewModel) => file.fullpath === value);
+		const filesSelected = this.store.groupsFiles
+			.flatMap((file: KioskViewFilesViewModel) => file.files)
+			.filter((file: KioskViewFileViewModel) => file.fullpath === value);
 		await this.onSendByEmail(filesSelected);
 	};
 
 	/** zz */
 	private readonly onSendByEmailClick = async (_event: React.MouseEvent<Element, MouseEvent>): Promise<void> => {
-		const filesSelected = this.store.files.filter((file: KioskViewFileViewModel) => file.isSelected);
+		const filesSelected = this.store.groupsFiles
+			.flatMap((file: KioskViewFilesViewModel) => file.files)
+			.filter((file: KioskViewFileViewModel) => file.isSelected);
 		await this.onSendByEmail(filesSelected);
 	};
 
@@ -263,38 +315,46 @@ class KioskView extends React.PureComponent<KioskViewProps> {
 
 	/** zz */
 	private readonly onPrintClick = async (_event: React.MouseEvent<Element, MouseEvent>): Promise<void> => {
-		const filesSelected = this.store.files.filter((file: KioskViewFileViewModel) => file.isSelected);
-		await this.onPrint(filesSelected);
+		const filesImageBase64Data = this.store.groupsFiles
+			.flatMap((file: KioskViewFilesViewModel) => file.files)
+			.filter((file: KioskViewFileViewModel) => file.isSelected && file.middleImage)
+			.map((file: KioskViewFileViewModel) => file.middleImage!);
+		await this.onPrint(filesImageBase64Data);
 	};
 
 	/** zz */
-	private readonly onPrintItemClick = async (_event: React.MouseEvent<Element, MouseEvent>, value?: string): Promise<void> => {
-		const filesSelected = this.store.files.filter((file: KioskViewFileViewModel) => file.fullpath === value);
-		await this.onPrint(filesSelected);
+	private readonly onPrintItemClick = async (_event: React.MouseEvent<Element, MouseEvent>, value?: PrintSendingItemModel): Promise<void> => {
+		if (!value) {
+			return;
+		}
+		const filesImageBase64Data = [value];
+		await this.onPrint(filesImageBase64Data);
 	};
 
 	/** zz */
-	private readonly onPrint = async (filesSelected: KioskViewFileViewModel[]): Promise<void> => {
-		if (filesSelected.length <= 0) {
+	private readonly onPrint = async (filesImageBase64Data: PrintSendingItemModel[]): Promise<void> => {
+		if (filesImageBase64Data.length <= 0) {
 			this.props.enqueueSnackbar(KioskLocalization.selectedFilesError, { variant: 'error' });
 			return;
 		}
 
 		try {
-			this.props.enqueueSnackbar(KioskLocalization.notificationPrinting(filesSelected.length), { variant: 'info' });
-			await this.controller.sendFilesToPrint(filesSelected);
-			this.props.enqueueSnackbar(KioskLocalization.notificationPrinted(filesSelected.length), { variant: 'success' });
+			this.props.enqueueSnackbar(KioskLocalization.notificationPrinting(filesImageBase64Data.length), { variant: 'info' });
+			await this.controller.sendFilesToPrint(filesImageBase64Data);
+			this.props.enqueueSnackbar(KioskLocalization.notificationPrinted(filesImageBase64Data.length), { variant: 'success' });
 		} catch (error) {
 			console.error(error);
-			const message = KioskLocalization.notificationPrintedError(filesSelected.length);
+			const message = KioskLocalization.notificationPrintedError(filesImageBase64Data.length);
 			this.props.enqueueSnackbar(message, { variant: 'error' });
 			// TransitionComponent: Slide,
 		}
 	};
 
 	/** */
-	private getFilesSize(files: KioskViewFileViewModel[]): string {
-		const selectedFiles = files.filter((file: KioskViewFileViewModel) => file.isSelected);
+	private getFilesSize(files: KioskViewFilesViewModel[]): string {
+		const selectedFiles = files
+			.flatMap((file: KioskViewFilesViewModel) => file.files)
+			.filter((file: KioskViewFileViewModel) => file.isSelected);
 		if (selectedFiles.length <= 0) {
 			return '';
 		}

@@ -1,13 +1,19 @@
 /* eslint-disable import/no-unassigned-import */
+import { observable } from 'mobx';
+import { observer } from 'mobx-react';
+import { SnackbarProvider } from 'notistack';
 import * as React from 'react';
-import { BrowserRouter } from 'react-router-dom';
 
 import KioskView from './views/KioskView';
 
 import './content/style/normalize.css';
 import './content/style/index.css';
-import { SnackbarProvider } from 'notistack';
 
+import { Loader } from '../elements/Loader';
+import { SettingsProxy } from '../helpers/SettingsProxy';
+import { DesignSettingsModel } from '../settings/DesignSettingsModel';
+
+@observer
 /** Приложение */
 export class ApplicationFront extends React.PureComponent {
 
@@ -24,18 +30,48 @@ export class ApplicationFront extends React.PureComponent {
 	// 	}, 0);*/
 	// }
 
+	@observable
+	private loaded = false;
+
+	@observable
+	private settings?: DesignSettingsModel;
+
+	private readonly client = new SettingsProxy();
+
+	/** */
+	public async componentDidMount(): Promise<void> {
+		this.settings = await this.client.getSettings();
+		this.loaded = true;
+	}
+
 	/** Отображение */
 	public render(): React.ReactNode {
+		if (!this.loaded) {
+			return (
+				<Loader
+					verticalCentered={true}
+				/>
+			);
+		}
+
+		const background = this.settings?.background ?? 'transparent';
 		return (
-			<SnackbarProvider
-				maxSnack={3}
-				anchorOrigin={{
-					vertical: 'bottom',
-					horizontal: 'right',
-				}}
+			<div
+				className='height-min-100vh'
+				style={{ background }}
 			>
-				<KioskView/>
-			</SnackbarProvider>
+				<SnackbarProvider
+					maxSnack={3}
+					anchorOrigin={{
+						vertical: 'bottom',
+						horizontal: 'right',
+					}}
+				>
+					<KioskView
+						size={this.settings?.size}
+					/>
+				</SnackbarProvider>
+			</div>
 		);
 	}
 }

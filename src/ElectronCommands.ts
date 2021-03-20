@@ -2,4 +2,6 @@
 export enum ElectronCommands {
 	/** Отправка почты */
 	sendEmail = 'sendEmail'
+	/** Отправка на печать */
+	print = 'print'
 }
