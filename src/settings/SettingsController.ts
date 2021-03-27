@@ -5,12 +5,12 @@ import { inject } from 'react-ioc';
 import { DesignSettingsModel } from './DesignSettingsModel';
 import { EmailSettingsModel } from './EmailSettingsModel';
 import { PrintSettingsModel } from './PrintSettingsModel';
+import { ServerSettingsModel } from './ServerSettingsModel';
 import { SettingsModel } from './SettingsModel';
 import { SettingsStore } from './SettingsStore';
 import { SettingsViewModel } from './SettingsViewModel';
 
 import { ApplicationSettingsController } from '../application/ApplicationSettingsController';
-import { ApplicationSettingsStore } from '../application/ApplicationSettingsStore';
 import { ISelectChangeEventProps } from '../elements/Select';
 import { MapperHelper } from '../helpers/MapperHelper';
 
@@ -20,10 +20,12 @@ export class SettingsController {
 	@inject
 	private readonly store!: SettingsStore;
 
+	private readonly settingsСontroller = new ApplicationSettingsController();
+
 	/** */
 	public loadSettings = (): void => {
-		ApplicationSettingsController.loadDefaultSettings();
-		this.store.settings = MapperHelper.Map(ApplicationSettingsStore.settings, SettingsViewModel);
+		const settings = this.settingsСontroller.loadDefaultSettings();
+		this.store.settings = MapperHelper.Map(settings, SettingsViewModel);
 	};
 
 	/** */
@@ -61,12 +63,22 @@ export class SettingsController {
 
 	/** */
 	public readonly onDesignSettingsChange = (_event: ISelectChangeEventProps | undefined, settings: DesignSettingsModel): void => {
-		this.store.settings.designSettings = settings;
+		this.store.settings.designSettings.titleFrontPage = settings.titleFrontPage;
+		this.store.settings.designSettings.background = settings.background;
+		this.store.settings.designSettings.backgroundToolbar = settings.backgroundToolbar;
+		this.store.settings.designSettings.backgroundGroupName = settings.backgroundGroupName;
+		this.store.settings.designSettings.backgroundFileCard = settings.backgroundFileCard;
+		this.store.settings.designSettings.size = settings.size;
+	};
+
+	/** */
+	public readonly onServerSettingsChange = (_event: ISelectChangeEventProps, settings: ServerSettingsModel): void => {
+		this.store.settings.serverSettings = settings;
 	};
 
 	/** */
 	public readonly onSaveClick = (): void => {
-		ApplicationSettingsStore.settings = MapperHelper.Map(this.store.settings, SettingsModel);
-		ApplicationSettingsController.saveDefaultSettings();
+		const settings = MapperHelper.Map(this.store.settings, SettingsModel);
+		this.settingsСontroller.saveDefaultSettings(settings);
 	};
 }

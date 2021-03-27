@@ -3,6 +3,7 @@ import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import React from 'react';
 
+import { ApplicationSettingsController } from './application/ApplicationSettingsController';
 import { BaseRoutedComponent } from './common/BaseRoutedComponent';
 import { IMainRoutedProps } from './common/props/IMainRoutedProps';
 import { Button } from './elements/Button';
@@ -21,6 +22,9 @@ import { KioskLocalization } from './src-front/localization/KioskLocalization';
 /** Основное окно приложения */
 export class App extends BaseRoutedComponent<IMainRoutedProps> {
 	@observable
+	private port?: number;
+
+	@observable
 	private hostname?: string;
 
 	@observable
@@ -28,14 +32,34 @@ export class App extends BaseRoutedComponent<IMainRoutedProps> {
 
 	/** */
 	public componentDidMount(): void {
-		this.localIp = `http:\\\\${UrlHelper.getLocalIp()}:8001`;
-		this.hostname = `http:\\\\${UrlHelper.getHostName()}:8001`;
+		const applicationController = new ApplicationSettingsController();
+		const settings = applicationController.loadDefaultSettings();
+		const port = settings.serverSettings?.port ?? 8001;
+
+		this.localIp = `http:\\\\${UrlHelper.getLocalIp()}:${port}`;
+		this.hostname = `http:\\\\${UrlHelper.getHostName()}:${port}`;
+		UrlHelper.setport(port);
+		this.port = port;
+		// location.host = this.hostname;
 	}
 
 	/** Отображение */
 	public render(): React.ReactNode {
+		const frontPage = this.getFrontPage(this.port);
 		return (
 			<>
+				<Typography
+					align='center'
+					variant='h6'
+				>
+					{this.localIp}
+				</Typography>
+				<Typography
+					align='center'
+					variant='h6'
+				>
+					{this.hostname}
+				</Typography>
 				<OneLine className='padding-left-12px padding-right-12px box-sizing-border-box'>
 					<h1>{KioskLocalization.administrative}</h1>
 					<RightContainer>
@@ -49,49 +73,19 @@ export class App extends BaseRoutedComponent<IMainRoutedProps> {
 						</ButtonGroup>
 					</RightContainer>
 				</OneLine>
-				<Typography
-					align='center'
-					variant='h6'
-				>
-					{this.localIp}
-				</Typography>
-				<Typography
-					align='center'
-					variant='h6'
-				>
-					{this.hostname}
-				</Typography>
-				{/* <Link target="_blank">
-				</Link> */}
-
-				<ApplicationFront/>
-				{/* <Link to='/settings'>{'Settings'}</Link>
-				<Link to='/profile'>{'Go back to profile'}</Link>
-				<div>
-					<ButtonGroup
-						variant='contained'
-						color='primary'
-					>
-						<Button
-							color='primary'
-						>
-							{'Start'}
-						</Button>
-						<Button
-							color='secondary'
-						>
-							{'Stop'}
-						</Button>
-						<Button
-							color='default'
-						>
-							{'Test'}
-						</Button>
-					</ButtonGroup>
-				</div> */}
+				{frontPage}
 			</>
 		);
 	}
+
+	/** */
+	private readonly getFrontPage = (port?: number): React.ReactNode => {
+		if (!port) {
+			return null;
+		}
+		return <ApplicationFront/>;
+	}
+	;
 
 	/** */
 	private readonly onSettingsClick = (_event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {

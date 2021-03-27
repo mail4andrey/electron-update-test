@@ -1,9 +1,8 @@
 import { observer } from 'mobx-react';
-import { ProviderContext } from 'notistack';
 import React from 'react';
 
 import { KioskItemStateEnum } from './KioskItemStateEnum';
-import { KioskViewFilesViewModel, KioskViewFileViewModel } from './KioskViewFileViewModel';
+import { KioskViewFileViewModel } from './KioskViewFileViewModel';
 import { KioskViewItem } from './KioskViewItem';
 import { KioskViewItemEventProps } from './KioskViewItemEventProps';
 import { VideoItemSizeEnum } from './SizeEnum';
@@ -16,13 +15,18 @@ import { PrintSendingItemModel } from '../../settings/PrintSendingItemModel';
 
 /** */
 export interface KioskViewGroupItemsProps {
+	backgroundGroupName?: string;
+	backgroundFileCard?: string;
 	currentItemSize?: VideoItemSizeEnum;
 
 	sortOrder?: SortOrderEnum;
 
 	size?: DesignSizeEnum;
 
-	groupFiles?: KioskViewFilesViewModel;
+	// groupFiles?: KioskViewFilesViewModel;
+	files: KioskViewFileViewModel[];
+
+	groupname?: string;
 
 	onSelectItemClick?: (event: React.ChangeEvent<HTMLInputElement>, value: KioskViewItemEventProps) => void;
 
@@ -36,13 +40,13 @@ export interface KioskViewGroupItemsProps {
 export class KioskViewGroupItems extends React.PureComponent<KioskViewGroupItemsProps> {
 	/** Отображение */
 	public render(): React.ReactNode {
-		const { groupFiles, size, currentItemSize, sortOrder, onPrintItemClick, onSendByEmailItemClick, onSelectItemClick } = this.props;
+		const { groupname, files, size, currentItemSize, sortOrder, onPrintItemClick, onSendByEmailItemClick, onSelectItemClick } = this.props;
 
-		if (!groupFiles?.files || groupFiles.files.length <= 0) {
+		if (!files || files.length <= 0) {
 			return null;
 		}
 
-		const showGroup = groupFiles.files
+		const showGroup = files
 			.some((file: KioskViewFileViewModel) => file.state === KioskItemStateEnum.Show || file.state === KioskItemStateEnum.Loading);
 		const classShowGroup = showGroup ? '' : 'display-none';
 		// const filesGrouped = ArrayHelper.groupBy(files, (file: KioskViewFileViewModel) => file.dirname!);
@@ -51,7 +55,7 @@ export class KioskViewGroupItems extends React.PureComponent<KioskViewGroupItems
 			? 'column'
 			: 'row';
 		const sortMultiplexer = sortOrder === SortOrderEnum.desc ? -1 : 1;
-		const filesInGroupArraySorted = groupFiles.files
+		const filesInGroupArraySorted = files
 			.slice()
 			.sort((a: KioskViewFileViewModel, b: KioskViewFileViewModel) => a.filename!.localeCompare(b.filename!) * sortMultiplexer);
 		const filesInGroupView = filesInGroupArraySorted.map((file: KioskViewFileViewModel) => (
@@ -63,12 +67,14 @@ export class KioskViewGroupItems extends React.PureComponent<KioskViewGroupItems
 				onSelect={onSelectItemClick}
 				onSendClick={onSendByEmailItemClick}
 				onPrintClick={onPrintItemClick}
+				backgroundFileCard={this.props.backgroundFileCard}
 			/>
 		));
 
+		const background = this.props.backgroundGroupName ?? 'gray';
 		return (
 			<div
-				className={`padding-12px ${classShowGroup}`}
+				className={`${classShowGroup}`}
 			>
 				<Grid
 					container={true}
@@ -78,26 +84,36 @@ export class KioskViewGroupItems extends React.PureComponent<KioskViewGroupItems
 				>
 					<Grid
 						item={true}
+						className='kiosk-item-group-sticky'
 					>
-						<Typography
-							align='center'
-							variant='h6'
+						<div
+							className='padding-6px background-image-bottom-gray'
+							style={{ background }}
 						>
-							{groupFiles.dirname}
-						</Typography>
+							<Typography
+								align='center'
+								variant='h6'
+							>
+								{groupname}
+							</Typography>
+						</div>
 					</Grid>
 					<Grid
 						item={true}
 					>
-						<Grid
-							container={true}
-							spacing={1}
-							alignItems='center'
-							justify='space-evenly'
-							direction={direction}
+						<div
+							className='padding-6px'
 						>
-							{filesInGroupView}
-						</Grid>
+							<Grid
+								container={true}
+								spacing={1}
+								alignItems='center'
+								justify='space-evenly'
+								direction={direction}
+							>
+								{filesInGroupView}
+							</Grid>
+						</div>
 					</Grid>
 				</Grid>
 			</div>

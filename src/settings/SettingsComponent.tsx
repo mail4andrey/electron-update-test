@@ -2,22 +2,21 @@ import { observer } from 'mobx-react';
 import React from 'react';
 import { inject, provider } from 'react-ioc';
 
-
 import { DesignSettings } from './DesignSettings';
 import { EmailSettings } from './EmailSettings';
 import { PathSourceSettings } from './PathSourceSettings';
 import { PrintSettings } from './PrintSettings';
+import { ServerSettings } from './ServerSettings';
 import { SettingsController } from './SettingsController';
 import { SettingsLocalization } from './SettingsLocalization';
 import { SettingsStore } from './SettingsStore';
 
-import { ApplicationSettingsController } from '../application/ApplicationSettingsController';
 import { BaseRoutedComponent } from '../common/BaseRoutedComponent';
 import { IMainRoutedProps } from '../common/props/IMainRoutedProps';
 import { AppBar } from '../elements/AppBar';
 import { Button } from '../elements/Button';
 import { ButtonGroup } from '../elements/ButtonGroup';
-import { Folder, FormatSize, Mail, Print } from '../elements/Icons';
+import { Folder, FormatSize, Mail, Print, SettingsEthernet } from '../elements/Icons';
 import { OneLine } from '../elements/ommons/OneLine';
 import { RightContainer } from '../elements/ommons/RightContainer';
 import { Tab } from '../elements/Tab';
@@ -63,14 +62,13 @@ export class SettingsComponent extends BaseRoutedComponent<IMainRoutedProps> {
 
 	/** */
 	// public componentWillUnmount(): void {
-	// 	ApplicationSettingsController.saveDefaultSettings();
 	// }
 
 	/** Отображение */
 	public render(): React.ReactNode {
 		// const classes = useStyles();
 
-		const { onPathSourceAdd, onPathSourceDelete, onPathSourceChange, onEmailSettingsChange, onPrintSettingsChange, onDesignSettingsChange } = this.controller;
+		const { onPathSourceAdd, onPathSourceDelete, onPathSourceChange, onEmailSettingsChange, onPrintSettingsChange, onDesignSettingsChange, onServerSettingsChange } = this.controller;
 		const { settings, tabSelected } = this.store;
 		return (
 			<div>
@@ -143,6 +141,11 @@ export class SettingsComponent extends BaseRoutedComponent<IMainRoutedProps> {
 							index={3}
 							icon={<FormatSize/>}
 						/>
+						<Tab
+							label={SettingsLocalization.serverTab.title}
+							index={4}
+							icon={<SettingsEthernet/>}
+						/>
 					</Tabs>
 					<TabPanel
 						value={tabSelected}
@@ -178,8 +181,22 @@ export class SettingsComponent extends BaseRoutedComponent<IMainRoutedProps> {
 						index={3}
 					>
 						<DesignSettings
-							settings={settings.designSettings}
+							titleFrontPage={settings.designSettings.titleFrontPage}
+							size={settings.designSettings.size}
+							background={settings.designSettings.background}
+							backgroundToolbar={settings.designSettings.backgroundToolbar}
+							backgroundGroupName={settings.designSettings.backgroundGroupName}
+							backgroundFileCard={settings.designSettings.backgroundFileCard}
 							onChange={onDesignSettingsChange}
+						/>
+					</TabPanel>
+					<TabPanel
+						value={tabSelected}
+						index={4}
+					>
+						<ServerSettings
+							port={settings.serverSettings.port}
+							onChange={onServerSettingsChange}
 						/>
 					</TabPanel>
 				</AppBar>

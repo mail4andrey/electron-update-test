@@ -41,6 +41,8 @@ export class ApplicationFront extends React.PureComponent {
 	/** */
 	public async componentDidMount(): Promise<void> {
 		this.settings = await this.client.getSettings();
+		const { titleFrontPage } = this.settings;
+		document.title = titleFrontPage && titleFrontPage.length > 0 ? titleFrontPage : 'Kiosk';
 		this.loaded = true;
 	}
 
@@ -54,7 +56,7 @@ export class ApplicationFront extends React.PureComponent {
 			);
 		}
 
-		const background = this.settings?.background ?? 'transparent';
+		const background = this.settings?.background ?? 'white';
 		return (
 			<div
 				className='height-min-100vh'
@@ -68,6 +70,10 @@ export class ApplicationFront extends React.PureComponent {
 					}}
 				>
 					<KioskView
+						title={this.settings?.titleFrontPage}
+						backgroundToolbar={this.settings?.backgroundToolbar}
+						backgroundGroupName={this.settings?.backgroundGroupName}
+						backgroundFileCard={this.settings?.backgroundFileCard}
 						size={this.settings?.size}
 					/>
 				</SnackbarProvider>

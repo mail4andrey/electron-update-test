@@ -25,6 +25,14 @@ module.exports = [
 		}
 	}
 	// {
+	// 	test: /\.ico$/,
+	// 	loader: 'file-loader',
+	// 	options: {
+	// 		name: '[name].[ext]',
+	// 		outputPath: '/'
+	// 	}
+	// }
+	// {
 	// 	test: /\.(ts|tsx)?$/,
 	// 	include: /src/,
 	// 	use: 'awesome-typescript-loader?silent=true'

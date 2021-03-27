@@ -19,7 +19,10 @@ import {
 	CropPortrait as UiCropPortrait,
 	PhotoSizeSelectActual as UiPhotoSizeSelectActual,
 	PhotoSizeSelectLarge as UiPhotoSizeSelectLarge,
-	FormatSize as UiFormatSize
+	FormatSize as UiFormatSize,
+	PhotoLibrary as UiPhotoLibrary,
+	Image as UiImage,
+	SettingsEthernet as UiSettingsEthernet
 } from '@material-ui/icons';
 import React from 'react';
 
@@ -279,6 +282,39 @@ export class FormatSize extends React.PureComponent<IIconProps> {
 	public render(): React.ReactNode {
 		return (
 			<UiFormatSize
+				{...this.props}
+			/>
+		);
+	}
+}
+/** */
+export class Image extends React.PureComponent<IIconProps> {
+	/** Отображение */
+	public render(): React.ReactNode {
+		return (
+			<UiImage
+				{...this.props}
+			/>
+		);
+	}
+}
+/** */
+export class PhotoLibrary extends React.PureComponent<IIconProps> {
+	/** Отображение */
+	public render(): React.ReactNode {
+		return (
+			<UiPhotoLibrary
+				{...this.props}
+			/>
+		);
+	}
+}
+/** */
+export class SettingsEthernet extends React.PureComponent<IIconProps> {
+	/** Отображение */
+	public render(): React.ReactNode {
+		return (
+			<UiSettingsEthernet
 				{...this.props}
 			/>
 		);

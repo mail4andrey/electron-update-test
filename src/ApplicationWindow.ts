@@ -2,6 +2,9 @@ import { BrowserWindow, Menu, dialog } from 'electron';
 
 import { ApplicationSettingsController } from './application/ApplicationSettingsController';
 
+import path from 'path';
+
+
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
 
 // let mainWindow: BrowserWindow | null = null;
@@ -10,14 +13,16 @@ declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
  *
  */
 // @provider(ApplicationSettingsStore)
-export function createWindow(): BrowserWindow {
+export function createWindow(app: Electron.App): BrowserWindow {
 
+	const application = app;
 	//   if (mainWindow) return mainWindow;
 
 	// Create the browser window.
 	const mainWindow = new BrowserWindow({
 		width: 1024,
 		height: 768,
+		// icon: path.join(__dirname, 'front', 'favicon.ico'),
 		// other
 		// useContentSize: true,
 		webPreferences: {
@@ -39,12 +44,10 @@ export function createWindow(): BrowserWindow {
 
 	// mainWindow.on('ready', () => {
 	// 	alert('ready');
-	// 	ApplicationSettingsController.loadSettings();
 	// });
 
 	// mainWindow.on('closed', () => {
 	// 	alert('close');
-	// 	ApplicationSettingsController.saveSettings();
 	// 	mainWindow = null;
 	// });
 
@@ -52,49 +55,57 @@ export function createWindow(): BrowserWindow {
 		{
 			label: 'File',
 			submenu: [
-				{ label: 'Configuration' },
 				{
-					label: 'Open Configuration',
-					accelerator: 'CmdOrCtrl+O',
-					/**
-					 *
-					 */
-					click: async (): Promise<void> => {
-						const result = await dialog.showOpenDialog(mainWindow, {
-							title: 'Open Configuration',
-							// defaultPath : "my_filename",
-							buttonLabel: 'Open',
-							filters: [
-								{ name: 'cfg', extensions: ['cfg'] },
-								{ name: 'All Files', extensions: ['*'] }
-							]
-						});
-						if (!result.canceled && result.filePaths.length > 0) {
-							ApplicationSettingsController.loadSettings(result.filePaths[0]);
-							// ApplicationSettingsController.saveDefaultSettings();
+					label: 'Configuration',
+					submenu: [
+						{
+							label: 'Open Configuration',
+							accelerator: 'CmdOrCtrl+O',
+							/**
+							 *
+							 */
+							click: async (): Promise<void> => {
+								const result = await dialog.showOpenDialog(mainWindow, {
+									title: 'Open Configuration',
+									// defaultPath : "my_filename",
+									buttonLabel: 'Open',
+									filters: [
+										{ name: 'Kiosk configuration', extensions: ['kiosk.cfg'] },
+										{ name: 'All Files', extensions: ['*'] }
+									]
+								});
+								if (!result.canceled && result.filePaths.length > 0) {
+									const settingsController = new ApplicationSettingsController();
+									const settings = settingsController.loadSettings(result.filePaths[0]);
+									settingsController.saveDefaultSettings(settings, application);
+									mainWindow.reload();
+								}
+							},
+						},
+						{
+							label: 'Save Configuration',
+							accelerator: 'CmdOrCtrl+S',
+							/**
+							 *
+							 */
+							click: async (): Promise<void> => {
+								const result = await dialog.showSaveDialog(mainWindow, {
+									title: 'Save Configuration',
+									// defaultPath : "my_filename",
+									buttonLabel: 'Save',
+									filters: [
+										{ name: 'Kiosk configuration', extensions: ['kiosk.cfg'] },
+										{ name: 'All Files', extensions: ['*'] }
+									]
+								});
+								if (!result.canceled && result.filePath) {
+									const settingsController = new ApplicationSettingsController();
+									const settings = settingsController.loadDefaultSettings(application);
+									settingsController.saveSettings(result.filePath, settings);
+								}
+							},
 						}
-					},
-				},
-				{
-					label: 'Save Configuration',
-					accelerator: 'CmdOrCtrl+S',
-					/**
-					 *
-					 */
-					click: async (): Promise<void> => {
-						const result = await dialog.showSaveDialog(mainWindow, {
-							title: 'Save Configuration',
-							// defaultPath : "my_filename",
-							buttonLabel: 'Save',
-							filters: [
-								{ name: 'cfg', extensions: ['cfg'] },
-								{ name: 'All Files', extensions: ['*'] }
-							]
-						});
-						if (!result.canceled && result.filePath) {
-							ApplicationSettingsController.saveSettings(result.filePath);
-						}
-					},
+					]
 				},
 				{ type: 'separator' },
 				{

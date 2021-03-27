@@ -15,6 +15,8 @@ export interface IAppBarProps {
 	 * Note: `sticky` is not universally supported and will fall back to `static` when unavailable.
 	 */
 	position?: 'fixed' | 'absolute' | 'sticky' | 'static' | 'relative';
+
+	// className?: string;
 }
 /** Кнопка */
 export class AppBar extends React.PureComponent<IAppBarProps> {

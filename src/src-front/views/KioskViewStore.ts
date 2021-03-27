@@ -1,5 +1,6 @@
 import { observable } from 'mobx';
 
+import { GroupByEnum } from './GroupByEnum';
 import { KioskViewFilesViewModel } from './KioskViewFileViewModel';
 import { VideoItemSizeEnum } from './SizeEnum';
 import { SortOrderEnum } from './SortOrderEnum';
@@ -19,6 +20,9 @@ export class KioskViewStore {
 
 	// @observable
 	// public alerts?: string;
+
+	@observable
+	public groupBy?: GroupByEnum;
 
 	@observable
 	public sortOrder?: SortOrderEnum;

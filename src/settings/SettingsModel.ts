@@ -1,6 +1,7 @@
 import { DesignSettingsModel } from './DesignSettingsModel';
 import { EmailSettingsModel } from './EmailSettingsModel';
 import { PrintSettingsModel } from './PrintSettingsModel';
+import { ServerSettingsModel } from './ServerSettingsModel';
 
 /** Модель настроек приложения */
 export class SettingsModel {
@@ -18,6 +19,9 @@ export class SettingsModel {
 
 	/** */
 	public designSettings?: DesignSettingsModel;
+
+	/** */
+	public serverSettings?: ServerSettingsModel;
 
 	/** */
 	// public language?: LanguageEnum;

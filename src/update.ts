@@ -6,7 +6,7 @@ import log from 'electron-log';
 export function setupUpdates(): void {
 	try {
 		require('update-electron-app')({
-			repo: 'mail4andrey/electron-update-test',
+			repo: 'mail4andrey/selfiebox-kiosk',
 			updateInterval: '1 hour',
 			logger: log
 		});

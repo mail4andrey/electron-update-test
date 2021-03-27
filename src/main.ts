@@ -19,6 +19,7 @@ import { EmailSendingModel } from './settings/EmailSendingModel';
 import { EmailSettingsModel } from './settings/EmailSettingsModel';
 import { PrintSendingItemModel } from './settings/PrintSendingItemModel';
 import { PrinterModel, PrintSettingsModel } from './settings/PrintSettingsModel';
+import { UrlHelper } from './src-front/helpers/UrlHelper';
 
 import http from 'http';
 import path from 'path';
@@ -72,7 +73,7 @@ let mainWindow: BrowserWindow | undefined;
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
-	mainWindow = createWindow();
+	mainWindow = createWindow(app);
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -88,7 +89,7 @@ app.on('activate', () => {
 	// On OS X it's common to re-create a window in the app when the
 	// dock icon is clicked and there are no other windows open.
 	if (BrowserWindow.getAllWindows().length === 0) {
-		mainWindow = createWindow();
+		mainWindow = createWindow(app);
 	}
 });
 
@@ -131,40 +132,41 @@ expressApp.use(bodyParser.json({ limit: '10mb' }));
 // expressApp.use(express.static('main_window'));
 expressApp.use(express.static(path.join(__dirname, 'front')));
 
+const settingsСontroller = new ApplicationSettingsController();
+/**
+ *
+ */
+const getSettings = (app?: Electron.App) => settingsСontroller.loadDefaultSettings(app);
+
 router.get('/settings', (req, res) => {
-	const settings = ApplicationSettingsController.loadDefaultSettings(app);
+	const settings = getSettings(app);
 	const designSettings = settings.designSettings ?? {} as DesignSettingsModel;
 	res.type('application/json');
 	res.send(designSettings);
 });
 
 router.get('/files', (req, res) => {
-	const settings = ApplicationSettingsController.loadDefaultSettings(app);
+	const settings = getSettings(app);
 	const { pathSources } = settings;
 	const files = FilesHelper.getFiles(pathSources);
 	res.type('application/json');
 	res.send(files);
 });
 router.get('/file', (req, res) => {
-	// const settings = ApplicationSettingsController.loadDefaultSettings(app);
-	// const { pathSources } = settings;
+	const settings = getSettings(app);
+	const { pathSources } = settings;
 	const filename = req.query.name as string;
 	// console.log(filename);
-	// const allow = pathSources?.some((pathSource: string) => filename.startsWith(pathSource));
-	// if (allow) {
-	res.sendFile(filename);
-	// }
-
-	// res.send();
-	// const filename = req.params.name;
-	// console.log(filename);
-	// if (fs.existsSync(filename)) {
-	// res.sendFile(filename);
-	// }
+	const allow = pathSources?.some((pathSource: string) => filename.startsWith(pathSource));
+	if (allow) {
+		res.sendFile(filename);
+	} else {
+		res.send();
+	}
 });
 
 router.post('/sendMail', async (req, res) => {
-	const settings = ApplicationSettingsController.loadDefaultSettings(app);
+	const settings = getSettings(app);
 	const { emailSettings: email } = settings;
 	const sendTo = req.body.email as string;
 	const sendFiles = req.body.files as string[];
@@ -215,7 +217,7 @@ router.get('/printers', async (req, res) => {
 	// res.send();
 });
 router.post('/printData', async (req, res) => {
-	const settings = ApplicationSettingsController.loadDefaultSettings(app);
+	const settings = getSettings(app);
 	const { printSettings } = settings;
 	const printData = req.body.printModel as PrintSendingItemModel[];
 	// const printers = mainWindow?.webContents.getPrinters() ?? [];
@@ -262,4 +264,12 @@ router.get('/', (req, res) => {
 
 expressApp.use('/', router);
 
-http.createServer(expressApp).listen(8001);
+const applicationController = new ApplicationSettingsController();
+const settings = applicationController.loadDefaultSettings(app);
+const port = settings.serverSettings?.port ?? 8001;
+// UrlHelper.setport(port);
+try {
+	http.createServer(expressApp).listen(port);
+} catch (error) {
+	console.error(error);
+}

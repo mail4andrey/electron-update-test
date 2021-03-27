@@ -1,8 +1,9 @@
 import { observable } from 'mobx';
 
-import { DesignSettingsModel } from './DesignSettingsModel';
+import { DesignSettingsModel, DesignSettingsViewModel } from './DesignSettingsModel';
 import { EmailSettingsViewModel } from './EmailSettingsViewModel';
 import { PrintSettingsModel } from './PrintSettingsModel';
+import { ServerSettingsViewModel } from './ServerSettingsModel';
 import { SettingsModel } from './SettingsModel';
 
 /** Можель настроек приложения */
@@ -19,8 +20,13 @@ export class SettingsViewModel extends SettingsModel {
 	/** */
 	public printSettings = {} as PrintSettingsModel;
 
+	@observable
 	/** */
-	public designSettings = {} as DesignSettingsModel;
+	public designSettings = new DesignSettingsViewModel();
+
+	@observable
+	/** */
+	public serverSettings = new ServerSettingsViewModel();
 
 	/** Патерн выборки файлов из папок */
 	public filesPattern = '*';

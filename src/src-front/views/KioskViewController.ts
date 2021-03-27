@@ -17,6 +17,7 @@ import { PrintSendingItemModel } from '../../settings/PrintSendingItemModel';
 import { UrlHelper } from '../helpers/UrlHelper';
 import { PathSourceFileModel, PathSourceFilesModel } from '../models/FilesModel';
 import { LanguageEnum } from '../models/LanguageEnum';
+import { GroupByEnum } from './GroupByEnum';
 
 
 /** */
@@ -37,6 +38,7 @@ export class KioskViewController {
 	public init = async (): Promise<void> => {
 		this.store.loaded = false;
 		const localSettings = LocalStorage.get<KioskSettingsLocalStorage>('local-settings') as KioskSettingsLocalStorage|undefined;
+		this.store.groupBy = localSettings?.groupBy;
 		this.store.currentItemSize = localSettings?.size;
 		this.store.sortOrder = localSettings?.sortOrder;
 		this.store.language = localSettings?.language;
@@ -91,6 +93,12 @@ export class KioskViewController {
 	};
 
 	/** */
+	public readonly onGroupByChange = (_event: React.MouseEvent<Element, MouseEvent>, value: GroupByEnum): void => {
+		this.store.groupBy = value;
+		this.saveSettingsToLocalStorage();
+	};
+
+	/** */
 	public readonly onSortOrderChange = (_event: React.MouseEvent<Element, MouseEvent>, value: SortOrderEnum): void => {
 		this.store.sortOrder = value;
 		this.saveSettingsToLocalStorage();
@@ -104,7 +112,12 @@ export class KioskViewController {
 
 	/** Сохраняем в local storage */
 	private saveSettingsToLocalStorage(): void {
-		const data = { size: this.store.currentItemSize, sortOrder: this.store.sortOrder, language: this.store.language } as KioskSettingsLocalStorage;
+		const data = { 
+			sizgroupBye: this.store.groupBy,
+			size: this.store.currentItemSize,
+			sortOrder: this.store.sortOrder,
+			language: this.store.language
+		} as KioskSettingsLocalStorage;
 		LocalStorage.set('local-settings', data);
 	}
 

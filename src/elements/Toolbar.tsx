@@ -3,6 +3,8 @@ import React from 'react';
 
 /** Свойства кнопки */
 export interface IToolbarProps {
+	variant?: 'regular' | 'dense';
+
 	/** Содержимое */
 	children?: React.ReactNode;
 }

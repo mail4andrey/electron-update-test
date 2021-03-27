@@ -21,7 +21,7 @@ import { UrlHelper } from '../helpers/UrlHelper';
 import { KioskLocalization } from '../localization/KioskLocalization';
 
 /** */
-export interface KioskViewItemProps {
+export interface KioskViewCarouselItemProps {
 	/**  */
 	backgroundFileCard?: string;
 
@@ -47,7 +47,7 @@ export interface KioskViewItemProps {
 // @provider(KioskViewController, KioskViewStore)
 @observer
 /** */
-export class KioskViewItem extends React.PureComponent<KioskViewItemProps> {
+export class KioskViewCarouselItem extends React.PureComponent<KioskViewCarouselItemProps> {
 	/** Первое включение видео */
 	private firstPlay = true;
 
@@ -182,32 +182,6 @@ export class KioskViewItem extends React.PureComponent<KioskViewItemProps> {
 			)
 			: null;
 		const bottomBlock = gridView ? description : null;
-
-		// if (size === VideoItemSizeEnum.small
-		// 	|| size === VideoItemSizeEnum.medium) {
-		// 	return (
-		// 		<Grid
-		// 			item
-		// 			className={hideItemClass}
-		// 		>
-		// 			<div
-		// 				style={{ background }}
-		// 				className='grid-tile'
-		// 			>
-		// 				<div className='0video 0padding-12px position-relative'>
-		// 					{skeleton}
-		// 					{image}
-		// 					{video}
-		// 					<canvas
-		// 						style={{ display: 'none' }}
-		// 						ref={this.canvasRef}
-		// 					/>
-		// 				</div>
-		// 				{description}
-		// 			</div>
-		// 		</Grid>
-		// 	);
-		// }
 
 		return (
 			<Grid

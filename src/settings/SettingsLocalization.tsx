@@ -81,7 +81,15 @@ export class SettingsLocalization {
 
 		public static title = 'Дизайн';
 
-		public static backgroundName = 'Фон';
+		public static backgroundName = 'Основной фон';
+
+		public static titleFrontPage = 'Заголовок страницы';
+
+		public static backgroundToolbarName = 'Фон заголовка страницы';
+
+		public static backgroundGroupName = 'Фон заголовка группы файлов';
+
+		public static backgroundFileCardName = 'Фон карточки файла';
 
 		public static sizeName = 'Размер';
 
@@ -97,6 +105,16 @@ export class SettingsLocalization {
 					return 'Средний';
 			}
 		};
+	};
+
+	/** Вкладка Web */
+	public static serverTab = class {
+
+		public static title = 'Web';
+
+		public static port = 'Порт';
+
+		public static portWarning = 'Необходимо перезапустить приложение';
 	};
 
 	public static title = 'Настройки';

@@ -27,11 +27,23 @@ import { Typography } from '../../elements/Typography';
 import { DesignSizeEnum } from '../../settings/DesignSettingsModel';
 import { PrintSendingItemModel } from '../../settings/PrintSendingItemModel';
 import { KioskLocalization } from '../localization/KioskLocalization';
+import { KioskItemGroupIcon } from './KioskItemGroupIcon';
+import { VideoItemSizeEnum } from './SizeEnum';
+import { GroupByEnum } from './GroupByEnum';
+import { SortOrderEnum } from './SortOrderEnum';
 
 
 /** */
 export interface KioskViewProps extends ProviderContext {
 	// email?: EmailSettingsModel;
+	title?: string;
+
+	backgroundToolbar?: string;
+
+	backgroundGroupName?: string;
+
+	backgroundFileCard?: string;
+
 	size?: DesignSizeEnum;
 }
 
@@ -65,29 +77,11 @@ class KioskView extends React.PureComponent<KioskViewProps> {
 
 	/** Отображение */
 	public render(): React.ReactNode {
-		const { groupsFiles, loaded, email, currentItemSize, sortOrder, language } = this.store;
+		const { groupsFiles, loaded, email, currentItemSize, sortOrder, language, groupBy } = this.store;
 		const { size } = this.props;
-
-		// if (!loaded) {
-		// 	return <Loader />;
-		// }
+		const items = this.getItems(groupsFiles, size, currentItemSize, sortOrder, groupBy);
 
 		const fileSizes = this.getFilesSize(groupsFiles);
-		// const sortMultiplexer = sortOrder === SortOrderEnum.desc ? -1 : 1;
-
-		const groupItems = groupsFiles.map((groupFiles: KioskViewFilesViewModel, index: number) => (
-			<KioskViewGroupItems
-				key={index}
-				size={size}
-				groupFiles={groupFiles}
-				currentItemSize={currentItemSize}
-				sortOrder={sortOrder}
-				onPrintItemClick={this.onPrintItemClick}
-				onSendByEmailItemClick={this.onSendByEmailItemClick}
-				onSelectItemClick={this.controller.onSelectItem}
-			/>
-		));
-
 		// const filesGrouped = ArrayHelper.groupBy(files, (file: KioskViewFileViewModel) => file.dirname!);
 		// const filesView: JSX.Element[] = [];
 		// const direction = currentItemSize === VideoItemSizeEnum.column
@@ -152,7 +146,10 @@ class KioskView extends React.PureComponent<KioskViewProps> {
 		const anyFileVisible = allFiles
 			.some((file: KioskViewFileViewModel) => file.state === KioskItemStateEnum.Show || file.state === KioskItemStateEnum.Loading);
 
-		const loader = !loaded || !anyFileVisible
+		const allFileHidden = allFiles
+			.every((file: KioskViewFileViewModel) => file.state === KioskItemStateEnum.Hide);
+
+		const loader = !loaded || allFiles.length > 0 && !anyFileVisible && !allFileHidden
 			? <Loader verticalCentered={true} />
 			: null;
 
@@ -209,45 +206,71 @@ class KioskView extends React.PureComponent<KioskViewProps> {
 			</Tooltip>
 		);
 
+		const background = this.props.backgroundToolbar ?? 'gray';
 		return (
 			<div>
 				{/* <CssBaseline /> */}
+				<div
+					className='padding-top-6px background-image-bottom-gray'
+					style={{ background }}
+				>
+					<Typography
+						align='center'
+						variant='h5'
+					>
+						{this.props.title}
+					</Typography>
+				</div>
 				<AppBar
 					position='sticky'
+					color='transparent'
 				>
-					<Toolbar>
-						<OneLine>
-							<TextField
+					<div
+						className='padding-top-6px background-image-bottom-gray'
+						style={{ background }}
+					>
+						<Toolbar
+							variant='dense'
+						>
+							<OneLine>
+								<TextField
 								// label={KioskLocalization.labelEmailTo}
-								value={email}
-								onChange={this.controller.onChangeEmail}
-								fullWidth={true}
-								InputProps={{
-									startAdornment: emailIcon,
-									endAdornment: sendButton
-								}}
-							/>
-							{printButton}
-							<RightContainer
-								className='padding-left-32px'
-							>
-								<OneLine>
-									<KioskItemSortOrderIcon
-										sortOrder={sortOrder}
-										onClick={this.controller.onSortOrderChange}
-									/>
-									<KioskItemSizeIcon
-										currentSize={currentItemSize}
-										onClick={this.controller.onItemSizeChange}
-									/>
-									<KioskItemLanguageIcon
-										language={language}
-										onClick={this.controller.onLanguageChange}
-									/>
-								</OneLine>
-							</RightContainer>
-						</OneLine>
-					</Toolbar>
+									value={email}
+									onChange={this.controller.onChangeEmail}
+									fullWidth={true}
+									InputProps={{
+										startAdornment: emailIcon,
+										endAdornment: sendButton
+									}}
+								/>
+								{printButton}
+								<RightContainer
+									className='padding-left-32px'
+								>
+									<OneLine>
+									<OneLine className='padding-right-12px'>
+										<KioskItemSortOrderIcon
+											sortOrder={sortOrder}
+											onClick={this.controller.onSortOrderChange}
+										/>
+										<KioskItemSizeIcon
+											currentSize={currentItemSize}
+											onClick={this.controller.onItemSizeChange}
+										/>
+										<KioskItemGroupIcon
+											value={groupBy}
+											onClick={this.controller.onGroupByChange}
+										/>
+									</OneLine>
+										<KioskItemLanguageIcon
+											language={language}
+											onClick={this.controller.onLanguageChange}
+										/>
+									</OneLine>
+								</RightContainer>
+							</OneLine>
+						</Toolbar>
+					</div>
 				</AppBar>
 				{/* <Grid
 					// container={true}
@@ -266,7 +289,7 @@ class KioskView extends React.PureComponent<KioskViewProps> {
 					className='padding-12px'
 				> */}
 				{loader}
-				{groupItems}
+				{items}
 				{/* </div> */}
 				{/* </Grid> */}
 			</div>
@@ -349,6 +372,40 @@ class KioskView extends React.PureComponent<KioskViewProps> {
 			// TransitionComponent: Slide,
 		}
 	};
+
+	private getItems(groupsFiles: KioskViewFilesViewModel[], size?: DesignSizeEnum, currentItemSize?: VideoItemSizeEnum, sortOrder?: SortOrderEnum, groupBy?: GroupByEnum) {
+		if (groupBy === GroupByEnum.none) {
+			const files = groupsFiles.flatMap((groupFiles: KioskViewFilesViewModel) => groupFiles.files);
+
+				return (
+					<KioskViewGroupItems
+						size={size}
+						files={files}
+						currentItemSize={currentItemSize}
+						sortOrder={sortOrder}
+						onPrintItemClick={this.onPrintItemClick}
+						onSendByEmailItemClick={this.onSendByEmailItemClick}
+						onSelectItemClick={this.controller.onSelectItem}
+						backgroundGroupName={this.props.backgroundGroupName}
+						backgroundFileCard={this.props.backgroundFileCard} />
+				);
+		}
+		
+		return groupsFiles.map((groupFiles: KioskViewFilesViewModel, index: number) => (
+			<KioskViewGroupItems
+				key={index}
+				size={size}
+				groupname={groupFiles.dirname}
+				files={groupFiles.files}
+				currentItemSize={currentItemSize}
+				sortOrder={sortOrder}
+				onPrintItemClick={this.onPrintItemClick}
+				onSendByEmailItemClick={this.onSendByEmailItemClick}
+				onSelectItemClick={this.controller.onSelectItem}
+				backgroundGroupName={this.props.backgroundGroupName}
+				backgroundFileCard={this.props.backgroundFileCard} />
+		));
+	}
 
 	/** */
 	private getFilesSize(files: KioskViewFilesViewModel[]): string {

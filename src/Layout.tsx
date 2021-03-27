@@ -1,22 +1,26 @@
-import { PureComponent } from 'react';
+import React from 'react';
 
-import { ApplicationSettingsController } from './application/ApplicationSettingsController';
+
 import { IBasicProps } from './common/props/IBasicProps';
 
 /** Основное окно приложения */
-export class Layout extends PureComponent<IBasicProps> {
+export class Layout extends React.PureComponent<IBasicProps> {
 	/** */
 	// public componentDidMount(): void {
-	// 	ApplicationSettingsController.loadDefaultSettings();
 	// }
 
 	// /** */
 	// public componentWillUnmount(): void {
-	// 	ApplicationSettingsController.saveDefaultSettings();
 	// }
 
 	/** Отображение */
 	public render(): React.ReactNode {
-		return this.props.children;
+		return (
+			<div
+				className='background-whitesmoke'
+			>
+				{this.props.children}
+			</div>
+		);
 	}
 }

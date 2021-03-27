@@ -1,3 +1,7 @@
+/* :focus {
+	outline: -webkit-focus-ring-color auto 1px;
+} */
+
 body {
 	/* background: darkgrey; */
 	/* background: linear-gradient(to top, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 70%, rgba(0,0,0,0) 100%); */
@@ -7,6 +11,9 @@ body {
 	overflow-x: hidden;
 	box-sizing: border-box;
 	font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+}
+body, div, video {
+	outline: none;
 }
 /* body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -73,6 +80,9 @@ body {
 }
 .padding-right-12px {
 	padding-right: 12px;
+}
+.padding-top-6px {
+	padding-top: 6px;
 }
 .padding-bottom-6px {
 	padding-bottom: 6px;
@@ -157,6 +167,9 @@ body {
 }
 .background-darkgrey {
 	background: darkgrey;
+}
+.background-whitesmoke {
+	background: whitesmoke;
 }
 
 
@@ -259,4 +272,28 @@ body {
 }
 .width-min-100vw {
 	min-width: 100vw;
+}
+
+.background-image-bottom-gray {
+	background-image: linear-gradient(to bottom, rgba(100,100,100,0.05) 0%, rgba(100,100,100,0.02) 30%, rgba(100,100,100,0) 100%) !important;
+}
+.background-image-top-gray {
+	background-image: linear-gradient(to top, rgba(100,100,100,0.05) 0%, rgba(100,100,100,0.02) 30%, rgba(100,100,100,0) 100%) !important;
+}
+.width-560px {
+	width: 560px;
+}
+.kiosk-title-sticky {
+	top: 0px;
+	left: auto;
+	right: 0;
+	position: sticky;
+	z-index: 1100;
+}
+.kiosk-item-group-sticky {
+	top: 50px;
+	left: auto;
+	right: 0;
+	position: sticky;
+	z-index: 1099;
 }

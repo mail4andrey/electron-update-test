@@ -1,13 +1,30 @@
 import { lookup } from 'dns';
 import { networkInterfaces, hostname } from 'os';
 
+// import { ApplicationSettingsController } from '../application/ApplicationSettingsController';
+
 /** */
 export class UrlHelper {
+	private static port?: number;
+
+	/** */
+	public static setport(port: number): void {
+		this.port = port;
+	}
+
 	/** */
 	public static getUrl(path: string): string {
-		const { hostname } = location;// UrlHelper.getLocalIp();
-		// UrlHelper.getHostName();
-		return `http://${hostname}:8001/${path}`;
+		const { port } = this;
+		if (port) {
+			return `http://${hostname}:${port}/${path}`;
+		}
+		const { host } = location;
+		// return `http://${host}/${path}`;
+		// const applicationController = new ApplicationSettingsController();
+		// const settings = applicationController.loadDefaultSettings();
+		// const port = settings.serverSettings?.port ?? 8001;
+		// const hostname = location.hostname && location.hostname.length > 0 ? location.hostname : UrlHelper.getHostName();
+		return `http://${host}/${path}`;
 	}
 
 	/** */
