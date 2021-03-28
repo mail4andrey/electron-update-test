@@ -19,6 +19,8 @@ export interface PathSourceSettingsProps {
 	onPathSourceAdd?: (event: React.MouseEvent<Element, MouseEvent>) => void;
 	onPathSourceChange?: (event: ITextFieldChangeEventProps, id: number) => void;
 	onPathSourceDelete?: (event: React.MouseEvent<Element, MouseEvent>, id: number) => void;
+	onPathSourceUp?: (event: React.MouseEvent<Element, MouseEvent>, id: number) => void;
+	onPathSourceDown?: (event: React.MouseEvent<Element, MouseEvent>, id: number) => void;
 }
 
 // @provider(SettingsController, SettingsStore)
@@ -27,18 +29,25 @@ export interface PathSourceSettingsProps {
 export class PathSourceSettings extends React.PureComponent<PathSourceSettingsProps> {
 	/** Отображение */
 	public render(): React.ReactNode {
-		const paths = this.props.settings?.map((path: string, index: number) => (
-			<div
-				key={index}
-			>
-				<PathSelector
-					id={index}
-					path={path}
-					onChange={this.props.onPathSourceChange}
-					onDelete={this.props.onPathSourceDelete}
-				/>
-			</div>
-		));
+		const paths = this.props.settings?.map((path: string, index: number, array: string[]) => {
+			const disableUpButton = index === 0;
+			const disableDownButton = index === array.length - 1;
+			return (
+				<div
+					key={index}
+				>
+					<PathSelector
+						id={index}
+						path={path}
+						disableUpButton={disableUpButton}
+						disableDownButton={disableDownButton}
+						onPathChange={this.props.onPathSourceChange}
+						onUpClick={this.props.onPathSourceUp}
+						onDownClick={this.props.onPathSourceDown}
+						onDeleteClick={this.props.onPathSourceDelete} />
+				</div>
+			);
+		});
 
 		return (
 			<div className=''>

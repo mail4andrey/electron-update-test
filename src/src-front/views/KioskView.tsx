@@ -3,6 +3,8 @@ import { ProviderContext, withSnackbar } from 'notistack';
 import React from 'react';
 import { inject, provider } from 'react-ioc';
 
+import { GroupByEnum } from './GroupByEnum';
+import { KioskItemGroupIcon } from './KioskItemGroupIcon';
 import { KioskItemLanguageIcon } from './KioskItemLanguageIcon';
 import { KioskItemSizeIcon } from './KioskItemSizeIcon';
 import { KioskItemSortOrderIcon } from './KioskItemSortOrderIcon';
@@ -11,6 +13,8 @@ import { KioskViewController } from './KioskViewController';
 import { KioskViewFilesViewModel, KioskViewFileViewModel } from './KioskViewFileViewModel';
 import { KioskViewGroupItems } from './KioskViewGroupItems';
 import { KioskViewStore } from './KioskViewStore';
+import { VideoItemSizeEnum } from './SizeEnum';
+import { SortOrderEnum } from './SortOrderEnum';
 
 import { AppBar } from '../../elements/AppBar';
 import { Badge } from '../../elements/Badge';
@@ -27,10 +31,6 @@ import { Typography } from '../../elements/Typography';
 import { DesignSizeEnum } from '../../settings/DesignSettingsModel';
 import { PrintSendingItemModel } from '../../settings/PrintSendingItemModel';
 import { KioskLocalization } from '../localization/KioskLocalization';
-import { KioskItemGroupIcon } from './KioskItemGroupIcon';
-import { VideoItemSizeEnum } from './SizeEnum';
-import { GroupByEnum } from './GroupByEnum';
-import { SortOrderEnum } from './SortOrderEnum';
 
 
 /** */
@@ -248,20 +248,20 @@ class KioskView extends React.PureComponent<KioskViewProps> {
 									className='padding-left-32px'
 								>
 									<OneLine>
-									<OneLine className='padding-right-12px'>
-										<KioskItemSortOrderIcon
-											sortOrder={sortOrder}
-											onClick={this.controller.onSortOrderChange}
-										/>
-										<KioskItemSizeIcon
-											currentSize={currentItemSize}
-											onClick={this.controller.onItemSizeChange}
-										/>
-										<KioskItemGroupIcon
-											value={groupBy}
-											onClick={this.controller.onGroupByChange}
-										/>
-									</OneLine>
+										<OneLine className='padding-right-12px'>
+											<KioskItemSortOrderIcon
+												sortOrder={sortOrder}
+												onClick={this.controller.onSortOrderChange}
+											/>
+											<KioskItemSizeIcon
+												currentSize={currentItemSize}
+												onClick={this.controller.onItemSizeChange}
+											/>
+											<KioskItemGroupIcon
+												value={groupBy}
+												onClick={this.controller.onGroupByChange}
+											/>
+										</OneLine>
 										<KioskItemLanguageIcon
 											language={language}
 											onClick={this.controller.onLanguageChange}
@@ -373,25 +373,31 @@ class KioskView extends React.PureComponent<KioskViewProps> {
 		}
 	};
 
+	/** */
 	private getItems(groupsFiles: KioskViewFilesViewModel[], size?: DesignSizeEnum, currentItemSize?: VideoItemSizeEnum, sortOrder?: SortOrderEnum, groupBy?: GroupByEnum) {
 		if (groupBy === GroupByEnum.none) {
 			const files = groupsFiles.flatMap((groupFiles: KioskViewFilesViewModel) => groupFiles.files);
 
-				return (
-					<KioskViewGroupItems
-						size={size}
-						files={files}
-						currentItemSize={currentItemSize}
-						sortOrder={sortOrder}
-						onPrintItemClick={this.onPrintItemClick}
-						onSendByEmailItemClick={this.onSendByEmailItemClick}
-						onSelectItemClick={this.controller.onSelectItem}
-						backgroundGroupName={this.props.backgroundGroupName}
-						backgroundFileCard={this.props.backgroundFileCard} />
-				);
+			return (
+				<KioskViewGroupItems
+					size={size}
+					files={files}
+					currentItemSize={currentItemSize}
+					sortOrder={sortOrder}
+					onPrintItemClick={this.onPrintItemClick}
+					onSendByEmailItemClick={this.onSendByEmailItemClick}
+					onSelectItemClick={this.controller.onSelectItem}
+					backgroundGroupName={this.props.backgroundGroupName}
+					backgroundFileCard={this.props.backgroundFileCard} />
+			);
 		}
-		
-		return groupsFiles.map((groupFiles: KioskViewFilesViewModel, index: number) => (
+
+		const uniqueGroupsFiles = groupsFiles
+			.filter((value: KioskViewFilesViewModel|undefined, index: number, array: (KioskViewFilesViewModel| undefined)[]) => {
+				const findIndex = array.findIndex((item: KioskViewFilesViewModel|undefined) => item?.dirname === value?.dirname);
+				return findIndex === index;
+			});
+		return uniqueGroupsFiles.map((groupFiles: KioskViewFilesViewModel, index: number) => (
 			<KioskViewGroupItems
 				key={index}
 				size={size}

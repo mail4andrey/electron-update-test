@@ -22,7 +22,9 @@ import {
 	FormatSize as UiFormatSize,
 	PhotoLibrary as UiPhotoLibrary,
 	Image as UiImage,
-	SettingsEthernet as UiSettingsEthernet
+	SettingsEthernet as UiSettingsEthernet,
+	KeyboardArrowDown as UiKeyboardArrowDown,
+	KeyboardArrowUp as UiKeyboardArrowUp,
 } from '@material-ui/icons';
 import React from 'react';
 
@@ -315,6 +317,28 @@ export class SettingsEthernet extends React.PureComponent<IIconProps> {
 	public render(): React.ReactNode {
 		return (
 			<UiSettingsEthernet
+				{...this.props}
+			/>
+		);
+	}
+}
+/** */
+export class KeyboardArrowDown extends React.PureComponent<IIconProps> {
+	/** Отображение */
+	public render(): React.ReactNode {
+		return (
+			<UiKeyboardArrowDown
+				{...this.props}
+			/>
+		);
+	}
+}
+/** */
+export class KeyboardArrowUp extends React.PureComponent<IIconProps> {
+	/** Отображение */
+	public render(): React.ReactNode {
+		return (
+			<UiKeyboardArrowUp
 				{...this.props}
 			/>
 		);

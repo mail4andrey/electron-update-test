@@ -11,6 +11,9 @@ export interface IIconButtonProps {
 	size?: 'small' | 'medium';
 	edge?: 'start' | 'end' | false;
 	className?: string;
+	disabled?: boolean;
+	disableRipple?: boolean;
+	disableFocusRipple?: boolean;
 
 	/** Событие при нажатии на кнопку */
 	// onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;

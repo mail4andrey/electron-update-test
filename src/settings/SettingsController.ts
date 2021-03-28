@@ -52,6 +52,24 @@ export class SettingsController {
 	};
 
 	/** */
+	public readonly onPathSourceUp = (_event: React.MouseEvent<Element, MouseEvent>, id: number): void => {
+		if (this.store.settings.pathSources && id >= 1 && id < this.store.settings.pathSources.length) {
+			const newValue = this.store.settings.pathSources[id - 1];
+			this.store.settings.pathSources[id - 1] = this.store.settings.pathSources[id];
+			this.store.settings.pathSources[id] = newValue;
+		}
+	};
+
+	/** */
+	public readonly onPathSourceDown = (_event: React.MouseEvent<Element, MouseEvent>, id: number): void => {
+		if (this.store.settings.pathSources && id >= 0 && id < this.store.settings.pathSources.length - 1) {
+			const newValue = this.store.settings.pathSources[id + 1];
+			this.store.settings.pathSources[id + 1] = this.store.settings.pathSources[id];
+			this.store.settings.pathSources[id] = newValue;
+		}
+	};
+
+	/** */
 	public readonly onEmailSettingsChange = (_event: ITextFieldChangeEventProps, settings: EmailSettingsModel): void => {
 		this.store.settings.emailSettings = settings;
 	};

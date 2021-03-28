@@ -10,10 +10,11 @@ import React from 'react';
 // import { SettingsStore } from './SettingsStore';
 
 import { IconButton } from '../../elements/IconButton';
-import { Folder, Remove } from '../../elements/Icons';
+import { Folder, KeyboardArrowDown, KeyboardArrowUp, Remove } from '../../elements/Icons';
 import { InputAdornment } from '../../elements/InputAdornment';
 import { ITextFieldChangeEventProps, TextField } from '../../elements/TextField';
 import { SettingsLocalization } from '../../settings/SettingsLocalization';
+import { OneLine } from '../ommons/OneLine';
 import { Tooltip } from '../Tooltip';
 
 
@@ -23,8 +24,13 @@ export interface PathSelectorProps {
 	path?: string;
 	canDelete?: boolean;
 	id: number;
-	onDelete?: (event: React.MouseEvent<Element, MouseEvent>, id: number) => void;
-	onChange?: (event: ITextFieldChangeEventProps, id: number) => void;
+	disableUpButton?: boolean;
+	disableDownButton?: boolean;
+	disableDeleteButton?: boolean;
+	onUpClick?: (event: React.MouseEvent<Element, MouseEvent>, id: number) => void;
+	onDownClick?: (event: React.MouseEvent<Element, MouseEvent>, id: number) => void;
+	onDeleteClick?: (event: React.MouseEvent<Element, MouseEvent>, id: number) => void;
+	onPathChange?: (event: ITextFieldChangeEventProps, id: number) => void;
 }
 
 // @provider(SettingsController, SettingsStore)
@@ -40,23 +46,38 @@ export class PathSelector extends React.PureComponent<PathSelectorProps> {
 
 	/** Отображение */
 	public render(): React.ReactNode {
-		const { label, path, onDelete } = this.props;
-		const deleteButton = !onDelete
-			? null
-			: (
-				<InputAdornment position='end'>
+		const { label, path, disableUpButton, disableDownButton, disableDeleteButton } = this.props;
+		const rightButtons = (
+			<InputAdornment position='end'>
+				<OneLine>
+					<IconButton
+						size='small'
+						disabled={disableUpButton}
+						onClick={this.onUpClick}
+					>
+						<KeyboardArrowUp />
+					</IconButton>
+					<IconButton
+						size='small'
+						disabled={disableDownButton}
+						onClick={this.onDownClick}
+					>
+						<KeyboardArrowDown />
+					</IconButton>
 					<Tooltip
 						title={SettingsLocalization.pathSourceTab.pathRemoveButtonTitle}
 					>
 						<IconButton
 							size='small'
-							onClick={this.onDelete}
+							disabled={disableDeleteButton}
+							onClick={this.onDeleteClick}
 						>
 							<Remove />
 						</IconButton>
 					</Tooltip>
-				</InputAdornment>
-			);
+				</OneLine>
+			</InputAdornment>
+		);
 		const selectFolder = (
 			<InputAdornment position='start'>
 				<Tooltip
@@ -64,7 +85,7 @@ export class PathSelector extends React.PureComponent<PathSelectorProps> {
 				>
 					<IconButton
 						size='small'
-						onClick={this.onSelectFolder}
+						onClick={this.onSelectFolderClick}
 					>
 						<Folder />
 					</IconButton>
@@ -79,30 +100,46 @@ export class PathSelector extends React.PureComponent<PathSelectorProps> {
 				fullWidth={true}
 				InputProps={{
 					startAdornment: selectFolder,
-					endAdornment: deleteButton
+					endAdornment: rightButtons
 				}}
 			/>
 		);
 	}
 
 	/** */
-	private readonly onDelete = (event: React.MouseEvent<Element, MouseEvent>): void => {
-		const { onDelete, id } = this.props;
-		if (onDelete) {
-			onDelete(event, id);
+	private readonly onDeleteClick = (event: React.MouseEvent<Element, MouseEvent>): void => {
+		const { onDeleteClick, id } = this.props;
+		if (onDeleteClick) {
+			onDeleteClick(event, id);
+		}
+	};
+
+	/** */
+	private readonly onUpClick = (event: React.MouseEvent<Element, MouseEvent>): void => {
+		const { onUpClick, id } = this.props;
+		if (onUpClick) {
+			onUpClick(event, id);
+		}
+	};
+
+	/** */
+	private readonly onDownClick = (event: React.MouseEvent<Element, MouseEvent>): void => {
+		const { onDownClick, id } = this.props;
+		if (onDownClick) {
+			onDownClick(event, id);
 		}
 	};
 
 	/** */
 	private readonly onChange = (event: ITextFieldChangeEventProps): void => {
-		const { onChange, id } = this.props;
-		if (onChange) {
-			onChange(event, id);
+		const { onPathChange, id } = this.props;
+		if (onPathChange) {
+			onPathChange(event, id);
 		}
 	};
 
 	/** */
-	private readonly onSelectFolder = async (_event: React.MouseEvent<Element, MouseEvent>): Promise<void> => {
+	private readonly onSelectFolderClick = async (_event: React.MouseEvent<Element, MouseEvent>): Promise<void> => {
 		const mainWindow = remote.getCurrentWindow();
 		// const { dialog } = require('electron').remote;
 		const result = await remote.dialog.showOpenDialog(mainWindow, {
@@ -111,10 +148,10 @@ export class PathSelector extends React.PureComponent<PathSelectorProps> {
 		});
 		if (!result.canceled) {
 			const path = result.filePaths.length > 0 ? result.filePaths[0] : '';
-			const { onChange, id } = this.props;
-			if (onChange) {
+			const { onPathChange, id } = this.props;
+			if (onPathChange) {
 				const onCahngeEvent = { target: { value: path } } as ITextFieldChangeEventProps;
-				onChange(onCahngeEvent, id);
+				onPathChange(onCahngeEvent, id);
 			}
 		}
 	};

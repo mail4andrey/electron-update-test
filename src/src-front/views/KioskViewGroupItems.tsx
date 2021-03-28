@@ -46,7 +46,13 @@ export class KioskViewGroupItems extends React.PureComponent<KioskViewGroupItems
 			return null;
 		}
 
-		const showGroup = files
+		const uniqueFiles = files
+			.filter((value: KioskViewFileViewModel|undefined, index: number, array: (KioskViewFileViewModel| undefined)[]) => {
+				const findIndex = array.findIndex((item: KioskViewFileViewModel|undefined) => item?.fullpath === value?.fullpath);
+				return findIndex === index;
+			});
+
+		const showGroup = uniqueFiles
 			.some((file: KioskViewFileViewModel) => file.state === KioskItemStateEnum.Show || file.state === KioskItemStateEnum.Loading);
 		const classShowGroup = showGroup ? '' : 'display-none';
 		// const filesGrouped = ArrayHelper.groupBy(files, (file: KioskViewFileViewModel) => file.dirname!);
@@ -55,8 +61,8 @@ export class KioskViewGroupItems extends React.PureComponent<KioskViewGroupItems
 			? 'column'
 			: 'row';
 		const sortMultiplexer = sortOrder === SortOrderEnum.desc ? -1 : 1;
-		const filesInGroupArraySorted = files
-			.slice()
+		const filesInGroupArraySorted = uniqueFiles
+			// .slice()
 			.sort((a: KioskViewFileViewModel, b: KioskViewFileViewModel) => a.filename!.localeCompare(b.filename!) * sortMultiplexer);
 		const filesInGroupView = filesInGroupArraySorted.map((file: KioskViewFileViewModel) => (
 			<KioskViewItem

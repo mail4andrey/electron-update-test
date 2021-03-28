@@ -155,6 +155,8 @@ export class SettingsComponent extends BaseRoutedComponent<IMainRoutedProps> {
 							settings={settings.pathSources}
 							onPathSourceAdd={onPathSourceAdd}
 							onPathSourceChange={onPathSourceChange}
+							onPathSourceUp={this.controller.onPathSourceUp}
+							onPathSourceDown={this.controller.onPathSourceDown}
 							onPathSourceDelete={onPathSourceDelete}
 						/>
 					</TabPanel>
