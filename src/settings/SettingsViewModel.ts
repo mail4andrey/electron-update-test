@@ -1,6 +1,6 @@
 import { observable } from 'mobx';
 
-import { DesignSettingsModel, DesignSettingsViewModel } from './DesignSettingsModel';
+import { DesignSettingsViewModel } from './DesignSettingsModel';
 import { EmailSettingsViewModel } from './EmailSettingsViewModel';
 import { PrintSettingsModel } from './PrintSettingsModel';
 import { ServerSettingsViewModel } from './ServerSettingsModel';

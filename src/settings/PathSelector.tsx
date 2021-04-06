@@ -2,6 +2,7 @@
 import { remote } from 'electron';
 import { observer } from 'mobx-react';
 import React from 'react';
+
 // import { inject, provider } from 'react-ioc';
 
 
@@ -9,18 +10,21 @@ import React from 'react';
 // import { SettingsLocalization } from './SettingsLocalization';
 // import { SettingsStore } from './SettingsStore';
 
-import { IconButton } from '../../elements/IconButton';
-import { Folder, KeyboardArrowDown, KeyboardArrowUp, Remove } from '../../elements/Icons';
-import { InputAdornment } from '../../elements/InputAdornment';
-import { ITextFieldChangeEventProps, TextField } from '../../elements/TextField';
-import { SettingsLocalization } from '../../settings/SettingsLocalization';
-import { OneLine } from '../ommons/OneLine';
-import { Tooltip } from '../Tooltip';
+import { SettingsLocalization } from './SettingsLocalization';
+
+import { IconButton } from '../elements/IconButton';
+import { Folder, KeyboardArrowDown, KeyboardArrowUp, Remove } from '../elements/Icons';
+import { InputAdornment } from '../elements/InputAdornment';
+import { OneLine } from '../elements/ommons/OneLine';
+import { ITextFieldChangeEventProps, TextField } from '../elements/TextField';
+import { Tooltip } from '../elements/Tooltip';
+import { LanguageEnum } from '../src-front/views/LanguageEnum';
 
 
 /** */
 export interface PathSelectorProps {
-	label?: string;
+	language?: LanguageEnum;
+	// label?: string;
 	path?: string;
 	canDelete?: boolean;
 	id: number;
@@ -46,7 +50,7 @@ export class PathSelector extends React.PureComponent<PathSelectorProps> {
 
 	/** Отображение */
 	public render(): React.ReactNode {
-		const { label, path, disableUpButton, disableDownButton, disableDeleteButton } = this.props;
+		const { path, disableUpButton, disableDownButton, disableDeleteButton, language } = this.props;
 		const rightButtons = (
 			<InputAdornment position='end'>
 				<OneLine>
@@ -65,7 +69,7 @@ export class PathSelector extends React.PureComponent<PathSelectorProps> {
 						<KeyboardArrowDown />
 					</IconButton>
 					<Tooltip
-						title={SettingsLocalization.pathSourceTab.pathRemoveButtonTitle}
+						title={SettingsLocalization.pathSourceTab.pathRemoveButtonTitle(language)}
 					>
 						<IconButton
 							size='small'
@@ -81,7 +85,7 @@ export class PathSelector extends React.PureComponent<PathSelectorProps> {
 		const selectFolder = (
 			<InputAdornment position='start'>
 				<Tooltip
-					title={SettingsLocalization.pathSourceTab.pathSelectButtonTitle}
+					title={SettingsLocalization.pathSourceTab.pathSelectButtonTitle(language)}
 				>
 					<IconButton
 						size='small'
@@ -94,7 +98,7 @@ export class PathSelector extends React.PureComponent<PathSelectorProps> {
 		);
 		return (
 			<TextField
-				label={label}
+				// label={label}
 				value={path}
 				onChange={this.onChange}
 				fullWidth={true}
@@ -140,10 +144,11 @@ export class PathSelector extends React.PureComponent<PathSelectorProps> {
 
 	/** */
 	private readonly onSelectFolderClick = async (_event: React.MouseEvent<Element, MouseEvent>): Promise<void> => {
+		const { language } = this.props;
 		const mainWindow = remote.getCurrentWindow();
 		// const { dialog } = require('electron').remote;
 		const result = await remote.dialog.showOpenDialog(mainWindow, {
-			title: SettingsLocalization.pathSourceTab.pathSelectButtonTitle,
+			title: SettingsLocalization.pathSourceTab.pathSelectButtonTitle(language),
 			properties: ['openDirectory']
 		});
 		if (!result.canceled) {

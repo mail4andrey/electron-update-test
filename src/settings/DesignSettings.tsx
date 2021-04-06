@@ -1,23 +1,19 @@
-import { observer } from 'mobx-react';
 import React from 'react';
 
-
-import { DesignSettingsModel, DesignSettingsViewModel, DesignSizeEnum } from './DesignSettingsModel';
 import { SettingsLocalization } from './SettingsLocalization';
 
 import { FormControl } from '../elements/FormControl';
-import { Mail } from '../elements/Icons';
-import { InputLabel } from '../elements/InputLabel';
-import { MenuItem } from '../elements/MenuItem';
 import { ColorPicker } from '../elements/npm/ColorPicker';
-import { OneLine } from '../elements/ommons/OneLine';
-import { ISelectChangeEventProps, Select } from '../elements/Select';
+import { ISelectChangeEventProps } from '../elements/Select';
 import { ITextFieldChangeEventProps, TextField } from '../elements/TextField';
 import { Typography } from '../elements/Typography';
+import { DesignSettingsModel } from '../src-front/models/FilesModel';
+import { LanguageEnum } from '../src-front/views/LanguageEnum';
 
 
 /** */
 export interface DesignSettingsProps {
+	language?: LanguageEnum;
 	/** */
 	titleFrontPage?: string;
 
@@ -34,96 +30,37 @@ export interface DesignSettingsProps {
 	backgroundFileCard?: string;
 
 	/** */
-	size?: DesignSizeEnum;
-	// settings?: DesignSettingsModel;
+	iconColor?: string;
 
+	/** */
 	onChange: (event: ISelectChangeEventProps | undefined, settings: DesignSettingsModel) => void;
 }
 
-// @provider(SettingsController, SettingsStore)
-// @observer
 /** */
 export class DesignSettings extends React.PureComponent<DesignSettingsProps> {
-	/** */
-	// private readonly settings = new DesignSettingsViewModel();
-
-	/** */
-	// public componentDidMount(): void {
-	// 	try {
-	// 		// this.settings.size = this.props.settings?.size;
-	// 		// this.settings.background = this.props.settings?.background;
-	// 	} catch (error) {
-	// 		console.error(error);
-	// 	}
-	// }
 
 	/** Отображение */
 	public render(): React.ReactNode {
-		// const titleFrontPage = this.props.titleFrontPage && this.props.titleFrontPage.length ? this.props.titleFrontPage: 'Kiosk';
+		const { language } = this.props;
 		const background = this.props.background ?? 'white';
 		const backgroundToolbar = this.props.backgroundToolbar ?? 'gray';
 		const backgroundGroupName = this.props.backgroundGroupName ?? 'gray';
 		const backgroundFileCard = this.props.backgroundFileCard ?? 'gray';
-		const size = this.props.size ?? DesignSizeEnum.medium;
-		const sizeValues = [
-			(
-				<MenuItem
-					key={DesignSizeEnum.small}
-					value={DesignSizeEnum.small}
-				>
-					<OneLine>
-						<Mail
-							fontSize='small'
-						/>
-						<div className='padding-left-12px'>
-							{SettingsLocalization.designTab.sizeEnum(DesignSizeEnum.small)}
-						</div>
-					</OneLine>
-				</MenuItem>
-			), (
-				<MenuItem
-					key={DesignSizeEnum.medium}
-					value={DesignSizeEnum.medium}
-				>
-					<OneLine>
-						<Mail
-							fontSize='default'
-						/>
-						<div className='padding-left-12px'>
-							{SettingsLocalization.designTab.sizeEnum(DesignSizeEnum.medium)}
-						</div>
-					</OneLine>
-				</MenuItem>
-			// ), (
-			// 	<MenuItem
-			// 		key={DesignSizeEnum.large}
-			// 		value={DesignSizeEnum.large}
-			// 	>
-			// 		<OneLine>
-			// 			<Mail
-			// 				fontSize='large'
-			// 			/>
-			// 			<div className='padding-left-12px'>
-			// 				{SettingsLocalization.designTab.sizeEnum(DesignSizeEnum.large)}
-			// 			</div>
-			// 		</OneLine>
-			// 	</MenuItem>
-			)
-		];
+		const iconColor = this.props.iconColor ?? 'gray';
 
 		return (
 			<div className=''>
 				<Typography
 					variant='h5'
 				>
-					{SettingsLocalization.designTab.title}
+					{SettingsLocalization.designTab.title(language)}
 				</Typography>
 				<FormControl
 					fullWidth={true}
 					margin='dense'
 				>
 					<TextField
-						label={SettingsLocalization.designTab.titleFrontPage}
+						label={SettingsLocalization.designTab.titleFrontPage(language)}
 						value={this.props.titleFrontPage}
 						onChange={this.onTitleFrontPageChange}
 						fullWidth={true}
@@ -134,15 +71,10 @@ export class DesignSettings extends React.PureComponent<DesignSettingsProps> {
 					margin='dense'
 				>
 					<ColorPicker
-						floatingLabelText={SettingsLocalization.designTab.backgroundName}
+						floatingLabelText={SettingsLocalization.designTab.backgroundName(language)}
 						TextFieldProps={{ value: background }}
-						// internalValue={background}
 						defaultValue={background}
-						// defaultValue={color}
-						// defaultValue={SettingsLocalization.designTab.backgroundName}
-						// internalValue={color}
 						onChange={this.onBackgroundChange}
-						// showPicker={true}
 					/>
 				</FormControl>
 				<FormControl
@@ -150,15 +82,10 @@ export class DesignSettings extends React.PureComponent<DesignSettingsProps> {
 					margin='dense'
 				>
 					<ColorPicker
-						floatingLabelText={SettingsLocalization.designTab.backgroundToolbarName}
+						floatingLabelText={SettingsLocalization.designTab.backgroundToolbarName(language)}
 						TextFieldProps={{ value: backgroundToolbar }}
-						// internalValue={backgroundToolbar}
 						defaultValue={backgroundToolbar}
-						// defaultValue={color}
-						// defaultValue={SettingsLocalization.designTab.backgroundName}
-						// internalValue={color}
 						onChange={this.onBackgroundToolbarChange}
-						// showPicker={true}
 					/>
 				</FormControl>
 				<FormControl
@@ -166,7 +93,7 @@ export class DesignSettings extends React.PureComponent<DesignSettingsProps> {
 					margin='dense'
 				>
 					<ColorPicker
-						floatingLabelText={SettingsLocalization.designTab.backgroundGroupName}
+						floatingLabelText={SettingsLocalization.designTab.backgroundGroupName(language)}
 						TextFieldProps={{ value: backgroundGroupName }}
 						// internalValue={backgroundToolbar}
 						defaultValue={backgroundGroupName}
@@ -182,30 +109,22 @@ export class DesignSettings extends React.PureComponent<DesignSettingsProps> {
 					margin='dense'
 				>
 					<ColorPicker
-						floatingLabelText={SettingsLocalization.designTab.backgroundFileCardName}
+						floatingLabelText={SettingsLocalization.designTab.backgroundFileCardName(language)}
 						TextFieldProps={{ value: backgroundFileCard }}
-						// internalValue={backgroundToolbar}
 						defaultValue={backgroundFileCard}
-						// defaultValue={color}
-						// defaultValue={SettingsLocalization.designTab.backgroundName}
-						// internalValue={color}
 						onChange={this.onBackgroundFileCardChange}
-						// showPicker={true}
 					/>
 				</FormControl>
 				<FormControl
 					fullWidth={true}
 					margin='dense'
 				>
-					<InputLabel>
-						{SettingsLocalization.designTab.sizeName}
-					</InputLabel>
-					<Select
-						value={size}
-						onChange={this.onSizeChange}
-					>
-						{sizeValues}
-					</Select>
+					<ColorPicker
+						floatingLabelText={SettingsLocalization.designTab.iconColorName(language)}
+						TextFieldProps={{ value: iconColor }}
+						defaultValue={iconColor}
+						onChange={this.onIconColorChange}
+					/>
 				</FormControl>
 			</div>
 		);
@@ -220,11 +139,9 @@ export class DesignSettings extends React.PureComponent<DesignSettingsProps> {
 				backgroundToolbar: this.props.backgroundToolbar,
 				backgroundGroupName: this.props.backgroundGroupName,
 				backgroundFileCard: this.props.backgroundFileCard,
-				size: this.props.size,
+				iconColor: this.props.iconColor,
 			} as DesignSettingsModel;
 			this.props.onChange(undefined, settings);
-			// this.settings.background = color;
-			// this.onDesignSettingsChange();
 		}
 	};
 
@@ -237,11 +154,9 @@ export class DesignSettings extends React.PureComponent<DesignSettingsProps> {
 				backgroundToolbar: color,
 				backgroundGroupName: this.props.backgroundGroupName,
 				backgroundFileCard: this.props.backgroundFileCard,
-				size: this.props.size,
+				iconColor: this.props.iconColor,
 			} as DesignSettingsModel;
 			this.props.onChange(undefined, settings);
-			// this.settings.background = color;
-			// this.onDesignSettingsChange();
 		}
 	};
 
@@ -254,11 +169,9 @@ export class DesignSettings extends React.PureComponent<DesignSettingsProps> {
 				backgroundToolbar: this.props.backgroundToolbar,
 				backgroundGroupName: color,
 				backgroundFileCard: this.props.backgroundFileCard,
-				size: this.props.size,
+				iconColor: this.props.iconColor,
 			} as DesignSettingsModel;
 			this.props.onChange(undefined, settings);
-			// this.settings.background = color;
-			// this.onDesignSettingsChange();
 		}
 	};
 
@@ -271,28 +184,25 @@ export class DesignSettings extends React.PureComponent<DesignSettingsProps> {
 				backgroundToolbar: this.props.backgroundToolbar,
 				backgroundGroupName: this.props.backgroundGroupName,
 				backgroundFileCard: color,
-				size: this.props.size,
+				iconColor: this.props.iconColor,
 			} as DesignSettingsModel;
 			this.props.onChange(undefined, settings);
-			// this.settings.background = color;
-			// this.onDesignSettingsChange();
 		}
 	};
 
 	/** */
-	private readonly onSizeChange = (event: ISelectChangeEventProps): void => {
-		const value = event.target.value as DesignSizeEnum;
-		const settings = {
-			titleFrontPage: this.props.titleFrontPage,
-			background: this.props.background,
-			backgroundToolbar: this.props.backgroundToolbar,
-			backgroundGroupName: this.props.backgroundGroupName,
-			backgroundFileCard: this.props.backgroundFileCard,
-			size: value,
-		} as DesignSettingsModel;
-		this.props.onChange(event, settings);
-		// this.settings.size = value;
-		// this.onDesignSettingsChange(event);
+	private readonly onIconColorChange = (color?: string): void => {
+		if (color) {
+			const settings = {
+				titleFrontPage: this.props.titleFrontPage,
+				background: this.props.background,
+				backgroundToolbar: this.props.backgroundToolbar,
+				backgroundGroupName: this.props.backgroundGroupName,
+				backgroundFileCard: this.props.backgroundFileCard,
+				iconColor: color,
+			} as DesignSettingsModel;
+			this.props.onChange(undefined, settings);
+		}
 	};
 
 	/** */
@@ -304,17 +214,8 @@ export class DesignSettings extends React.PureComponent<DesignSettingsProps> {
 			backgroundToolbar: this.props.backgroundToolbar,
 			backgroundGroupName: this.props.backgroundGroupName,
 			backgroundFileCard: this.props.backgroundFileCard,
-			size: this.props.size,
+			iconColor: this.props.iconColor,
 		} as DesignSettingsModel;
 		this.props.onChange(event, settings);
 	};
-
-	/**  */
-	// private onDesignSettingsChange(event?: ISelectChangeEventProps): void {
-	// 	const settings = {
-	// 		background: this.props.settings?.background,
-	// 		size: this.props.settings?.size,
-	// 	} as DesignSettingsModel;
-	// 	this.props.onChange(event, settings);
-	// }
 }

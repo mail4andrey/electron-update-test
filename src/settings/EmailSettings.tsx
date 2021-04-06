@@ -1,24 +1,22 @@
-import { ipcRenderer } from 'electron';
 import { observer } from 'mobx-react';
 import React from 'react';
 
 
-import { EmailSendingModel } from './EmailSendingModel';
 import { EmailSettingsModel } from './EmailSettingsModel';
 import { SettingsLocalization } from './SettingsLocalization';
 
-import { ElectronCommands } from '../ElectronCommands';
 import { Button } from '../elements/Button';
 import { FormControl } from '../elements/FormControl';
 import { Mail } from '../elements/Icons';
-import { InputLabel } from '../elements/InputLabel';
 import { ITextFieldChangeEventProps, TextField } from '../elements/TextField';
 import { Typography } from '../elements/Typography';
 import { EmailProxy } from '../helpers/EmailProxy';
+import { LanguageEnum } from '../src-front/views/LanguageEnum';
 
 
 /** */
 export interface EmailSettingsProps {
+	language?: LanguageEnum;
 	settings?: EmailSettingsModel;
 
 	onChange?: (event: ITextFieldChangeEventProps, settings: EmailSettingsModel) => void;
@@ -37,20 +35,21 @@ export class EmailSettings extends React.PureComponent<EmailSettingsProps> {
 
 	/** Отображение */
 	public render(): React.ReactNode {
+		const { language } = this.props;
 		const { login, password, server, subject, content } = this.settings;
 		return (
 			<div className=''>
 				<Typography
 					variant='h5'
 				>
-					{SettingsLocalization.emailTab.title}
+					{SettingsLocalization.emailTab.title(language)}
 				</Typography>
 				<FormControl
 					fullWidth={true}
 					margin='dense'
 				>
 					<TextField
-						label={SettingsLocalization.emailTab.server}
+						label={SettingsLocalization.emailTab.server(language)}
 						value={server}
 						onChange={this.onServerChange}
 						fullWidth={true}
@@ -62,7 +61,7 @@ export class EmailSettings extends React.PureComponent<EmailSettingsProps> {
 					margin='dense'
 				>
 					<TextField
-						label={SettingsLocalization.emailTab.login}
+						label={SettingsLocalization.emailTab.login(language)}
 						value={login}
 						onChange={this.onLoginChange}
 						fullWidth={true}
@@ -74,7 +73,7 @@ export class EmailSettings extends React.PureComponent<EmailSettingsProps> {
 					margin='dense'
 				>
 					<TextField
-						label={SettingsLocalization.emailTab.password}
+						label={SettingsLocalization.emailTab.password(language)}
 						value={password}
 						onChange={this.onPasswordChange}
 						fullWidth={true}
@@ -86,7 +85,7 @@ export class EmailSettings extends React.PureComponent<EmailSettingsProps> {
 					margin='dense'
 				>
 					<TextField
-						label={SettingsLocalization.emailTab.subject}
+						label={SettingsLocalization.emailTab.subject(language)}
 						value={subject}
 						onChange={this.onSubjectChange}
 						fullWidth={true}
@@ -97,7 +96,7 @@ export class EmailSettings extends React.PureComponent<EmailSettingsProps> {
 					margin='dense'
 				>
 					<TextField
-						label={SettingsLocalization.emailTab.content}
+						label={SettingsLocalization.emailTab.content(language)}
 						value={content}
 						onChange={this.onContentChange}
 						fullWidth={true}
@@ -113,7 +112,7 @@ export class EmailSettings extends React.PureComponent<EmailSettingsProps> {
 						variant='contained'
 						startIcon={<Mail />}
 					>
-						{SettingsLocalization.emailTab.testSendButton}
+						{SettingsLocalization.emailTab.testSendButton(language)}
 					</Button>
 				</FormControl>
 			</div>

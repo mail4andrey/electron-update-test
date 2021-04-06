@@ -1,56 +1,36 @@
 import { observable } from 'mobx';
 
-/** Модель настроек приложения */
-export interface DesignSettingsModel {
-	/** */
-	titleFrontPage?: string;
-	/** */
-	background?: string;
-
-	/** */
-	backgroundToolbar?: string;
-
-	/** */
-	backgroundGroupName?: string;
-
-	/** */
-	backgroundFileCard?: string;
-
-	/** */
-	size?: DesignSizeEnum;
-}
+import { DesignSettingsModel } from '../src-front/models/FilesModel';
 
 /** Модель настроек приложения */
 export class DesignSettingsViewModel implements DesignSettingsModel {
 	@observable
 	/** */
-	public background?: string;
+	public background = 'white';
 
 	@observable
 	/** */
-	public backgroundToolbar?: string;
+	public backgroundToolbar = 'gray';
 
 	@observable
 	/** */
-	public backgroundGroupName?: string;
+	public backgroundGroupName = 'gray';
 
 	@observable
 	/** */
-	public backgroundFileCard?: string;
+	public backgroundFileCard = 'gray';
 
 	@observable
 	/** */
-	public size?: DesignSizeEnum;
+	public iconColor = 'gray';
 
 	// @observable
+	// /** */
+	// public size?: DesignSizeEnum;
+
+	@observable
 	// Редактирование тесктового поля
 	/** */
-	public titleFrontPage?: string;
+	public titleFrontPage = '';
 }
 
-/** */
-export enum DesignSizeEnum {
-	small='small',
-	medium='medium',
-	// large='large',
-}

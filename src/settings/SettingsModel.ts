@@ -1,7 +1,9 @@
-import { DesignSettingsModel } from './DesignSettingsModel';
+
 import { EmailSettingsModel } from './EmailSettingsModel';
 import { PrintSettingsModel } from './PrintSettingsModel';
 import { ServerSettingsModel } from './ServerSettingsModel';
+
+import { DesignSettingsModel } from '../src-front/models/FilesModel';
 
 /** Модель настроек приложения */
 export class SettingsModel {

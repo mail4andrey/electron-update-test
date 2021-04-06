@@ -3,6 +3,7 @@ import React from 'react';
 
 /** Свойства кнопки */
 export interface ISkeletonProps {
+	className?: string;
 	animation?: 'pulse' | 'wave' | false;
 	children?: React.ReactNode;
 	height?: number | string;

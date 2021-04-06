@@ -16,10 +16,12 @@ import { ISelectChangeEventProps, Select } from '../elements/Select';
 import { Skeleton } from '../elements/Skeleton';
 import { Typography } from '../elements/Typography';
 import { PrintProxy } from '../helpers/PrintProxy';
+import { LanguageEnum } from '../src-front/views/LanguageEnum';
 
 
 /** */
 export interface PrinterSettingsProps {
+	language?: LanguageEnum;
 	settings?: PrintSettingsModel;
 
 	onChange?: (event: ISelectChangeEventProps, settings: PrintSettingsModel) => void;
@@ -57,6 +59,7 @@ export class PrintSettings extends React.PureComponent<PrinterSettingsProps> {
 
 	/** Отображение */
 	public render(): React.ReactNode {
+		const { language } = this.props;
 		const printers = this.getPrinters();
 		const layout = this.settings.layout ?? PrintLayoutEnum.landscape;
 		const layoutValues = [
@@ -68,7 +71,7 @@ export class PrintSettings extends React.PureComponent<PrinterSettingsProps> {
 					<OneLine>
 						<CropLandscape />
 						<div className='padding-left-12px'>
-							{SettingsLocalization.printerTab.layoutEnum(PrintLayoutEnum.landscape)}
+							{SettingsLocalization.printerTab.layoutEnum(language, PrintLayoutEnum.landscape)}
 						</div>
 					</OneLine>
 				</MenuItem>
@@ -80,7 +83,7 @@ export class PrintSettings extends React.PureComponent<PrinterSettingsProps> {
 					<OneLine>
 						<CropPortrait />
 						<div className='padding-left-12px'>
-							{SettingsLocalization.printerTab.layoutEnum(PrintLayoutEnum.portrait)}
+							{SettingsLocalization.printerTab.layoutEnum(language, PrintLayoutEnum.portrait)}
 						</div>
 					</OneLine>
 				</MenuItem>
@@ -96,7 +99,7 @@ export class PrintSettings extends React.PureComponent<PrinterSettingsProps> {
 					<OneLine>
 						<PhotoSizeSelectLarge />
 						<div className='padding-left-12px'>
-							{SettingsLocalization.printerTab.fitOnPageEnum(PrintFitOnPageEnum.contain)}
+							{SettingsLocalization.printerTab.fitOnPageEnum(language, PrintFitOnPageEnum.contain)}
 						</div>
 					</OneLine>
 				</MenuItem>
@@ -108,7 +111,7 @@ export class PrintSettings extends React.PureComponent<PrinterSettingsProps> {
 					<OneLine>
 						<PhotoSizeSelectActual />
 						<div className='padding-left-12px'>
-							{SettingsLocalization.printerTab.fitOnPageEnum(PrintFitOnPageEnum.cover)}
+							{SettingsLocalization.printerTab.fitOnPageEnum(language, PrintFitOnPageEnum.cover)}
 						</div>
 					</OneLine>
 				</MenuItem>
@@ -119,7 +122,7 @@ export class PrintSettings extends React.PureComponent<PrinterSettingsProps> {
 				<Typography
 					variant='h5'
 				>
-					{SettingsLocalization.printerTab.title}
+					{SettingsLocalization.printerTab.title(language)}
 				</Typography>
 				{printers}
 				<FormControl
@@ -127,7 +130,7 @@ export class PrintSettings extends React.PureComponent<PrinterSettingsProps> {
 					margin='dense'
 				>
 					<InputLabel>
-						{SettingsLocalization.printerTab.layoutName}
+						{SettingsLocalization.printerTab.layoutName(language)}
 					</InputLabel>
 					<Select
 						value={layout}
@@ -142,7 +145,7 @@ export class PrintSettings extends React.PureComponent<PrinterSettingsProps> {
 					margin='dense'
 				>
 					<InputLabel>
-						{SettingsLocalization.printerTab.fitOnPageName}
+						{SettingsLocalization.printerTab.fitOnPageName(language)}
 					</InputLabel>
 					<Select
 						value={fitOnPage}
@@ -162,7 +165,7 @@ export class PrintSettings extends React.PureComponent<PrinterSettingsProps> {
 						variant='contained'
 						startIcon={<Print />}
 					>
-						{SettingsLocalization.printerTab.testPrintButton}
+						{SettingsLocalization.printerTab.testPrintButton(language)}
 					</Button>
 				</FormControl>
 			</div>
@@ -171,6 +174,7 @@ export class PrintSettings extends React.PureComponent<PrinterSettingsProps> {
 
 	/** */
 	private readonly getPrinters = (): React.ReactNode => {
+		const { language } = this.props;
 		if (!this.loaded) {
 			return (
 				<Skeleton
@@ -197,7 +201,7 @@ export class PrintSettings extends React.PureComponent<PrinterSettingsProps> {
 				margin='dense'
 			>
 				<InputLabel>
-					{SettingsLocalization.printerTab.printerName}
+					{SettingsLocalization.printerTab.printerName(language)}
 				</InputLabel>
 				<Select
 					value={printer}
@@ -211,11 +215,6 @@ export class PrintSettings extends React.PureComponent<PrinterSettingsProps> {
 			</FormControl>
 		);
 	};
-
-	// onChange?: (
-	// 	event: React.ChangeEvent<{ name?: string; value: unknown; }>,
-	// 	child: React.ReactNode
-	// ) => void;
 
 	/** */
 	private readonly onPrinterChange = (event: ISelectChangeEventProps): void => {
@@ -240,13 +239,6 @@ export class PrintSettings extends React.PureComponent<PrinterSettingsProps> {
 
 	/** */
 	private readonly onTestPrint = async (_event: React.MouseEvent<HTMLButtonElement, MouseEvent>): Promise<void> => {
-		// const model = new PrintSendingModel();
-		// model.printer = this.props.settings;
-		// model.items = [
-		// 	{
-		// 		data: 'data:text/html;charset=utf-8,<body><h1>Test</h1></body>'
-		// 	}
-		// ];
 		try {
 			const settings = {
 				printer: this.settings.printer,
@@ -258,7 +250,7 @@ export class PrintSettings extends React.PureComponent<PrinterSettingsProps> {
 		}
 	};
 
-	/**  */
+	/** */
 	private onPrintSettingsChange(event: ISelectChangeEventProps): void {
 		const { onChange } = this.props;
 		if (onChange) {

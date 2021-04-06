@@ -40,7 +40,9 @@ export function createWindow(app: Electron.App): BrowserWindow {
 	mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
 	// Open the DevTools.
-	mainWindow.webContents.openDevTools();
+	if (process.env.NODE_ENV === 'development') {
+		mainWindow.webContents.openDevTools();
+	}
 
 	// mainWindow.on('ready', () => {
 	// 	alert('ready');
@@ -107,22 +109,22 @@ export function createWindow(app: Electron.App): BrowserWindow {
 						}
 					]
 				},
-				{ type: 'separator' },
-				{
-					label: 'Language',
-					submenu: [
-						{
-							label: 'English',
-							type: 'radio',
-							checked: true
-						},
-						{
-							label: 'Русский',
-							type: 'radio',
-							checked: false
-						},
-					]
-				},
+				// { type: 'separator' },
+				// {
+				// 	label: 'Language',
+				// 	submenu: [
+				// 		{
+				// 			label: 'English',
+				// 			type: 'radio',
+				// 			checked: true
+				// 		},
+				// 		{
+				// 			label: 'Русский',
+				// 			type: 'radio',
+				// 			checked: false
+				// 		},
+				// 	]
+				// },
 				{ type: 'separator' },
 				{
 					label: 'Exit',

@@ -2,6 +2,8 @@
 import * as LocalStorage from 'local-storage';
 import { inject } from 'react-ioc';
 
+import { DesignSizeEnum } from './DesignSizeEnum';
+import { GroupByEnum } from './GroupByEnum';
 import { KioskSettingsLocalStorage } from './KioskSettingsLocalStorage';
 import { KioskViewFilesViewModel, KioskViewFileViewModel } from './KioskViewFileViewModel';
 import { KioskViewItemEventProps } from './KioskViewItemEventProps';
@@ -16,8 +18,7 @@ import { ITimer, Timer } from '../../helpers/Timer';
 import { PrintSendingItemModel } from '../../settings/PrintSendingItemModel';
 import { UrlHelper } from '../helpers/UrlHelper';
 import { PathSourceFileModel, PathSourceFilesModel } from '../models/FilesModel';
-import { LanguageEnum } from '../models/LanguageEnum';
-import { GroupByEnum } from './GroupByEnum';
+import { LanguageEnum } from './LanguageEnum';
 
 
 /** */
@@ -42,9 +43,10 @@ export class KioskViewController {
 		this.store.currentItemSize = localSettings?.size;
 		this.store.sortOrder = localSettings?.sortOrder;
 		this.store.language = localSettings?.language;
+		this.store.iconSize = localSettings?.iconSize;
 		await this.loadFiles();
 		this.store.loaded = true;
-		this.timer = new Timer(5000, this.loadFiles);
+		this.timer = new Timer(15000, this.loadFiles);
 		this.timer.execute();
 	};
 
@@ -60,10 +62,12 @@ export class KioskViewController {
 
 	/** */
 	public readonly onSelectItem = (_event: React.ChangeEvent<HTMLInputElement>, value: KioskViewItemEventProps): void => {
-		const pathSource = this.store.groupsFiles.find((file: KioskViewFilesViewModel) => file.dirname === value.dirname);
-		const selectedFile = pathSource?.files.find((file: KioskViewFileViewModel) => file.filename === value.id);
+		const selectedFile = this.store.groupsFiles
+			.flatMap((file: KioskViewFilesViewModel) => file.files)
+			.find((file: KioskViewFileViewModel) => file.fullpath === value.id);
+		// const selectedFile = pathSource?.files.find((file: KioskViewFileViewModel) => file.filename === value.id);
 		if (selectedFile) {
-			selectedFile.isSelected = value.checked;
+			selectedFile.isSelected = value.checked ?? false;
 		}
 	};
 
@@ -110,13 +114,21 @@ export class KioskViewController {
 		this.saveSettingsToLocalStorage();
 	};
 
+	/** */
+	public readonly onSizeChange = (_event: React.MouseEvent<Element, MouseEvent>, value: DesignSizeEnum): void => {
+		this.store.iconSize = value;
+		this.saveSettingsToLocalStorage();
+	};
+
 	/** Сохраняем в local storage */
 	private saveSettingsToLocalStorage(): void {
-		const data = { 
+		const data = {
 			sizgroupBye: this.store.groupBy,
 			size: this.store.currentItemSize,
 			sortOrder: this.store.sortOrder,
-			language: this.store.language
+			language: this.store.language,
+			groupBy: this.store.groupBy,
+			iconSize: this.store.iconSize,
 		} as KioskSettingsLocalStorage;
 		LocalStorage.set('local-settings', data);
 	}

@@ -74,6 +74,7 @@ export interface ICheckboxProps {
 	 */
 	value?: any;
 
+	style?: React.CSSProperties;
 }
 /** Кнопка */
 export class Checkbox extends React.PureComponent<ICheckboxProps> {

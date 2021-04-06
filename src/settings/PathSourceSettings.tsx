@@ -1,18 +1,21 @@
 import { observer } from 'mobx-react';
 import React from 'react';
 
+import { PathSelector } from './PathSelector';
 import { SettingsLocalization } from './SettingsLocalization';
 
 import { Button } from '../elements/Button';
-import { PathSelector } from '../elements/combine/PathSelector';
 import { FormControl } from '../elements/FormControl';
 import { PlaylistAdd } from '../elements/Icons';
 import { ITextFieldChangeEventProps } from '../elements/TextField';
 import { Typography } from '../elements/Typography';
+import { LanguageEnum } from '../src-front/views/LanguageEnum';
 
 
 /** */
 export interface PathSourceSettingsProps {
+	language?: LanguageEnum;
+
 	/** */
 	settings?: string[];
 
@@ -29,6 +32,7 @@ export interface PathSourceSettingsProps {
 export class PathSourceSettings extends React.PureComponent<PathSourceSettingsProps> {
 	/** Отображение */
 	public render(): React.ReactNode {
+		const { language } = this.props;
 		const paths = this.props.settings?.map((path: string, index: number, array: string[]) => {
 			const disableUpButton = index === 0;
 			const disableDownButton = index === array.length - 1;
@@ -37,6 +41,7 @@ export class PathSourceSettings extends React.PureComponent<PathSourceSettingsPr
 					key={index}
 				>
 					<PathSelector
+						language={language}
 						id={index}
 						path={path}
 						disableUpButton={disableUpButton}
@@ -54,7 +59,7 @@ export class PathSourceSettings extends React.PureComponent<PathSourceSettingsPr
 				<Typography
 					variant='h5'
 				>
-					{SettingsLocalization.pathSourceTab.title}
+					{SettingsLocalization.pathSourceTab.title(language)}
 				</Typography>
 				<FormControl
 					fullWidth={true}
@@ -66,7 +71,7 @@ export class PathSourceSettings extends React.PureComponent<PathSourceSettingsPr
 						variant='contained'
 						startIcon={<PlaylistAdd />}
 					>
-						{SettingsLocalization.pathSourceTab.pathAddButtonTitle}
+						{SettingsLocalization.pathSourceTab.pathAddButtonTitle(language)}
 					</Button>
 				</FormControl>
 				<FormControl

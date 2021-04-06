@@ -1,22 +1,25 @@
 import { observer } from 'mobx-react';
 import React from 'react';
 
+import { DesignSizeEnum } from './DesignSizeEnum';
 import { KioskItemStateEnum } from './KioskItemStateEnum';
 import { KioskViewFileViewModel } from './KioskViewFileViewModel';
 import { KioskViewItem } from './KioskViewItem';
 import { KioskViewItemEventProps } from './KioskViewItemEventProps';
+import { LanguageEnum } from './LanguageEnum';
 import { VideoItemSizeEnum } from './SizeEnum';
 import { SortOrderEnum } from './SortOrderEnum';
 
 import { Grid } from '../../elements/Grid';
 import { Typography } from '../../elements/Typography';
-import { DesignSizeEnum } from '../../settings/DesignSettingsModel';
 import { PrintSendingItemModel } from '../../settings/PrintSendingItemModel';
 
 /** */
 export interface KioskViewGroupItemsProps {
+	language?: LanguageEnum;
 	backgroundGroupName?: string;
 	backgroundFileCard?: string;
+	iconColor?: string;
 	currentItemSize?: VideoItemSizeEnum;
 
 	sortOrder?: SortOrderEnum;
@@ -40,7 +43,7 @@ export interface KioskViewGroupItemsProps {
 export class KioskViewGroupItems extends React.PureComponent<KioskViewGroupItemsProps> {
 	/** Отображение */
 	public render(): React.ReactNode {
-		const { groupname, files, size, currentItemSize, sortOrder, onPrintItemClick, onSendByEmailItemClick, onSelectItemClick } = this.props;
+		const { groupname, files, size, currentItemSize, sortOrder, language, onPrintItemClick, onSendByEmailItemClick, onSelectItemClick } = this.props;
 
 		if (!files || files.length <= 0) {
 			return null;
@@ -67,6 +70,7 @@ export class KioskViewGroupItems extends React.PureComponent<KioskViewGroupItems
 		const filesInGroupView = filesInGroupArraySorted.map((file: KioskViewFileViewModel) => (
 			<KioskViewItem
 				key={file.fullpath}
+				language={language}
 				file={file}
 				size={currentItemSize}
 				buttonSize={size}
@@ -74,10 +78,26 @@ export class KioskViewGroupItems extends React.PureComponent<KioskViewGroupItems
 				onSendClick={onSendByEmailItemClick}
 				onPrintClick={onPrintItemClick}
 				backgroundFileCard={this.props.backgroundFileCard}
+				iconColor={this.props.iconColor}
 			/>
 		));
 
 		const background = this.props.backgroundGroupName ?? 'gray';
+		const group = groupname && groupname.length > 0
+			? (
+				<div
+					className='padding-6px background-image-bottom-gray'
+					style={{ background }}
+				>
+					<Typography
+						align='center'
+						variant='h6'
+					>
+						{groupname}
+					</Typography>
+				</div>
+			)
+			: null;
 		return (
 			<div
 				className={`${classShowGroup}`}
@@ -92,17 +112,7 @@ export class KioskViewGroupItems extends React.PureComponent<KioskViewGroupItems
 						item={true}
 						className='kiosk-item-group-sticky'
 					>
-						<div
-							className='padding-6px background-image-bottom-gray'
-							style={{ background }}
-						>
-							<Typography
-								align='center'
-								variant='h6'
-							>
-								{groupname}
-							</Typography>
-						</div>
+						{group}
 					</Grid>
 					<Grid
 						item={true}

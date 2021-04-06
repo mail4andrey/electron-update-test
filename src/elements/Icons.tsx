@@ -25,6 +25,12 @@ import {
 	SettingsEthernet as UiSettingsEthernet,
 	KeyboardArrowDown as UiKeyboardArrowDown,
 	KeyboardArrowUp as UiKeyboardArrowUp,
+	KeyboardArrowLeft as UiKeyboardArrowLeft,
+	KeyboardArrowRight as UiKeyboardArrowRight,
+	CheckBox as UiCheckBox,
+	CheckBoxOutlineBlank as UiCheckBoxOutlineBlank,
+	Block as UiBlock,
+	Settings as UiSettings,
 } from '@material-ui/icons';
 import React from 'react';
 
@@ -52,7 +58,6 @@ export interface IIconProps {
 	 * The shape-rendering attribute. The behavior of the different options is described on the
 	 * [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/shape-rendering).
 	 * If you are having issues with blurry icons you should investigate this prop.
-	 * @document
 	 */
 	shapeRendering?: string;
 	/**
@@ -344,4 +349,70 @@ export class KeyboardArrowUp extends React.PureComponent<IIconProps> {
 		);
 	}
 }
+/** */
+export class CheckBox extends React.PureComponent<IIconProps> {
+	/** Отображение */
+	public render(): React.ReactNode {
+		return (
+			<UiCheckBox
+				{...this.props}
+			/>
+		);
+	}
+}
+/** */
+export class CheckBoxOutlineBlank extends React.PureComponent<IIconProps> {
+	/** Отображение */
+	public render(): React.ReactNode {
+		return (
+			<UiCheckBoxOutlineBlank
+				{...this.props}
+			/>
+		);
+	}
+}
+/** */
+export class Block extends React.PureComponent<IIconProps> {
+	/** Отображение */
+	public render(): React.ReactNode {
+		return (
+			<UiBlock
+				{...this.props}
+			/>
+		);
+	}
+}
 
+/** */
+export class KeyboardArrowLeft extends React.PureComponent<IIconProps> {
+	/** Отображение */
+	public render(): React.ReactNode {
+		return (
+			<UiKeyboardArrowLeft
+				{...this.props}
+			/>
+		);
+	}
+}
+/** */
+export class KeyboardArrowRight extends React.PureComponent<IIconProps> {
+	/** Отображение */
+	public render(): React.ReactNode {
+		return (
+			<UiKeyboardArrowRight
+				{...this.props}
+			/>
+		);
+	}
+}
+/** */
+export class Settings extends React.PureComponent<IIconProps> {
+	/** Отображение */
+	public render(): React.ReactNode {
+		return (
+			<UiSettings
+				{...this.props}
+			/>
+		);
+	}
+}

@@ -22,24 +22,6 @@ import { RightContainer } from '../elements/ommons/RightContainer';
 import { Tab } from '../elements/Tab';
 import { TabPanel } from '../elements/TabPanel';
 import { Tabs } from '../elements/Tabs';
-import { ITextFieldChangeEventProps } from '../elements/TextField';
-
-
-/** */
-// export interface SettingsProps extends Routed {
-// }
-
-// const useStyles = makeStyles((theme: Theme) => ({
-// 	root: {
-// 		flexGrow: 1,
-// 		backgroundColor: theme.palette.background.paper,
-// 		display: 'flex',
-// 		height: 224,
-// 	},
-// 	tabs: {
-// 		borderRight: `1px solid ${theme.palette.divider}`,
-// 	},
-// }));
 
 @provider(SettingsController, SettingsStore)
 @observer
@@ -68,39 +50,39 @@ export class SettingsComponent extends BaseRoutedComponent<IMainRoutedProps> {
 	public render(): React.ReactNode {
 		// const classes = useStyles();
 
-		const { onPathSourceAdd, onPathSourceDelete, onPathSourceChange, onEmailSettingsChange, onPrintSettingsChange, onDesignSettingsChange, onServerSettingsChange } = this.controller;
-		const { settings, tabSelected } = this.store;
+		const {
+			onPathSourceAdd,
+			onPathSourceDelete,
+			onPathSourceChange,
+			onEmailSettingsChange,
+			onPrintSettingsChange,
+			onDesignSettingsChange,
+			onServerSettingsChange,
+			onPathSourceUp,
+			onPathSourceDown
+		} = this.controller;
+		const { settings, tabSelected, language } = this.store;
 		return (
 			<div>
 				<OneLine className='padding-left-12px box-sizing-border-box'>
-					<h1>{SettingsLocalization.title}</h1>
+					<h1>{SettingsLocalization.title(language)}</h1>
 					<RightContainer className='padding-right-12px'>
 						<ButtonGroup>
 							<Button
 								color='primary'
 								onClick={this.onSaveClick}
 							>
-								{SettingsLocalization.saveButton}
+								{SettingsLocalization.saveButton(language)}
 							</Button>
 							<Button
 								color='secondary'
 								onClick={this.onCancelClick}
 							>
-								{SettingsLocalization.cancelButton}
+								{SettingsLocalization.cancelButton(language)}
 							</Button>
-							{/* <Link
-								component='button'
-								color='secondary'
-								underline='none'
-							>
-								{SettingsLocalization.cancelButton}
-							</Link> */}
 						</ButtonGroup>
 					</RightContainer>
 				</OneLine>
-				{/* <div
-					className='flex-grow-1'
-				> */}
 
 				<AppBar
 					position='static'
@@ -120,29 +102,29 @@ export class SettingsComponent extends BaseRoutedComponent<IMainRoutedProps> {
 						onChange={this.onTabChange}
 					>
 						<Tab
-							label={SettingsLocalization.pathSourceTab.title}
+							label={SettingsLocalization.pathSourceTab.title(language)}
 							index={0}
 							// id = 'simple-tab-0'
 							// 'aria-controls'= 'simple-tabpanel-0'
 							icon={<Folder/>}
 						/>
 						<Tab
-							label={SettingsLocalization.emailTab.title}
+							label={SettingsLocalization.emailTab.title(language)}
 							index={1}
 							icon={<Mail/>}
 						/>
 						<Tab
-							label={SettingsLocalization.printerTab.title}
+							label={SettingsLocalization.printerTab.title(language)}
 							index={2}
 							icon={<Print/>}
 						/>
 						<Tab
-							label={SettingsLocalization.designTab.title}
+							label={SettingsLocalization.designTab.title(language)}
 							index={3}
 							icon={<FormatSize/>}
 						/>
 						<Tab
-							label={SettingsLocalization.serverTab.title}
+							label={SettingsLocalization.serverTab.title(language)}
 							index={4}
 							icon={<SettingsEthernet/>}
 						/>
@@ -152,11 +134,12 @@ export class SettingsComponent extends BaseRoutedComponent<IMainRoutedProps> {
 						index={0}
 					>
 						<PathSourceSettings
+							language={language}
 							settings={settings.pathSources}
 							onPathSourceAdd={onPathSourceAdd}
 							onPathSourceChange={onPathSourceChange}
-							onPathSourceUp={this.controller.onPathSourceUp}
-							onPathSourceDown={this.controller.onPathSourceDown}
+							onPathSourceUp={onPathSourceUp}
+							onPathSourceDown={onPathSourceDown}
 							onPathSourceDelete={onPathSourceDelete}
 						/>
 					</TabPanel>
@@ -165,6 +148,7 @@ export class SettingsComponent extends BaseRoutedComponent<IMainRoutedProps> {
 						index={1}
 					>
 						<EmailSettings
+							language={language}
 							settings={settings.emailSettings}
 							onChange={onEmailSettingsChange}
 						/>
@@ -174,6 +158,7 @@ export class SettingsComponent extends BaseRoutedComponent<IMainRoutedProps> {
 						index={2}
 					>
 						<PrintSettings
+							language={language}
 							settings={settings.printSettings}
 							onChange={onPrintSettingsChange}
 						/>
@@ -183,12 +168,14 @@ export class SettingsComponent extends BaseRoutedComponent<IMainRoutedProps> {
 						index={3}
 					>
 						<DesignSettings
+							language={language}
 							titleFrontPage={settings.designSettings.titleFrontPage}
-							size={settings.designSettings.size}
+							// size={settings.designSettings.size}
 							background={settings.designSettings.background}
 							backgroundToolbar={settings.designSettings.backgroundToolbar}
 							backgroundGroupName={settings.designSettings.backgroundGroupName}
 							backgroundFileCard={settings.designSettings.backgroundFileCard}
+							iconColor={settings.designSettings.iconColor}
 							onChange={onDesignSettingsChange}
 						/>
 					</TabPanel>
@@ -197,55 +184,12 @@ export class SettingsComponent extends BaseRoutedComponent<IMainRoutedProps> {
 						index={4}
 					>
 						<ServerSettings
+							language={language}
 							port={settings.serverSettings.port}
 							onChange={onServerSettingsChange}
 						/>
 					</TabPanel>
 				</AppBar>
-				{/* <OneLine>
-					<Tooltip
-						title={SettingsLocalization.pathAddButtonTitle}
-					>
-						<IconButton
-							size='small'
-							onClick={this.controller.onAddPath}
-						>
-							<PlaylistAdd />
-						</IconButton>
-					</Tooltip>
-					<InputLabel>
-						{SettingsLocalization.pathSource}
-					</InputLabel>
-				</OneLine> */}
-				{/* <PathSelector
-					label={SettingsLocalization.pathSource}
-					path={this.store.settings.pathSource}
-					onChange={this.controller.onChange}
-				/>
-				<TextField
-					label={}
-					value={}
-					onChange={}
-					InputProps={{
-						startAdornment: (
-							<InputAdornment position='start'>
-								<Folder />
-							</InputAdornment>
-						),
-						endAdornment: (
-							<InputAdornment position='end'>
-								<IconButton
-									size='small'
-								>
-									<MoreHoriz />
-								</IconButton>
-							</InputAdornment>
-						)
-					}}
-				/> */}
-				{/* <Link to='/'>
-					{SettingsLocalization.cancel}
-				</Link> */}
 			</div>
 		);
 	}
@@ -264,11 +208,5 @@ export class SettingsComponent extends BaseRoutedComponent<IMainRoutedProps> {
 	/** zzz */
 	private readonly onTabChange = (_event: React.ChangeEvent<unknown>, newValue: number): void => {
 		this.store.tabSelected = newValue;
-	};
-
-	/** zzz */
-	private readonly onFilesPatternChange = (event: ITextFieldChangeEventProps): void => {
-		const { value } = event.target;
-		this.store.settings.filesPattern = value;
 	};
 }

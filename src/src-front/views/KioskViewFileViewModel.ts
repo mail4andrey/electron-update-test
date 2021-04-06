@@ -21,7 +21,7 @@ export class KioskViewFileViewModel {
 	public state?: KioskItemStateEnum = KioskItemStateEnum.Initializing;
 
 	@observable
-	public isSelected?: boolean;
+	public isSelected = false;
 
 	/** Средний кадр видео в base64 */
 	public middleImage?: PrintSendingItemModel;

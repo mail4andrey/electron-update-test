@@ -11,7 +11,8 @@ import './content/style/index.css';
 
 import { Loader } from '../elements/Loader';
 import { SettingsProxy } from '../helpers/SettingsProxy';
-import { DesignSettingsModel } from '../settings/DesignSettingsModel';
+
+import { DesignSettingsModel } from './models/FilesModel';
 
 @observer
 /** Приложение */
@@ -74,7 +75,8 @@ export class ApplicationFront extends React.PureComponent {
 						backgroundToolbar={this.settings?.backgroundToolbar}
 						backgroundGroupName={this.settings?.backgroundGroupName}
 						backgroundFileCard={this.settings?.backgroundFileCard}
-						size={this.settings?.size}
+						iconColor={this.settings?.iconColor}
+						// size={this.settings?.size}
 					/>
 				</SnackbarProvider>
 			</div>

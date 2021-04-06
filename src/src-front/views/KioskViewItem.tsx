@@ -2,28 +2,32 @@ import { observer } from 'mobx-react';
 import React from 'react';
 
 
+import { DesignSizeEnum } from './DesignSizeEnum';
 import { KioskItemStateEnum } from './KioskItemStateEnum';
 import { KioskViewFileViewModel } from './KioskViewFileViewModel';
 import { KioskViewItemEventProps } from './KioskViewItemEventProps';
+import { LanguageEnum } from './LanguageEnum';
 import { VideoItemSizeEnum } from './SizeEnum';
 
 import { Checkbox } from '../../elements/Checkbox';
 import { Grid } from '../../elements/Grid';
 import { IconButton } from '../../elements/IconButton';
-import { Mail, Print, PrintTwoTone } from '../../elements/Icons';
+import { CheckBox, CheckBoxOutlineBlank, Mail, Print, PrintTwoTone } from '../../elements/Icons';
 import { OneLine } from '../../elements/ommons/OneLine';
 import { RightContainer } from '../../elements/ommons/RightContainer';
 import { Skeleton } from '../../elements/Skeleton';
 import { Tooltip } from '../../elements/Tooltip';
-import { DesignSizeEnum } from '../../settings/DesignSettingsModel';
 import { PrintSendingItemModel } from '../../settings/PrintSendingItemModel';
 import { UrlHelper } from '../helpers/UrlHelper';
 import { KioskLocalization } from '../localization/KioskLocalization';
 
 /** */
 export interface KioskViewItemProps {
-	/**  */
+	language?: LanguageEnum;
+	/** */
 	backgroundFileCard?: string;
+	/** */
+	iconColor?: string;
 
 	/** Видеофайл */
 	file: KioskViewFileViewModel;
@@ -85,7 +89,7 @@ export class KioskViewItem extends React.PureComponent<KioskViewItemProps> {
 
 	/** Отображение */
 	public render(): React.ReactNode {
-		const { file, size, buttonSize } = this.props;
+		const { file, size, buttonSize, iconColor, language } = this.props;
 		if (!file.state
 			|| file.state === KioskItemStateEnum.Hide) {
 			return null;
@@ -100,40 +104,61 @@ export class KioskViewItem extends React.PureComponent<KioskViewItemProps> {
 				aria-label={`send ${file.filename}`}
 				className='icon'
 				onClick={this.onSendClick}
-				size={buttonSize}
 			>
-				<Mail />
+				<Mail
+					htmlColor={iconColor}
+					fontSize={buttonSize}
+				/>
 			</IconButton>
 		);
 		const printIcons = (
 			<>
-				<Tooltip title={KioskLocalization.printMiddleFrame}>
+				<Tooltip title={KioskLocalization.printMiddleFrame(language)}>
 					<IconButton
 						aria-label={`print ${file.filename}` }
 						className='icon'
 						onClick={this.onPrintMiddleFrameClick}
-						size={buttonSize}
 					>
-						<Print />
+						<Print
+							htmlColor={iconColor}
+							fontSize={buttonSize}
+						/>
 					</IconButton></Tooltip>
-				<Tooltip title={KioskLocalization.printCurrentFrame}>
+				<Tooltip title={KioskLocalization.printCurrentFrame(language)}>
 					<IconButton
 						aria-label={`print ${file.filename}` }
 						className='icon'
 						onClick={this.onPrintCurrentFrameClick}
-						size={buttonSize}
 					>
-						<PrintTwoTone />
+						<PrintTwoTone
+							htmlColor={iconColor}
+							fontSize={buttonSize}
+						/>
 					</IconButton>
 				</Tooltip>
 			</>
+		);
+		const checkBoxIcon = (
+			<CheckBoxOutlineBlank
+				htmlColor={iconColor}
+				fontSize={buttonSize}
+			/>
+		);
+		const checkBoxCheckedIcon = (
+			<CheckBox
+				htmlColor={iconColor}
+				fontSize={buttonSize}
+			/>
 		);
 		const checkBox = (
 			<Checkbox
 				checked={file.isSelected}
 				onChange={this.onSelect}
-				color='secondary'
-				size={buttonSize}
+				// size={buttonSize}
+				// style={{ color: iconColor }}
+				icon={checkBoxIcon}
+				checkedIcon={checkBoxCheckedIcon}
+				// color='secondary'
 			/>
 		);
 
@@ -216,7 +241,7 @@ export class KioskViewItem extends React.PureComponent<KioskViewItemProps> {
 			>
 				<div
 					style={{ background }}
-					className='grid-tile background-image-top-gray'
+					className='grid-tile background-image-top-gray border-radius-3px'
 				>
 					{topBlock}
 					<div className='0video 0padding-12px position-relative'>

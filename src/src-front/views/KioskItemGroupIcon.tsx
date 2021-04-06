@@ -5,13 +5,16 @@ import { GroupByEnum } from './GroupByEnum';
 
 import { IconButton } from '../../elements/IconButton';
 import { PhotoLibrary, Image } from '../../elements/Icons';
+import { DesignSizeEnum } from './DesignSizeEnum';
 
 
 /**  */
 export interface IKioskItemGroupIcon {
-	/**  */
+	buttonSize?: DesignSizeEnum;
+	iconColor?: string;
+	/** */
 	value?: GroupByEnum;
-	/**  */
+	/** */
 	onClick: (event: React.MouseEvent<Element, MouseEvent>, value: GroupByEnum) => void;
 }
 /** Кнопка */
@@ -21,7 +24,7 @@ export class KioskItemGroupIcon extends React.PureComponent<IKioskItemGroupIcon>
 		const icon = this.getIcon(this.props.value);
 		return (
 			<IconButton
-				size='small'
+				// size='small'
 				onClick={this.onClick}
 			>
 				{icon}
@@ -33,12 +36,20 @@ export class KioskItemGroupIcon extends React.PureComponent<IKioskItemGroupIcon>
 	private getIcon(value?: GroupByEnum): React.ReactNode {
 		switch (value) {
 			case GroupByEnum.none:
-				return <Image />;
+				return (
+					<Image
+						htmlColor={this.props.iconColor}
+						fontSize={this.props.buttonSize}
+					/>
+				);
 			case GroupByEnum.groupByDir:
-				return <PhotoLibrary />;
-
 			default:
-				return <PhotoLibrary />;
+				return (
+					<PhotoLibrary
+						htmlColor={this.props.iconColor}
+						fontSize={this.props.buttonSize}
+					/>
+				);
 		}
 	}
 

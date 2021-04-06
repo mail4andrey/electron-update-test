@@ -6,9 +6,12 @@ import { VideoItemSizeEnum } from './SizeEnum';
 
 import { IconButton } from '../../elements/IconButton';
 import { ViewCarousel, ViewComfy, ViewModule } from '../../elements/Icons';
+import { DesignSizeEnum } from './DesignSizeEnum';
 
 /**  */
 export interface IKioskItemSizeIcon {
+	buttonSize?: DesignSizeEnum;
+	iconColor?: string;
 	/**  */
 	currentSize?: VideoItemSizeEnum;
 	/**  */
@@ -21,7 +24,7 @@ export class KioskItemSizeIcon extends React.PureComponent<IKioskItemSizeIcon> {
 		const icon = this.getIconCurrentSize(this.props.currentSize);
 		return (
 			<IconButton
-				size='small'
+				// size='small'
 				onClick={this.onClick}
 			>
 				{icon}
@@ -32,17 +35,36 @@ export class KioskItemSizeIcon extends React.PureComponent<IKioskItemSizeIcon> {
 	/** */
 	private getIconCurrentSize(currentSize?: VideoItemSizeEnum): React.ReactNode {
 		switch (currentSize) {
-			case VideoItemSizeEnum.small:
-				return <ViewComfy/>;
 			case VideoItemSizeEnum.medium:
-				return <ViewModule/>;
+				return (
+					<ViewModule
+						htmlColor={this.props.iconColor}
+						fontSize={this.props.buttonSize}
+					/>
+				);
 			case VideoItemSizeEnum.column:
-				return <ViewStream/>;
+				return (
+					<ViewStream
+						htmlColor={this.props.iconColor}
+						fontSize={this.props.buttonSize}
+					/>
+				);
 			case VideoItemSizeEnum.carousel:
-				return <ViewCarousel/>;
+				return (
+					<ViewCarousel
+						htmlColor={this.props.iconColor}
+						fontSize={this.props.buttonSize}
+					/>
+				);
 
+			case VideoItemSizeEnum.small:
 			default:
-				return <ViewComfy/>;
+				return (
+					<ViewComfy
+						htmlColor={this.props.iconColor}
+						fontSize={this.props.buttonSize}
+					/>
+				);
 		}
 	}
 

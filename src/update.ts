@@ -1,8 +1,6 @@
 import log from 'electron-log';
 
-/**
- *
- */
+/** */
 export function setupUpdates(): void {
 	try {
 		require('update-electron-app')({

@@ -1,12 +1,14 @@
+import { DesignSizeEnum } from './DesignSizeEnum';
 import { GroupByEnum } from './GroupByEnum';
+import { LanguageEnum } from './LanguageEnum';
 import { VideoItemSizeEnum } from './SizeEnum';
 import { SortOrderEnum } from './SortOrderEnum';
 
-import { LanguageEnum } from '../models/LanguageEnum';
 
 export interface KioskSettingsLocalStorage {
 	groupBy?: GroupByEnum;
 	size?: VideoItemSizeEnum;
 	sortOrder?: SortOrderEnum;
 	language?: LanguageEnum;
+	iconSize?: DesignSizeEnum;
 }

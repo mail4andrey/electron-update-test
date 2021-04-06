@@ -1,11 +1,12 @@
 import { observable } from 'mobx';
 
+import { DesignSizeEnum } from './DesignSizeEnum';
 import { GroupByEnum } from './GroupByEnum';
 import { KioskViewFilesViewModel } from './KioskViewFileViewModel';
+import { LanguageEnum } from './LanguageEnum';
 import { VideoItemSizeEnum } from './SizeEnum';
 import { SortOrderEnum } from './SortOrderEnum';
 
-import { LanguageEnum } from '../models/LanguageEnum';
 
 /** */
 export class KioskViewStore {
@@ -25,6 +26,9 @@ export class KioskViewStore {
 	public groupBy?: GroupByEnum;
 
 	@observable
+	public iconSize?: DesignSizeEnum;
+
+	@observable
 	public sortOrder?: SortOrderEnum;
 
 	@observable
@@ -36,6 +40,7 @@ export class KioskViewStore {
 	@observable
 	public currentItemSize? = VideoItemSizeEnum.small;
 
-	public email?: string;
+	@observable
+	public email = '';
 }
 

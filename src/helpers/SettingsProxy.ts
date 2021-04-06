@@ -1,5 +1,5 @@
-import { DesignSettingsModel } from '../settings/DesignSettingsModel';
 import { UrlHelper } from '../src-front/helpers/UrlHelper';
+import { DesignSettingsModel } from '../src-front/models/FilesModel';
 
 
 /** */

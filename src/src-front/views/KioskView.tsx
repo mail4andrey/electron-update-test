@@ -3,16 +3,20 @@ import { ProviderContext, withSnackbar } from 'notistack';
 import React from 'react';
 import { inject, provider } from 'react-ioc';
 
+import { DesignSizeEnum } from './DesignSizeEnum';
 import { GroupByEnum } from './GroupByEnum';
+import { KioskIconsSizeIcon } from './KioskIconsSizeIcon';
 import { KioskItemGroupIcon } from './KioskItemGroupIcon';
 import { KioskItemLanguageIcon } from './KioskItemLanguageIcon';
 import { KioskItemSizeIcon } from './KioskItemSizeIcon';
 import { KioskItemSortOrderIcon } from './KioskItemSortOrderIcon';
 import { KioskItemStateEnum } from './KioskItemStateEnum';
+import { KioskViewCarouselItem } from './KioskViewCarouselItem';
 import { KioskViewController } from './KioskViewController';
 import { KioskViewFilesViewModel, KioskViewFileViewModel } from './KioskViewFileViewModel';
 import { KioskViewGroupItems } from './KioskViewGroupItems';
 import { KioskViewStore } from './KioskViewStore';
+import { LanguageEnum } from './LanguageEnum';
 import { VideoItemSizeEnum } from './SizeEnum';
 import { SortOrderEnum } from './SortOrderEnum';
 
@@ -28,7 +32,6 @@ import { TextField } from '../../elements/TextField';
 import { Toolbar } from '../../elements/Toolbar';
 import { Tooltip } from '../../elements/Tooltip';
 import { Typography } from '../../elements/Typography';
-import { DesignSizeEnum } from '../../settings/DesignSettingsModel';
 import { PrintSendingItemModel } from '../../settings/PrintSendingItemModel';
 import { KioskLocalization } from '../localization/KioskLocalization';
 
@@ -44,7 +47,9 @@ export interface KioskViewProps extends ProviderContext {
 
 	backgroundFileCard?: string;
 
-	size?: DesignSizeEnum;
+	iconColor?: string;
+
+	// size?: DesignSizeEnum;
 }
 
 /**
@@ -71,97 +76,33 @@ class KioskView extends React.PureComponent<KioskViewProps> {
 		await this.controller.dispose();
 	}
 
-
-	/** */
-	// public email = { ...this.props.email ?? new EmailSettingsModel() };
-
 	/** Отображение */
 	public render(): React.ReactNode {
-		const { groupsFiles, loaded, email, currentItemSize, sortOrder, language, groupBy } = this.store;
-		const { size } = this.props;
-		const items = this.getItems(groupsFiles, size, currentItemSize, sortOrder, groupBy);
+		const { groupsFiles, loaded, email, currentItemSize, sortOrder, language, groupBy, iconSize } = this.store;
+		const { iconColor } = this.props;
+
+
+		const items = this.getItems(groupsFiles, iconSize, currentItemSize, sortOrder, groupBy, language);
 
 		const fileSizes = this.getFilesSize(groupsFiles);
-		// const filesGrouped = ArrayHelper.groupBy(files, (file: KioskViewFileViewModel) => file.dirname!);
-		// const filesView: JSX.Element[] = [];
-		// const direction = currentItemSize === VideoItemSizeEnum.column
-		// 	? 'column'
-		// 	: 'row';
-		// for (const filesInGroup of filesGrouped) {
-		// 	const [key, filesInGroupArray] = filesInGroup;
-		// 	// filesInGroup[0]
-		// 	// }
-		// 	// filesGrouped.forEach((filesInGroup: KioskViewFileViewModel[], key: string) => {
-		// 	// const filesView = filesGrouped.map((filesInGroup: KioskViewFileViewModel[]) => {
-		// 	const filesInGroupArraySorted = filesInGroupArray.sort((a: KioskViewFileViewModel, b: KioskViewFileViewModel) => a.filename!.localeCompare(b.filename!) * sortMultiplexer);
-		// 	const filesInGroupView = filesInGroupArraySorted.map((file: KioskViewFileViewModel) => (
-		// 		// <Grid
-		// 		// 	item={true}
-		// 		// >
-		// 		<KioskViewItem
-		// 			key={file.fullpath}
-		// 			file={file}
-		// 			size={currentItemSize}
-		// 			buttonSize={size}
-		// 			onSelect={this.controller.onSelectItem}
-		// 			onSendClick={this.onSendByEmailItemClick}
-		// 			onPrintClick={this.onPrintItemClick}
-		// 		/>
-		// 		// </Grid>
-		// 	));
-		// 	const filesGroupView = (
-		// 		<Grid
-		// 			key={key}
-		// 			container={true}
-		// 			spacing={1}
-		// 			alignContent='stretch'
-		// 			direction='column'
-		// 		>
-		// 			<Grid
-		// 				item={true}
-		// 			>
-		// 				<Typography
-		// 					align='center'
-		// 				>
-		// 					{key}
-		// 				</Typography>
-		// 			</Grid>
-		// 			<Grid
-		// 				container={true}
-		// 				spacing={1}
-		// 				alignItems='center'
-		// 				justify='space-evenly'
-		// 				direction={direction}
-		// 			>
-		// 				{filesInGroupView}
-		// 			</Grid>
-		// 		</Grid>
-		// 	);
-		// 	filesView.push(filesGroupView);
-		// }
 
 		const allFiles = this.store.groupsFiles
 			.flatMap((file: KioskViewFilesViewModel) => file.files);
 
-		const anyFileVisible = allFiles
-			.some((file: KioskViewFileViewModel) => file.state === KioskItemStateEnum.Show || file.state === KioskItemStateEnum.Loading);
+		// const anyFileVisible = allFiles
+		// 	.some((file: KioskViewFileViewModel) => file.state === KioskItemStateEnum.Show || file.state === KioskItemStateEnum.Loading);
 
-		const allFileHidden = allFiles
-			.every((file: KioskViewFileViewModel) => file.state === KioskItemStateEnum.Hide);
-
-		const loader = !loaded || allFiles.length > 0 && !anyFileVisible && !allFileHidden
-			? <Loader verticalCentered={true} />
-			: null;
+		// const allFileHidden = allFiles
+		// 	.every((file: KioskViewFileViewModel) => file.state === KioskItemStateEnum.Hide);
 
 		const filesSelected = allFiles
 			.filter((file: KioskViewFileViewModel) => file.isSelected).length;
 		const emailIcon = (
 			<InputAdornment position='start'>
-				<Tooltip
-					title={KioskLocalization.sendEmailTo}
-				>
-					<Mail />
-				</Tooltip>
+				<Mail
+					htmlColor={iconColor}
+					fontSize={iconSize}
+				/>
 			</InputAdornment>
 		);
 		const sendButton = (
@@ -171,17 +112,19 @@ class KioskView extends React.PureComponent<KioskViewProps> {
 					{fileSizes}
 				</Typography>
 				<Tooltip
-					title={KioskLocalization.sendEmail}
+					title={KioskLocalization.sendEmail(language)}
 				>
 					<Badge
 						badgeContent={filesSelected}
 						color='secondary'
 					>
 						<IconButton
-							size={size}
 							onClick={this.onSendByEmailClick}
 						>
-							<Send />
+							<Send
+								htmlColor={iconColor}
+								fontSize={iconSize}
+							/>
 						</IconButton>
 					</Badge>
 				</Tooltip>
@@ -190,17 +133,19 @@ class KioskView extends React.PureComponent<KioskViewProps> {
 
 		const printButton = (
 			<Tooltip
-				title={KioskLocalization.print}
+				title={KioskLocalization.print(language)}
 			>
 				<Badge
 					badgeContent={filesSelected}
 					color='secondary'
 				>
 					<IconButton
-						size={size}
 						onClick={this.onPrintClick}
 					>
-						<Print />
+						<Print
+							htmlColor={iconColor}
+							fontSize={iconSize}
+						/>
 					</IconButton>
 				</Badge>
 			</Tooltip>
@@ -226,7 +171,7 @@ class KioskView extends React.PureComponent<KioskViewProps> {
 					color='transparent'
 				>
 					<div
-						className='padding-top-6px background-image-bottom-gray'
+						className='padding-top-6px background-image-bottom-gray height65px'
 						style={{ background }}
 					>
 						<Toolbar
@@ -238,6 +183,8 @@ class KioskView extends React.PureComponent<KioskViewProps> {
 									value={email}
 									onChange={this.controller.onChangeEmail}
 									fullWidth={true}
+									placeholder={KioskLocalization.sendEmailTo(language)}
+									autoComplete='email'
 									InputProps={{
 										startAdornment: emailIcon,
 										endAdornment: sendButton
@@ -248,24 +195,42 @@ class KioskView extends React.PureComponent<KioskViewProps> {
 									className='padding-left-32px'
 								>
 									<OneLine>
-										<OneLine className='padding-right-12px'>
+										<OneLine
+											className='padding-right-12px'
+										>
 											<KioskItemSortOrderIcon
+												buttonSize={iconSize}
+												iconColor={iconColor}
 												sortOrder={sortOrder}
 												onClick={this.controller.onSortOrderChange}
 											/>
-											<KioskItemSizeIcon
-												currentSize={currentItemSize}
-												onClick={this.controller.onItemSizeChange}
-											/>
 											<KioskItemGroupIcon
+												buttonSize={iconSize}
+												iconColor={iconColor}
 												value={groupBy}
 												onClick={this.controller.onGroupByChange}
 											/>
+											<KioskItemSizeIcon
+												buttonSize={iconSize}
+												iconColor={iconColor}
+												currentSize={currentItemSize}
+												onClick={this.controller.onItemSizeChange}
+											/>
 										</OneLine>
-										<KioskItemLanguageIcon
-											language={language}
-											onClick={this.controller.onLanguageChange}
-										/>
+										<OneLine>
+											<KioskItemLanguageIcon
+												buttonSize={iconSize}
+												iconColor={iconColor}
+												language={language}
+												onClick={this.controller.onLanguageChange}
+											/>
+											<KioskIconsSizeIcon
+												buttonSize={iconSize}
+												iconColor={iconColor}
+												value={iconSize}
+												onClick={this.controller.onSizeChange}
+											/>
+										</OneLine>
 									</OneLine>
 								</RightContainer>
 							</OneLine>
@@ -288,7 +253,6 @@ class KioskView extends React.PureComponent<KioskViewProps> {
 				{/* <div
 					className='padding-12px'
 				> */}
-				{loader}
 				{items}
 				{/* </div> */}
 				{/* </Grid> */}
@@ -314,24 +278,24 @@ class KioskView extends React.PureComponent<KioskViewProps> {
 
 	/** zz */
 	private readonly onSendByEmail = async (filesSelected: KioskViewFileViewModel[]): Promise<void> => {
-		const { email } = this.store;
+		const { email, language } = this.store;
 		if (!email || email.length === 0) {
-			this.props.enqueueSnackbar(KioskLocalization.sendEmailToError, { variant: 'error' });
+			this.props.enqueueSnackbar(KioskLocalization.sendEmailToError(language), { variant: 'error' });
 			return;
 		}
 
 		if (filesSelected.length <= 0) {
-			this.props.enqueueSnackbar(KioskLocalization.selectedFilesError, { variant: 'error' });
+			this.props.enqueueSnackbar(KioskLocalization.selectedFilesError(language), { variant: 'error' });
 			return;
 		}
 
 		try {
-			this.props.enqueueSnackbar(KioskLocalization.notificationSendingByEmail(filesSelected.length), { variant: 'info' });
+			this.props.enqueueSnackbar(KioskLocalization.notificationSendingByEmail(filesSelected.length, language), { variant: 'info' });
 			await this.controller.onSendByEmail(email, filesSelected);
-			this.props.enqueueSnackbar(KioskLocalization.notificationSendedByEmail(filesSelected.length), { variant: 'success' });
+			this.props.enqueueSnackbar(KioskLocalization.notificationSendedByEmail(filesSelected.length, language), { variant: 'success' });
 		} catch (error) {
 			console.error(error);
-			const message = KioskLocalization.notificationSendedByEmailError(filesSelected.length);
+			const message = KioskLocalization.notificationSendedByEmailError(filesSelected.length, language);
 			this.props.enqueueSnackbar(message, { variant: 'error' });
 		}
 	};
@@ -356,39 +320,85 @@ class KioskView extends React.PureComponent<KioskViewProps> {
 
 	/** zz */
 	private readonly onPrint = async (filesImageBase64Data: PrintSendingItemModel[]): Promise<void> => {
+		const { language } = this.store;
 		if (filesImageBase64Data.length <= 0) {
-			this.props.enqueueSnackbar(KioskLocalization.selectedFilesError, { variant: 'error' });
+			this.props.enqueueSnackbar(KioskLocalization.selectedFilesError(language), { variant: 'error' });
 			return;
 		}
 
 		try {
-			this.props.enqueueSnackbar(KioskLocalization.notificationPrinting(filesImageBase64Data.length), { variant: 'info' });
+			this.props.enqueueSnackbar(KioskLocalization.notificationPrinting(filesImageBase64Data.length, language), { variant: 'info' });
 			await this.controller.sendFilesToPrint(filesImageBase64Data);
-			this.props.enqueueSnackbar(KioskLocalization.notificationPrinted(filesImageBase64Data.length), { variant: 'success' });
+			this.props.enqueueSnackbar(KioskLocalization.notificationPrinted(filesImageBase64Data.length, language), { variant: 'success' });
 		} catch (error) {
 			console.error(error);
-			const message = KioskLocalization.notificationPrintedError(filesImageBase64Data.length);
+			const message = KioskLocalization.notificationPrintedError(filesImageBase64Data.length, language);
 			this.props.enqueueSnackbar(message, { variant: 'error' });
 			// TransitionComponent: Slide,
 		}
 	};
 
 	/** */
-	private getItems(groupsFiles: KioskViewFilesViewModel[], size?: DesignSizeEnum, currentItemSize?: VideoItemSizeEnum, sortOrder?: SortOrderEnum, groupBy?: GroupByEnum) {
-		if (groupBy === GroupByEnum.none) {
-			const files = groupsFiles.flatMap((groupFiles: KioskViewFilesViewModel) => groupFiles.files);
-
+	private getItems(
+		groupsFiles: KioskViewFilesViewModel[],
+		iconSize?: DesignSizeEnum,
+		currentItemSize?: VideoItemSizeEnum,
+		sortOrder?: SortOrderEnum,
+		groupBy?: GroupByEnum,
+		language?: LanguageEnum
+	): React.ReactNode {
+		if (currentItemSize === VideoItemSizeEnum.carousel) {
 			return (
-				<KioskViewGroupItems
-					size={size}
-					files={files}
-					currentItemSize={currentItemSize}
+				<KioskViewCarouselItem
+					language={language}
+					groupBy={groupBy}
+					buttonSize={iconSize}
+					groups={groupsFiles}
+					// currentItemSize={currentItemSize}
 					sortOrder={sortOrder}
 					onPrintItemClick={this.onPrintItemClick}
 					onSendByEmailItemClick={this.onSendByEmailItemClick}
 					onSelectItemClick={this.controller.onSelectItem}
 					backgroundGroupName={this.props.backgroundGroupName}
-					backgroundFileCard={this.props.backgroundFileCard} />
+					backgroundFileCard={this.props.backgroundFileCard}
+					iconColor={this.props.iconColor}
+				/>
+			);
+		}
+
+		const allFiles = this.store.groupsFiles
+			.flatMap((file: KioskViewFilesViewModel) => file.files);
+
+		const anyFileVisible = allFiles
+			.some((file: KioskViewFileViewModel) => file.state === KioskItemStateEnum.Show || file.state === KioskItemStateEnum.Loading);
+
+		const allFileHidden = allFiles
+			.every((file: KioskViewFileViewModel) => file.state === KioskItemStateEnum.Hide);
+
+		const loader = !this.store.loaded || allFiles.length > 0 && !anyFileVisible && !allFileHidden
+			? <Loader verticalCentered={true} />
+			: null;
+
+		if (groupBy === GroupByEnum.none) {
+			const files = groupsFiles.flatMap((groupFiles: KioskViewFilesViewModel) => groupFiles.files);
+
+			return (
+				<>
+					{loader}
+					<KioskViewGroupItems
+						language={language}
+						size={iconSize}
+						files={files}
+						currentItemSize={currentItemSize}
+						sortOrder={sortOrder}
+						onPrintItemClick={this.onPrintItemClick}
+						onSendByEmailItemClick={this.onSendByEmailItemClick}
+						onSelectItemClick={this.controller.onSelectItem}
+						backgroundGroupName={this.props.backgroundGroupName}
+						backgroundFileCard={this.props.backgroundFileCard}
+						iconColor={this.props.iconColor}
+					/>
+				</>
 			);
 		}
 
@@ -397,10 +407,11 @@ class KioskView extends React.PureComponent<KioskViewProps> {
 				const findIndex = array.findIndex((item: KioskViewFilesViewModel|undefined) => item?.dirname === value?.dirname);
 				return findIndex === index;
 			});
-		return uniqueGroupsFiles.map((groupFiles: KioskViewFilesViewModel, index: number) => (
+		const groupsElemnts = uniqueGroupsFiles.map((groupFiles: KioskViewFilesViewModel, index: number) => (
 			<KioskViewGroupItems
 				key={index}
-				size={size}
+				language={language}
+				size={iconSize}
 				groupname={groupFiles.dirname}
 				files={groupFiles.files}
 				currentItemSize={currentItemSize}
@@ -409,8 +420,17 @@ class KioskView extends React.PureComponent<KioskViewProps> {
 				onSendByEmailItemClick={this.onSendByEmailItemClick}
 				onSelectItemClick={this.controller.onSelectItem}
 				backgroundGroupName={this.props.backgroundGroupName}
-				backgroundFileCard={this.props.backgroundFileCard} />
+				backgroundFileCard={this.props.backgroundFileCard}
+				iconColor={this.props.iconColor}
+			/>
 		));
+
+		return (
+			<>
+				{loader}
+				{groupsElemnts}
+			</>
+		);
 	}
 
 	/** */

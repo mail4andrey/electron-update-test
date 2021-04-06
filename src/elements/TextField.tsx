@@ -30,6 +30,7 @@ export interface ITextFieldProps {
 	value?: React.ReactNode;
 	defaultValue?: React.ReactNode;
 	placeholder?: string;
+	autoComplete?: string;
 	InputProps?: object;
 	fullWidth?: boolean;
 

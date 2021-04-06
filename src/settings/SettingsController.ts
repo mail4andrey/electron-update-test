@@ -1,8 +1,8 @@
 import { ITextFieldChangeEventProps } from 'elements/TextField';
+import * as LocalStorage from 'local-storage';
 import { inject } from 'react-ioc';
 
 
-import { DesignSettingsModel } from './DesignSettingsModel';
 import { EmailSettingsModel } from './EmailSettingsModel';
 import { PrintSettingsModel } from './PrintSettingsModel';
 import { ServerSettingsModel } from './ServerSettingsModel';
@@ -13,6 +13,8 @@ import { SettingsViewModel } from './SettingsViewModel';
 import { ApplicationSettingsController } from '../application/ApplicationSettingsController';
 import { ISelectChangeEventProps } from '../elements/Select';
 import { MapperHelper } from '../helpers/MapperHelper';
+import { DesignSettingsModel } from '../src-front/models/FilesModel';
+import { KioskSettingsLocalStorage } from '../src-front/views/KioskSettingsLocalStorage';
 
 
 /** */
@@ -24,6 +26,9 @@ export class SettingsController {
 
 	/** */
 	public loadSettings = (): void => {
+		const localSettings = LocalStorage.get<KioskSettingsLocalStorage>('local-settings') as KioskSettingsLocalStorage|undefined;
+		this.store.language = localSettings?.language;
+
 		const settings = this.settingsСontroller.loadDefaultSettings();
 		this.store.settings = MapperHelper.Map(settings, SettingsViewModel);
 	};
@@ -81,12 +86,13 @@ export class SettingsController {
 
 	/** */
 	public readonly onDesignSettingsChange = (_event: ISelectChangeEventProps | undefined, settings: DesignSettingsModel): void => {
-		this.store.settings.designSettings.titleFrontPage = settings.titleFrontPage;
-		this.store.settings.designSettings.background = settings.background;
-		this.store.settings.designSettings.backgroundToolbar = settings.backgroundToolbar;
-		this.store.settings.designSettings.backgroundGroupName = settings.backgroundGroupName;
-		this.store.settings.designSettings.backgroundFileCard = settings.backgroundFileCard;
-		this.store.settings.designSettings.size = settings.size;
+		this.store.settings.designSettings.titleFrontPage = settings.titleFrontPage ?? '';
+		this.store.settings.designSettings.background = settings.background ?? 'white';
+		this.store.settings.designSettings.backgroundToolbar = settings.backgroundToolbar ?? 'gray';
+		this.store.settings.designSettings.backgroundGroupName = settings.backgroundGroupName ?? 'gray';
+		this.store.settings.designSettings.backgroundFileCard = settings.backgroundFileCard ?? 'gray';
+		this.store.settings.designSettings.iconColor = settings.iconColor ?? 'gray';
+		// this.store.settings.designSettings.size = settings.size;
 	};
 
 	/** */
@@ -96,6 +102,9 @@ export class SettingsController {
 
 	/** */
 	public readonly onSaveClick = (): void => {
+		const pathSources = this.store.settings.pathSources ?? [];
+		this.store.settings.pathSources = pathSources
+			.filter((value: string, index: number, array: string[]) => array.indexOf(value) === index);
 		const settings = MapperHelper.Map(this.store.settings, SettingsModel);
 		this.settingsСontroller.saveDefaultSettings(settings);
 	};

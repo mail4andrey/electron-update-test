@@ -1,53 +1,79 @@
+import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import React from 'react';
 
 
+import { DesignSizeEnum } from './DesignSizeEnum';
+import { GroupByEnum } from './GroupByEnum';
 import { KioskItemStateEnum } from './KioskItemStateEnum';
-import { KioskViewFileViewModel } from './KioskViewFileViewModel';
+import { KioskViewFilesViewModel, KioskViewFileViewModel } from './KioskViewFileViewModel';
 import { KioskViewItemEventProps } from './KioskViewItemEventProps';
+import { LanguageEnum } from './LanguageEnum';
 import { VideoItemSizeEnum } from './SizeEnum';
+import { SortOrderEnum } from './SortOrderEnum';
 
 import { Checkbox } from '../../elements/Checkbox';
 import { Grid } from '../../elements/Grid';
 import { IconButton } from '../../elements/IconButton';
-import { Mail, Print, PrintTwoTone } from '../../elements/Icons';
+import { CheckBox, CheckBoxOutlineBlank, KeyboardArrowLeft, KeyboardArrowRight, Mail, Print, PrintTwoTone } from '../../elements/Icons';
+import { MobileStepper } from '../../elements/MobileStepper';
 import { OneLine } from '../../elements/ommons/OneLine';
 import { RightContainer } from '../../elements/ommons/RightContainer';
 import { Skeleton } from '../../elements/Skeleton';
 import { Tooltip } from '../../elements/Tooltip';
-import { DesignSizeEnum } from '../../settings/DesignSettingsModel';
+import { Typography } from '../../elements/Typography';
 import { PrintSendingItemModel } from '../../settings/PrintSendingItemModel';
 import { UrlHelper } from '../helpers/UrlHelper';
 import { KioskLocalization } from '../localization/KioskLocalization';
 
+
 /** */
 export interface KioskViewCarouselItemProps {
-	/**  */
+	language?: LanguageEnum;
+	/** */
 	backgroundFileCard?: string;
+	/** */
+	backgroundGroupName?: string;
+
+	/** */
+	iconColor?: string;
 
 	/** Видеофайл */
-	file: KioskViewFileViewModel;
+	groups: KioskViewFilesViewModel[];
+
+	sortOrder?: SortOrderEnum;
 
 	/** Размер видео */
-	size?: VideoItemSizeEnum;
+	// iconSize?: VideoItemSizeEnum;
 
 	/** Размер видео */
 	buttonSize?: DesignSizeEnum;
+	groupBy?: GroupByEnum;
 
-	// email?: EmailSettingsModel;
+	onSelectItemClick?: (event: React.ChangeEvent<HTMLInputElement>, value: KioskViewItemEventProps) => void;
 
-	// onEmailTestSend?: (event: React.MouseEvent<Element, MouseEvent>) => void;
+	onPrintItemClick: (event: React.MouseEvent<Element, MouseEvent>, value?: PrintSendingItemModel) => Promise<void>;
 
-	// onChange?: (event: ITextFieldChangeEventProps, email: EmailSettingsModel) => void;
-	onSelect?: (event: React.ChangeEvent<HTMLInputElement>, value: KioskViewItemEventProps) => void;
-	onSendClick?: (event: React.MouseEvent<Element, MouseEvent>, value?: string) => void;
-	onPrintClick?: (event: React.MouseEvent<Element, MouseEvent>, value?: PrintSendingItemModel) => void;
+	onSendByEmailItemClick: (event: React.MouseEvent<Element, MouseEvent>, value?: string) => Promise<void>;
 }
 
 // @provider(KioskViewController, KioskViewStore)
 @observer
 /** */
 export class KioskViewCarouselItem extends React.PureComponent<KioskViewCarouselItemProps> {
+
+	@observable
+	/** */
+	private selectedGroup?: string;
+
+	@observable
+	/** */
+	private selectedFile?: string;
+
+	// @observable
+	// /** */
+	// private fileState = KioskItemStateEnum.Initializing;
+
 	/** Первое включение видео */
 	private firstPlay = true;
 
@@ -85,7 +111,91 @@ export class KioskViewCarouselItem extends React.PureComponent<KioskViewCarousel
 
 	/** Отображение */
 	public render(): React.ReactNode {
-		const { file, size, buttonSize } = this.props;
+		const { groups, buttonSize } = this.props;
+		const groupBy = this.props.groupBy ?? GroupByEnum.groupByDir;
+		const group = this.getGroup();
+		const groupStepper = this.getGroupStepper(groupBy, group);
+		const fileItem = this.getFileItem();
+
+		return (
+			<>
+				{groupStepper}
+				{fileItem}
+			</>
+		);
+	}
+
+	/** Отображение */
+	public getGroupStepper(groupBy: GroupByEnum, group?: KioskViewFilesViewModel): React.ReactNode {
+		const { buttonSize, iconColor } = this.props;
+		if (groupBy === GroupByEnum.none) {
+			return null;
+		}
+
+		// const group = this.getGroup();
+		const groupName = group?.dirname ?? '';
+		const groupNextButton = (
+			<IconButton
+				onClick={this.onGroupNextClick}
+			>
+				<KeyboardArrowRight
+					htmlColor={iconColor}
+					fontSize={buttonSize}
+				/>
+			</IconButton>
+		);
+		const groupBackButton = (
+			<IconButton
+				onClick={this.onGroupBackClick}
+			>
+				<KeyboardArrowLeft
+					htmlColor={iconColor}
+					fontSize={buttonSize}
+				/>
+			</IconButton>
+		);
+
+		const background = this.props.backgroundGroupName ?? 'gray';
+		return (
+			<div
+				className='stepper background-image-bottom-gray height60px'
+				style={{ background }}
+			>
+				{/* <MobileStepper
+					steps={groupSteps}
+					position='static'
+					variant='text'
+					activeStep={currentStep}
+					nextButton={groupNextButton}
+					backButton={groupBackButton}
+				/> */}
+				{groupBackButton}
+				<Typography
+					align='center'
+					variant='h6'
+					className='stepper-cut-text'
+				>
+					{groupName}
+				</Typography>
+				{groupNextButton}
+			</div>
+		);
+	}
+
+	/** Отображение */
+	public getFileItem(): React.ReactNode {
+		const { buttonSize, iconColor } = this.props;
+
+		const group = this.getGroup();
+		if (!group) {
+			return null;
+		}
+		const file = this.getFile(group);
+		if (!file) {
+			return null;
+		}
+		// const filenameShow = file.filename ?? '';
+
 		if (!file.state
 			|| file.state === KioskItemStateEnum.Hide) {
 			return null;
@@ -93,148 +203,360 @@ export class KioskViewCarouselItem extends React.PureComponent<KioskViewCarousel
 
 		const filename = encodeURI(file.fullpath ?? '');
 		const url = UrlHelper.getUrl(`file?name=${filename}`);
-		const widthSizeNumber = this.getSize(size);
-		const heightSizeNumber = this.getHeightSize(size);
-		const emailIcon = (
-			<IconButton
-				aria-label={`send ${file.filename}`}
-				className='icon'
-				onClick={this.onSendClick}
-				size={buttonSize}
+		const widthSizeNumber = 800;
+		const heightSizeNumber = 800;
+
+		const show = file.state === KioskItemStateEnum.Show;
+		const showSkeleton = file.state === KioskItemStateEnum.Loading;
+		const skeleton = this.getSkeleton(showSkeleton, widthSizeNumber, heightSizeNumber);
+		const image = this.getImage(show, widthSizeNumber, heightSizeNumber);
+		const video = this.getVideo(show, widthSizeNumber, heightSizeNumber, url);
+
+		const hideItem = file.state === KioskItemStateEnum.Initializing;
+		const background = this.props.backgroundFileCard ?? 'gray';
+
+		const fileStepper = this.getFileStepper();
+
+		return (
+			// <Grid
+			// 	item
+			// 	className={hideItemClass}
+			// >
+			<div
+				style={{ background }}
+				className='grid-tile background-image-top-gray'
 			>
-				<Mail />
+				{/* {file.state} */}
+				{fileStepper}
+				{/* {topBlock} */}
+				<div className='0video 0padding-12px position-relative0'>
+					{/* {skeleton} */}
+					{image}
+					{video}
+					<canvas
+						className='display-none'
+						// style={{ display: 'none' }}
+						ref={this.canvasRef}
+					/>
+					{/* {insideBlock} */}
+				</div>
+				{/* {bottomBlock} */}
+			</div>
+			// </Grid>
+		);
+	}
+
+
+	/** Отображение */
+	public getFileStepper(): React.ReactNode {
+		const { buttonSize, iconColor, language } = this.props;
+		// if (groupBy === GroupByEnum.none) {
+		// 	return null;
+		// }
+
+		const group = this.getGroup();
+		if (!group) {
+			return null;
+		}
+
+		const files = this.getFiles();
+		const selectedFileIndex = files.findIndex((fileItem: KioskViewFileViewModel) => fileItem.fullpath === this.selectedFile);
+		const currentStep = selectedFileIndex >= 0
+			? selectedFileIndex
+			: 0;
+
+		const fileSteps = files.length;
+
+		const file = this.getFile(group);
+		if (!file) {
+			return null;
+		}
+
+		const fileNextButton = (
+			<IconButton
+				onClick={this.onFileNextClick}
+			>
+				<KeyboardArrowRight
+					htmlColor={iconColor}
+					fontSize={buttonSize}
+				/>
 			</IconButton>
 		);
-		const printIcons = (
-			<>
-				<Tooltip title={KioskLocalization.printMiddleFrame}>
-					<IconButton
-						aria-label={`print ${file.filename}` }
-						className='icon'
-						onClick={this.onPrintMiddleFrameClick}
-						size={buttonSize}
-					>
-						<Print />
-					</IconButton></Tooltip>
-				<Tooltip title={KioskLocalization.printCurrentFrame}>
-					<IconButton
-						aria-label={`print ${file.filename}` }
-						className='icon'
-						onClick={this.onPrintCurrentFrameClick}
-						size={buttonSize}
-					>
-						<PrintTwoTone />
-					</IconButton>
-				</Tooltip>
-			</>
+		const fileBackButton = (
+			<IconButton
+				onClick={this.onFileBackClick}
+			>
+				<KeyboardArrowLeft
+					htmlColor={iconColor}
+					fontSize={buttonSize}
+				/>
+			</IconButton>
+		);
+
+		const checkBoxIcon = (
+			<CheckBoxOutlineBlank
+				htmlColor={iconColor}
+				fontSize={buttonSize}
+			/>
+		);
+		const checkBoxCheckedIcon = (
+			<CheckBox
+				htmlColor={iconColor}
+				fontSize={buttonSize}
+			/>
 		);
 		const checkBox = (
 			<Checkbox
 				checked={file.isSelected}
 				onChange={this.onSelect}
-				color='secondary'
-				size={buttonSize}
+				// size={buttonSize}
+				// style={{ color: iconColor }}
+				icon={checkBoxIcon}
+				checkedIcon={checkBoxCheckedIcon}
+				// color='secondary'
 			/>
 		);
 
-		const show = file.state === KioskItemStateEnum.Show;
-		const showSkeleton = file.state === KioskItemStateEnum.Loading;
-		const skeletonHeight = size === VideoItemSizeEnum.column ? widthSizeNumber / 2 : heightSizeNumber;
-		const skeleton = this.getSkeleton(showSkeleton, widthSizeNumber, skeletonHeight);
-		const image = this.getImage(show, widthSizeNumber, heightSizeNumber);
-		const video = this.getVideo(show, widthSizeNumber, heightSizeNumber, url);
-
-		const hideItem = file.state === KioskItemStateEnum.Initializing;
-		const hideItemClass = hideItem ? 'display-none' : '';
 		const description = this.getDescription(file);
-		const background = this.props.backgroundFileCard ?? 'gray';
 
-		const gridView = !size
-			|| size === VideoItemSizeEnum.small
-			|| size === VideoItemSizeEnum.medium;
-		const topBlock = gridView
-			? null
-			: (
-				<OneLine>
-					{checkBox}
-					<div
-						className='width-560px'
+		const emailIcon = (
+			<IconButton
+				aria-label={`send ${file.filename}`}
+				className='icon'
+				onClick={this.onSendClick}
+			>
+				<Mail
+					htmlColor={iconColor}
+					fontSize={buttonSize}
+				/>
+			</IconButton>
+		);
+		const printIcons = (
+			<>
+				<Tooltip title={KioskLocalization.printMiddleFrame(language)}>
+					<IconButton
+						aria-label={`print ${file.filename}` }
+						className='icon'
+						onClick={this.onPrintMiddleFrameClick}
 					>
-						{description}
-					</div>
-					<RightContainer>
+						<Print
+							htmlColor={iconColor}
+							fontSize={buttonSize}
+						/>
+					</IconButton></Tooltip>
+				<Tooltip title={KioskLocalization.printCurrentFrame(language)}>
+					<IconButton
+						aria-label={`print ${file.filename}` }
+						className='icon'
+						onClick={this.onPrintCurrentFrameClick}
+					>
+						<PrintTwoTone
+							htmlColor={iconColor}
+							fontSize={buttonSize}
+						/>
+					</IconButton>
+				</Tooltip>
+			</>
+		);
+		const infoBlock = (
+			<OneLine>
+				{/* {checkBox} */}
+				{/* <div
+					className='width-560px'
+				> */}
+				{description}
+				{/* </div> */}
+				<RightContainer className='padding-left-12px'>
+					<OneLine>
+						{/* {checkBox} */}
 						{emailIcon}
 						{printIcons}
-					</RightContainer>
-				</OneLine>
-			);
-		const insideBlock = gridView
-			? (
-				<div className='grid-tile-bar'>
-					<OneLine>
-						{checkBox}
-						<RightContainer>
-							{emailIcon}
-							{printIcons}
-						</RightContainer>
 					</OneLine>
-				</div>
-			)
-			: null;
-		const bottomBlock = gridView ? description : null;
+				</RightContainer>
+			</OneLine>
+		);
 
+		const background = this.props.backgroundFileCard ?? 'gray';
 		return (
-			<Grid
-				item
-				className={hideItemClass}
+			<div
+				className='stepper background-image-bottom-gray0 height60px'
+				style={{ background }}
 			>
-				<div
-					style={{ background }}
-					className='grid-tile background-image-top-gray'
+				{/* <MobileStepper
+					steps={fileSteps}
+					position='static'
+					variant='text'
+					activeStep={currentStep}
+					nextButton={fileNextButton}
+					backButton={fileBackButton}
+				/> */}
+				{/* {filename} */}
+				{fileBackButton}
+				{checkBox}
+				{/* <OneLine></OneLine> */}
+				{/* <div className='padding-right-12px'>
+					{`${currentStep + 1}/${fileSteps}`}
+				</div> */}
+				<Typography
+					align='left'
+					variant='h6'
+					className='stepper-cut-text'
 				>
-					{topBlock}
-					<div className='0video 0padding-12px position-relative'>
-						{skeleton}
-						{image}
-						{video}
-						<canvas
-							style={{ display: 'none' }}
-							ref={this.canvasRef}
-						/>
-						{insideBlock}
-					</div>
-					{bottomBlock}
+					{`(${currentStep + 1}/${fileSteps}) ${file.filename}`}
+				</Typography>
+				<div className='padding-right-12px'>
+					{infoBlock}
 				</div>
-			</Grid>
+				{fileNextButton}
+			</div>
 		);
 	}
 
-	/**
-	 *
-	 */
+	/** */
+	private getGroup(): KioskViewFilesViewModel | undefined {
+		const { groups } = this.props;
+		const selectedGroupIndex = groups.findIndex((group: KioskViewFilesViewModel) => group.dirname === this.selectedGroup);
+		if (selectedGroupIndex >= 0) {
+			return groups[selectedGroupIndex];
+		}
+
+		if (groups.length > 0) {
+			return groups[0];
+		}
+
+		return undefined;
+	}
+
+	/** */
+	private getFile(group?: KioskViewFilesViewModel): KioskViewFileViewModel | undefined {
+		if (!group) {
+			return undefined;
+		}
+
+		const files = this.getFiles();
+		const selectedFileIndex = files.findIndex((file: KioskViewFileViewModel) => file.fullpath === this.selectedFile);
+
+		if (selectedFileIndex >= 0) {
+			return files[selectedFileIndex];
+		}
+
+		if (files.length > 0) {
+			return files[0];
+		}
+
+		return undefined;
+	}
+
+	/** */
+	private readonly onGroupNextClick = (_event: React.MouseEvent<Element, MouseEvent>): void => {
+		const { groups } = this.props;
+		const selectedGroupIndex = groups.findIndex((group: KioskViewFilesViewModel) => group.dirname === this.selectedGroup);
+		const currentStep = selectedGroupIndex >= 0
+			? selectedGroupIndex
+			: 0;
+		if (groups.length > currentStep + 1) {
+			this.selectedGroup = groups[currentStep + 1].dirname;
+		} else if (groups.length > 0) {
+			this.selectedGroup = groups[0].dirname;
+		} else {
+			this.selectedGroup = '';
+		}
+
+		this.selectedFile = '';
+	};
+
+	/** */
+	private readonly onGroupBackClick = (_event: React.MouseEvent<Element, MouseEvent>): void => {
+		const { groups } = this.props;
+		const selectedGroupIndex = groups.findIndex((group: KioskViewFilesViewModel) => group.dirname === this.selectedGroup);
+		if (selectedGroupIndex - 1 >= 0) {
+			this.selectedGroup = groups[selectedGroupIndex - 1].dirname;
+		} else if (groups.length > 0) {
+			this.selectedGroup = groups[groups.length - 1].dirname;
+		} else {
+			this.selectedGroup = '';
+		}
+
+		this.selectedFile = '';
+	};
+
+	/** */
+	private readonly onFileNextClick = (_event: React.MouseEvent<Element, MouseEvent>): void => {
+		const group = this.getGroup();
+		if (!group) {
+			return;
+		}
+
+		const files = this.getFiles();
+		const selectedFileIndex = files.findIndex((file: KioskViewFileViewModel) => file.fullpath === this.selectedFile);
+
+		const currentStep = selectedFileIndex >= 0
+			? selectedFileIndex
+			: 0;
+		if (files.length > currentStep + 1) {
+			this.selectedFile = files[currentStep + 1].fullpath;
+		} else if (files.length > 0) {
+			/** Если 1ый элемент, то включается автообновление */
+			this.selectedFile = ''; // files[0].fullpath;
+		} else {
+			this.selectedFile = '';
+		}
+	};
+
+	/** */
+	private readonly onFileBackClick = (_event: React.MouseEvent<Element, MouseEvent>): void => {
+		const group = this.getGroup();
+		if (!group) {
+			return;
+		}
+
+		const files = this.getFiles();
+
+		const selectedFileIndex = files.findIndex((file: KioskViewFileViewModel) => file.fullpath === this.selectedFile);
+
+		/** Если 1ый элемент, то включается автообновление */
+		if (selectedFileIndex - 1 === 0) {
+			this.selectedFile = '';
+		}
+		if (selectedFileIndex - 1 > 0) {
+			this.selectedFile = files[selectedFileIndex - 1].fullpath;
+		} else if (files.length > 0) {
+			this.selectedFile = files[files.length - 1].fullpath;
+		} else {
+			this.selectedFile = '';
+		}
+	};
+
+	/** */
+	private getFiles(): KioskViewFileViewModel[] {
+		const { groupBy, groups, sortOrder } = this.props;
+		const sortMultiplexer = sortOrder === SortOrderEnum.desc ? -1 : 1;
+		if (groupBy === GroupByEnum.none) {
+			const allfiles = groups
+				.flatMap((groupData: KioskViewFilesViewModel) => groupData.files)
+				.slice()
+				.sort((a: KioskViewFileViewModel, b: KioskViewFileViewModel) => a.filename!.localeCompare(b.filename!) * sortMultiplexer);
+			return allfiles;
+		}
+
+		const group = this.getGroup();
+		const files = group?.files
+			.slice()
+			.sort((a: KioskViewFileViewModel, b: KioskViewFileViewModel) => a.filename!.localeCompare(b.filename!) * sortMultiplexer);
+		return files ?? [];
+	}
+
+	/** */
 	private getDescription(file: KioskViewFileViewModel): React.ReactNode {
 		return (
-			<div
-				className='padding-left-12px padding-bottom-6px padding-right-12px'
-			>
-				<div className='grid-tile-bar-title'>
-					<div className='grid-tile-bar-title-cut-text'>
-						{file.filename}
-					</div>
+			<OneLine className='padding-left-12px padding-right-12px width200px0'>
+				<div>
+					{KioskLocalization.fileSizeInMb(file.fileSize)}
 				</div>
-				<div
-					className='grid-tile-bar-subtitle'
-				>
-					<OneLine>
-						<div>
-							{KioskLocalization.fileSizeInMb(file.fileSize)}
-						</div>
-						<div className='padding-left-12px'>
-							{KioskLocalization.fileResolution(this.resolutionWidth, this.resolutionHeight)}
-						</div>
-					</OneLine>
+				<div className='padding-left-12px'>
+					{KioskLocalization.fileResolution(this.resolutionWidth, this.resolutionHeight)}
 				</div>
-			</div>
+			</OneLine>
 		);
 	}
 
@@ -244,65 +566,73 @@ export class KioskViewCarouselItem extends React.PureComponent<KioskViewCarousel
 			return null;
 		}
 
+		const className = this.getItemHeightClass();
 		return (
 			<Skeleton
+				className={`file-item-container-carousel-group-height ${className}`}
 				animation='wave'
 				variant='rect'
-				width={widthSizeNumber}
-				height={heightSizeNumber}
+				// width={widthSizeNumber}
+				// height={heightSizeNumber}
 			/>
 		);
 	}
 
 	/** */
 	private getImage(show: boolean, widthSizeNumber: 'auto' | number, heightSizeNumber: 'auto' | number): React.ReactNode {
-		const itemClass = show
-			? ''
-			: 'display-none';
+		// const itemClass = show
+		// 	? ''
+		// 	: 'display-none';
 
+		const className = this.getItemHeightClass();
 		return (
 			<img
 				ref={this.imageRef}
 				crossOrigin='anonymous'
-				className={`position-relative kiosk-item-image width100prc0 height100prc0 ${itemClass}`}
-				width={widthSizeNumber}
-				height={heightSizeNumber}
+				className={`display-none position-relative kiosk-item-image file-item-container-carousel-group-height ${className}`}
+				// width={widthSizeNumber}
+				// height={heightSizeNumber}
 				onLoad={this.onImageLoadedData}
+				// className={'position-absolute top-0 left-0 width100prc file-item-container-carousel-group-height'}
 			/>
 		);
 	}
 
 	/** */
 	private getVideo(show: boolean, widthSizeNumber: 'auto' | number, heightSizeNumber: 'auto' | number, url: string): React.ReactNode {
-		const itemClass = show
-			? ''
-			: 'display-none';
+		const itemClass = '';
+		// const itemClass = show
+		// 	? ''
+		// 	: 'display-none';
 
+		const className = this.getItemHeightClass();
 		return (
 			<video
 				controls={true}
-				width={widthSizeNumber}
-				height={heightSizeNumber}
-				// controlsList="nodownload"
-				preload="metadata"
+				// width={widthSizeNumber}
+				// height={heightSizeNumber}
+				// controlsList='nodownload'
+				preload='metadata'
 				// id={file.fullpath}
 				onLoadedMetadata={this.onVideoLoadedMetadata}
 				onTimeUpdate={this.onVideoTimeUpdate}
 				onPlay={this.onPlay}
 				ref={this.videoRef}
 				crossOrigin='anonymous'
-				className={`position-absolute top-0 left-0 ${itemClass}`}
+				className={`width100prc file-item-container-carousel-group-height ${itemClass} ${className}`}
+				// className={`position-absolute top-0 left-0 width100prc file-item-container-carousel-group-height ${itemClass}`}
+				src={url}
 			>
-				<source
+				{/* <source
 				// type={`video/${file.extension}`}
 					src={url}
-				/>
+				/> */}
 				{/* <source
 				// type={`video/${file.extension}`}
 				src={`file://${file.fullpath}`}
 			/> */}
-				{/* <source type="video/webm" src="http://media.w3.org/2010/05/sintel/trailer.webm" id="webm"></source>
-			<source type="video/ogg" src="http://media.w3.org/2010/05/sintel/trailer.ogv" id="ogv"></source> */}
+				{/* <source type='video/webm' src='http://media.w3.org/2010/05/sintel/trailer.webm' id='webm'></source>
+			<source type='video/ogg' src='http://media.w3.org/2010/05/sintel/trailer.ogv' id='ogv'></source> */}
 				{/* <p>Your user agent does not support the HTML5 Video element.</p> */}
 			</video>
 		);
@@ -317,19 +647,30 @@ export class KioskViewCarouselItem extends React.PureComponent<KioskViewCarousel
 			return;
 		}
 
+		const group = this.getGroup();
+		const file = this.getFile(group);
+		if (!file) {
+			return;
+		}
+
 		this.resolutionWidth = event.target.videoWidth;
 		this.resolutionHeight = event.target.videoHeight;
 		const middle = event.target.duration / 2;
 		event.target.currentTime = middle;
-		this.props.file.state = KioskItemStateEnum.Loading;
+		file.state = KioskItemStateEnum.Loading;
 	};
 
 	/** Событие после загрузки данных о видеофайле */
 	private readonly onVideoTimeUpdate = (): void => {
+		const group = this.getGroup();
+		const file = this.getFile(group);
+		if (!file) {
+			return;
+		}
 		// console.dir(event);
 		if (this.firstPlay && this.imageRef.current) {
 			const middleImage = this.getVideoFrame();
-			this.props.file.middleImage = middleImage;
+			file.middleImage = middleImage;
 			// if (this.props.size !== SizeEnum.carousel
 			// 	&& this.props.size !== SizeEnum.column) {
 			this.imageRef.current.src = middleImage.data ?? '';
@@ -337,6 +678,7 @@ export class KioskViewCarouselItem extends React.PureComponent<KioskViewCarousel
 			// 	this.props.file.state = KioskItemStateEnum.Show;
 			// }
 		}
+		file.state = KioskItemStateEnum.Show;
 	};
 
 	/** Событие при воспроизведении */
@@ -381,92 +723,70 @@ export class KioskViewCarouselItem extends React.PureComponent<KioskViewCarousel
 	}
 
 	/** */
-	private getSize(size?: VideoItemSizeEnum): number {
-		switch (size) {
-			case VideoItemSizeEnum.small:
-				return 250;
-			case VideoItemSizeEnum.medium:
-				return 400;
-			case VideoItemSizeEnum.column:
-				return 800;
-			case VideoItemSizeEnum.carousel:
-				return 800;
-			default:
-				return 250;
-		}
-	}
-
-	/** */
-	private getHeightSize(size?: VideoItemSizeEnum): number | 'auto' {
-		switch (size) {
-			case VideoItemSizeEnum.small:
-				return 250;
-			case VideoItemSizeEnum.medium:
-				return 400;
-			case VideoItemSizeEnum.column:
-				return 'auto';
-			case VideoItemSizeEnum.carousel:
-				return 'auto';
-			default:
-				return 250;
-		}
-	}
-
-	/** */
 	private readonly onSelect = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean): void => {
-		const { onSelect } = this.props;
-		if (onSelect) {
+		const { onSelectItemClick } = this.props;
+		const group = this.getGroup();
+		const file = this.getFile(group);
+		if (!file) {
+			return;
+		}
+		if (onSelectItemClick) {
 			const value = {
 				checked,
-				id: this.props.file.fullpath,
-				dirname: this.props.file.dirname
+				id: file.fullpath,
+				dirname: file.dirname
 			} as KioskViewItemEventProps;
-			onSelect(event, value);
+			onSelectItemClick(event, value);
 		}
 	};
 
 	/** */
-	private readonly onSendClick = (event: React.MouseEvent<Element, MouseEvent>): void => {
-		const { onSendClick } = this.props;
-		if (onSendClick) {
-			const value = this.props.file.fullpath;
-			onSendClick(event, value);
+	private readonly onSendClick = async (event: React.MouseEvent<Element, MouseEvent>): Promise<void> => {
+		const { onSendByEmailItemClick } = this.props;
+		const group = this.getGroup();
+		const file = this.getFile(group);
+		if (!file) {
+			return;
 		}
+		const value = file.fullpath;
+		await onSendByEmailItemClick(event, value);
 	};
 
 	/** */
-	private readonly onPrintMiddleFrameClick = (event: React.MouseEvent<Element, MouseEvent>): void => {
-		const { onPrintClick } = this.props;
-		if (onPrintClick) {
-			const value = this.props.file.middleImage;
-			onPrintClick(event, value);
+	private readonly onPrintMiddleFrameClick = async (event: React.MouseEvent<Element, MouseEvent>): Promise<void> => {
+		const { onPrintItemClick } = this.props;
+		const group = this.getGroup();
+		const file = this.getFile(group);
+		if (!file) {
+			return;
 		}
+		const value = file.middleImage;
+		await onPrintItemClick(event, value);
 	};
 
 	/** */
-	private readonly onPrintCurrentFrameClick = (event: React.MouseEvent<Element, MouseEvent>): void => {
-		const { onPrintClick } = this.props;
-		if (onPrintClick) {
-			const value = this.getVideoFrame();
-			onPrintClick(event, value);
-		}
+	private readonly onPrintCurrentFrameClick = async (event: React.MouseEvent<Element, MouseEvent>): Promise<void> => {
+		const { onPrintItemClick } = this.props;
+		const value = this.getVideoFrame();
+		await onPrintItemClick(event, value);
 	};
 
 	/** */
 	private readonly onImageLoadedData = (_event: React.SyntheticEvent<HTMLImageElement>): void => {
-		this.props.file.state = KioskItemStateEnum.Show;
+		const group = this.getGroup();
+		const file = this.getFile(group);
+		if (!file) {
+			return;
+		}
+		file.state = KioskItemStateEnum.Show;
 	};
 
+	/** */
+	private getItemHeightClass(): string {
+		if (this.props.groupBy === GroupByEnum.none) {
+			return 'file-item-container-carousel-nogroup-height';
+		}
 
-	// /** */
-	// private readonly onEmailTestSend = async (_event: React.MouseEvent<HTMLButtonElement, MouseEvent>): Promise<void> => {
-	// 	const email = new EmailSecndingModel();
-	// 	email.server = this.email.server;
-	// 	email.login = this.email.login;
-	// 	email.password = this.email.password;
-	// 	email.to = this.email.login;
-	// 	email.subject = this.email.subject;
-	// 	email.content = this.email.content;
-	// 	await ipcRenderer.invoke(ElectronCommands.sendEmail, email);
-	// };
+		return 'file-item-container-carousel-group-height';
+	}
 }

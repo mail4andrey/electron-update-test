@@ -14,12 +14,12 @@ import { ElectronCommands } from './ElectronCommands';
 import { EmailHelper } from './helpers/EmailHelper';
 import { FilesHelper } from './helpers/FilesHelper';
 import { PrintHelper } from './helpers/PrintHelper';
-import { DesignSettingsModel } from './settings/DesignSettingsModel';
 import { EmailSendingModel } from './settings/EmailSendingModel';
 import { EmailSettingsModel } from './settings/EmailSettingsModel';
 import { PrintSendingItemModel } from './settings/PrintSendingItemModel';
 import { PrinterModel, PrintSettingsModel } from './settings/PrintSettingsModel';
 import { UrlHelper } from './src-front/helpers/UrlHelper';
+import { DesignSettingsModel } from './src-front/models/FilesModel';
 
 import http from 'http';
 import path from 'path';
@@ -228,7 +228,7 @@ router.post('/printData', async (req, res) => {
 			await PrintHelper.printData(item, printSettings);
 		} catch (error) {
 			// console.error('2');
-			console.error(error);
+			// console.error(error);
 		}
 	}
 	res.send();

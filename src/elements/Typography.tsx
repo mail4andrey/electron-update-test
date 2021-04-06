@@ -4,6 +4,7 @@ import React from 'react';
 
 /** Свойства кнопки */
 export interface ITypographyProps {
+	className?: string;
 	align?: PropTypes.Alignment;
 	/**
 	 * The content of the component.
