@@ -13,12 +13,12 @@ import { VideoItemSizeEnum } from './SizeEnum';
 import { SortOrderEnum } from './SortOrderEnum';
 
 import { Checkbox } from '../../elements/Checkbox';
+import { OneLine } from '../../elements/commons/OneLine';
+import { RightContainer } from '../../elements/commons/RightContainer';
 import { Grid } from '../../elements/Grid';
 import { IconButton } from '../../elements/IconButton';
 import { CheckBox, CheckBoxOutlineBlank, KeyboardArrowLeft, KeyboardArrowRight, Mail, Print, PrintTwoTone } from '../../elements/Icons';
 import { MobileStepper } from '../../elements/MobileStepper';
-import { OneLine } from '../../elements/ommons/OneLine';
-import { RightContainer } from '../../elements/ommons/RightContainer';
 import { Skeleton } from '../../elements/Skeleton';
 import { Tooltip } from '../../elements/Tooltip';
 import { Typography } from '../../elements/Typography';

@@ -15,6 +15,7 @@ module.exports = [
 		},
 	},
 	{
+		// test: /\.(ts|tsx)?$/,
 		test: /\.tsx?$/,
 		exclude: /(node_modules|\.webpack)/,
 		use: {
@@ -23,7 +24,14 @@ module.exports = [
 				transpileOnly: true
 			}
 		}
-	}
+	},
+	// {
+	// 	test: /\.js$/,
+	// 	exclude: /node_modules/,
+	// 	use: [
+	// 	  { loader: "babel-loader"}
+	// 	]
+	// }
 	// {
 	// 	test: /\.ico$/,
 	// 	loader: 'file-loader',

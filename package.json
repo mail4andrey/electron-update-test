@@ -1,168 +1,116 @@
 {
-  "name": "selfiebox-kiosk",
-  "productName": "Kiosk (SelfieBox)",
-  "version": "1.0.0",
-  "description": "My Electron application description",
-  "main": ".webpack/main",
-  "repository": "github:mail4andrey/selfiebox-kiosk",
-  "scripts": {
-    "start0": "rm -rf ./dist && mkdir ./dist && NODE_ENV=production  webpack --config=./webpack/config.server.js --mode=production && NODE_ENV=production webpack -p --config=./webpack/config.client.js --mode=production",
-    "start1": "rimraf dist && webpack --config webpack.front.js && electron-forge start",
-    "start": "rimraf dist-front && webpack --config webpack.front.js  && electron-forge start",
-    "starta": "electron-forge start",
-    "package": "rimraf dist-front && webpack --config webpack.front.js  && electron-forge package",
-    "make": "rimraf dist-front && webpack --config webpack.front.js  && electron-forge make",
-    "publish": "rimraf dist-front && webpack --config webpack.front.js  && electron-forge publish",
-    "lint": "eslint --ext .ts .",
-    "generate-barrels": "barrelsby -c barrelsby.json --singleQuotes",
-    "sort-package.json": "sort-package-json"
-  },
-  "keywords": [],
-  "author": {
-    "name": "SelfieBox96",
-    "email": "selfiebox96@mail.ru"
-  },
-  "license": "MIT",
-  "config": {
-    "forge": {
-      "packagerConfig": {
-		"icon": "icon.ico"
+	"name": "selfiebox-kiosk",
+	"productName": "Kiosk (SelfieBox)",
+	"version": "1.0.0",
+	"description": "",
+	"main": ".webpack/main",
+	"repository": "github:mail4andrey/selfiebox-kiosk",
+	"scripts": {
+		"make0": "MY_APP_ROLE=prod electron-forge make",
+		"start0": "rm -rf ./dist && mkdir ./dist && NODE_ENV=production webpack --config=./webpack/config.server.js --mode=production && NODE_ENV=production webpack -p --config=./webpack/config.client.js --mode=production",
+		"start1": "rimraf dist && webpack --config webpack.front.common.js && electron-forge start",
+		"start11": " @powershell -Command $env:APPLICATION='kiosk' && rimraf dist-front && webpack --config webpack.front.common.js --env build_mode=development && electron-forge start",
+		"start": "set APPLICATION=kiosk&& rimraf dist-front && webpack --config webpack.front.common.js --env build_mode=development && electron-forge start",
+		"starta": "electron-forge start",
+		"package": "set APPLICATION=kiosk&& rimraf dist-front && webpack --config webpack.front.common.js && electron-forge package",
+		"make": "set APPLICATION=kiosk&& rimraf dist-front && webpack --config webpack.front.common.js && electron-forge make",
+		"publish": "set APPLICATION=kiosk&& rimraf dist-front && webpack --config webpack.front.common.js && electron-forge publish",
+		"lint": "eslint --ext .ts .",
+		"generate-barrels": "barrelsby -c barrelsby.json --singleQuotes",
+		"sort-package.json": "sort-package-json"
 	},
-      "makers": [
-        {
-          "name": "@electron-forge/maker-squirrel",
-          "config": {
-            "name": "selfiebox-kiosk"
-          },
-          "platforms": [
-            "win32"
-          ]
-        },
-        {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin",
-            "win32"
-          ]
-        },
-        {
-          "name": "@electron-forge/maker-deb",
-          "config": {},
-          "platforms": [
-            "linux"
-          ]
-        },
-        {
-          "name": "@electron-forge/maker-rpm",
-          "config": {},
-          "platforms": [
-            "linux"
-          ]
-        }
-      ],
-      "plugins": [
-        [
-          "@electron-forge/plugin-webpack",
-          {
-            "mainConfig": "./webpack.main.config.js",
-            "renderer": {
-              "config": "./webpack.renderer.config.js",
-              "entryPoints": [
-                {
-                  "html": "./src/index.html",
-                  "js": "./src/renderer.tsx",
-                  "name": "main_window"
-                }
-              ]
-            }
-          }
-        ]
-      ]
-    }
-  },
-  "devDependencies": {
-    "@electron-forge/cli": "6.0.0-beta.52",
-    "@electron-forge/maker-deb": "6.0.0-beta.52",
-    "@electron-forge/maker-rpm": "6.0.0-beta.52",
-    "@electron-forge/maker-squirrel": "6.0.0-beta.52",
-    "@electron-forge/maker-zip": "6.0.0-beta.52",
-    "@electron-forge/plugin-webpack": "6.0.0-beta.52",
-    "@marshallofsound/webpack-asset-relocator-loader": "0.5.0",
-    "@types/cors": "2.8.10",
-    "@types/express": "4.17.11",
-    "@types/html-webpack-plugin": "3.2.1",
-    "@types/mini-css-extract-plugin": "0.9.0",
-    "@types/react": "16.9.44",
-    "@types/react-dom": "16.9.8",
-    "@types/react-event-listener": "0.4.11",
-    "@types/react-router-dom": "5.1.5",
-    "@typescript-eslint/eslint-plugin": "3.8.0",
-    "@typescript-eslint/parser": "3.8.0",
-    "add-asset-html-webpack-plugin": "3.1.3",
-    "awesome-typescript-loader": "5.2.1",
-    "barrelsby": "2.2.0",
-    "copy-webpack-plugin": "6.3.2",
-    "css-loader": "3.4.2",
-    "electron": "9.2.0",
-    "eslint": "7.6.0",
-    "eslint-config-prettier": "6.11.0",
-    "eslint-plugin-import": "2.22.0",
-    "eslint-plugin-jsdoc": "30.2.1",
-    "eslint-plugin-optimize-regex": "1.2.0",
-    "eslint-plugin-prefer-arrow": "1.2.2",
-    "eslint-plugin-prettier": "3.1.4",
-    "eslint-plugin-promise": "4.2.1",
-    "eslint-plugin-react": "7.20.5",
-    "eslint-plugin-react-hooks": "4.0.8",
-    "eslint-plugin-sonarjs": "0.5.0",
-    "eslint-plugin-unicorn": "21.0.0",
-    "fork-ts-checker-webpack-plugin": "5.0.14",
-    "html-webpack-plugin": "3.2.0",
-    "mini-css-extract-plugin": "0.9.0",
-    "node-loader": "1.0.1",
-    "node-sass": "4.13.1",
-    "normalize-scss": "7.0.1",
-    "postcss-loader": "3.0.0",
-    "postcss-mixins": "6.2.3",
-    "postcss-scss": "2.0.0",
-    "sass-loader": "8.0.2",
-    "style-loader": "1.2.1",
-    "ts-loader": "8.0.2",
-    "typescript": "3.9.7",
-    "webpack-cli": "4.5.0",
-    "webpack-dev-server": "3.11.2"
-  },
-  "dependencies": {
-    "@electron/remote": "1.0.4",
-    "@material-ui/core": "4.11.0",
-    "@material-ui/icons": "4.9.1",
-    "@material-ui/lab": "4.0.0-alpha.57",
-    "@types/node": "14.14.9",
-    "@types/nodemailer": "6.4.0",
-    "@types/nodemailer-direct-transport": "1.0.31",
-    "@types/nodemailer-smtp-transport": "2.7.4",
-    "body-parser": "1.19.0",
-    "core-js": "3.9.0",
-    "cors": "2.8.5",
-    "electron-log": "4.2.2",
-    "electron-squirrel-startup": "1.0.0",
-    "express": "4.17.1",
-    "fast-xml-parser": "3.17.4",
-    "glob": "7.1.6",
-    "glob-promise": "4.0.1",
-    "local-storage": "2.0.0",
-    "material-ui-color-picker": "3.5.1",
-    "mobx": "5.15.5",
-    "mobx-react": "6.2.5",
-    "nodemailer": "6.4.16",
-    "notistack": "1.0.5",
-    "plural-ru": "2.0.2",
-    "react": "16.13.1",
-    "react-dom": "16.13.1",
-    "react-event-listener": "0.6.6",
-    "react-ioc": "1.0.0",
-    "react-oc": "1.0.0-alpha.6",
-    "react-router-dom": "5.2.0",
-    "update-electron-app": "1.5.0"
-  }
+	"keywords": [],
+	"author": {
+		"name": "SelfieBox96",
+		"email": "selfiebox96@mail.ru"
+	},
+	"license": "MIT",
+	"config": {
+		"forge": "./forge.config.js"
+	},
+	"devDependencies": {
+		"@electron-forge/cli": "6.0.0-beta.52",
+		"@electron-forge/maker-deb": "6.0.0-beta.52",
+		"@electron-forge/maker-rpm": "6.0.0-beta.52",
+		"@electron-forge/maker-squirrel": "6.0.0-beta.52",
+		"@electron-forge/maker-zip": "6.0.0-beta.52",
+		"@electron-forge/plugin-webpack": "6.0.0-beta.52",
+		"@marshallofsound/webpack-asset-relocator-loader": "0.5.0",
+		"@types/cors": "2.8.10",
+		"@types/express": "4.17.11",
+		"@types/html-webpack-plugin": "3.2.1",
+		"@types/mini-css-extract-plugin": "0.9.0",
+		"@types/react": "16.9.44",
+		"@types/react-dom": "16.9.8",
+		"@types/react-event-listener": "0.4.11",
+		"@types/react-router-dom": "5.1.5",
+		"@typescript-eslint/eslint-plugin": "3.8.0",
+		"@typescript-eslint/parser": "3.8.0",
+		"add-asset-html-webpack-plugin": "3.1.3",
+		"awesome-typescript-loader": "5.2.1",
+		"barrelsby": "2.2.0",
+		"copy-webpack-plugin": "6.3.2",
+		"css-loader": "3.4.2",
+		"electron": "9.2.0",
+		"eslint": "7.6.0",
+		"eslint-config-prettier": "6.11.0",
+		"eslint-plugin-import": "2.22.0",
+		"eslint-plugin-jsdoc": "30.2.1",
+		"eslint-plugin-optimize-regex": "1.2.0",
+		"eslint-plugin-prefer-arrow": "1.2.2",
+		"eslint-plugin-prettier": "3.1.4",
+		"eslint-plugin-promise": "4.2.1",
+		"eslint-plugin-react": "7.20.5",
+		"eslint-plugin-react-hooks": "4.0.8",
+		"eslint-plugin-sonarjs": "0.5.0",
+		"eslint-plugin-unicorn": "21.0.0",
+		"fork-ts-checker-webpack-plugin": "5.0.14",
+		"html-webpack-plugin": "3.2.0",
+		"mini-css-extract-plugin": "0.9.0",
+		"node-loader": "1.0.1",
+		"node-sass": "4.13.1",
+		"normalize-scss": "7.0.1",
+		"postcss-loader": "3.0.0",
+		"postcss-mixins": "6.2.3",
+		"postcss-scss": "2.0.0",
+		"sass-loader": "8.0.2",
+		"style-loader": "1.2.1",
+		"ts-loader": "8.0.2",
+		"typescript": "3.9.7",
+		"webpack-cli": "4.5.0",
+		"webpack-dev-server": "3.11.2"
+	},
+	"dependencies": {
+		"@electron/remote": "1.0.4",
+		"@material-ui/core": "4.11.0",
+		"@material-ui/icons": "4.9.1",
+		"@material-ui/lab": "4.0.0-alpha.57",
+		"@types/node": "14.14.9",
+		"@types/nodemailer": "6.4.0",
+		"@types/nodemailer-direct-transport": "1.0.31",
+		"@types/nodemailer-smtp-transport": "2.7.4",
+		"body-parser": "1.19.0",
+		"core-js": "3.9.0",
+		"cors": "2.8.5",
+		"electron-log": "4.2.2",
+		"electron-squirrel-startup": "1.0.0",
+		"express": "4.17.1",
+		"fast-xml-parser": "3.17.4",
+		"glob": "7.1.6",
+		"glob-promise": "4.0.1",
+		"local-storage": "2.0.0",
+		"material-ui-color-picker": "3.5.1",
+		"mobx": "5.15.5",
+		"mobx-react": "6.2.5",
+		"nodemailer": "6.4.16",
+		"notistack": "1.0.5",
+		"plural-ru": "2.0.2",
+		"react": "16.13.1",
+		"react-dom": "16.13.1",
+		"react-event-listener": "0.6.6",
+		"react-ioc": "1.0.0",
+		"react-oc": "1.0.0-alpha.6",
+		"react-router-dom": "5.2.0",
+		"update-electron-app": "1.5.0"
+	}
 }

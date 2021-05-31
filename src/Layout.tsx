@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 import { IBasicProps } from './common/props/IBasicProps';
 
 /** Основное окно приложения */

@@ -8,6 +8,7 @@ import { KioskSettingsLocalStorage } from './KioskSettingsLocalStorage';
 import { KioskViewFilesViewModel, KioskViewFileViewModel } from './KioskViewFileViewModel';
 import { KioskViewItemEventProps } from './KioskViewItemEventProps';
 import { KioskViewStore } from './KioskViewStore';
+import { LanguageEnum } from './LanguageEnum';
 import { VideoItemSizeEnum } from './SizeEnum';
 import { SortOrderEnum } from './SortOrderEnum';
 
@@ -17,8 +18,8 @@ import { PrintProxy } from '../../helpers/PrintProxy';
 import { ITimer, Timer } from '../../helpers/Timer';
 import { PrintSendingItemModel } from '../../settings/PrintSendingItemModel';
 import { UrlHelper } from '../helpers/UrlHelper';
-import { PathSourceFileModel, PathSourceFilesModel } from '../models/FilesModel';
-import { LanguageEnum } from './LanguageEnum';
+import { PathSourceFileModel } from '../models/PathSourceFileModel';
+import { PathSourceFilesModel } from '../models/PathSourceFilesModel';
 
 
 /** */

@@ -12,7 +12,7 @@ import './content/style/index.css';
 import { Loader } from '../elements/Loader';
 import { SettingsProxy } from '../helpers/SettingsProxy';
 
-import { DesignSettingsModel } from './models/FilesModel';
+import { DesignSettingsModel } from './models/DesignSettingsModel';
 
 @observer
 /** Приложение */

@@ -3,7 +3,7 @@ import { EmailSettingsModel } from './EmailSettingsModel';
 import { PrintSettingsModel } from './PrintSettingsModel';
 import { ServerSettingsModel } from './ServerSettingsModel';
 
-import { DesignSettingsModel } from '../src-front/models/FilesModel';
+import { DesignSettingsModel } from '../src-front/models/DesignSettingsModel';
 
 /** Модель настроек приложения */
 export class SettingsModel {

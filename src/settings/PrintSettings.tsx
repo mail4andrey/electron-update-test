@@ -7,11 +7,11 @@ import { PrinterModel, PrintFitOnPageEnum, PrintLayoutEnum, PrintSettingsModel, 
 import { SettingsLocalization } from './SettingsLocalization';
 
 import { Button } from '../elements/Button';
+import { OneLine } from '../elements/commons/OneLine';
 import { FormControl } from '../elements/FormControl';
 import { CropLandscape, CropPortrait, PhotoSizeSelectActual, PhotoSizeSelectLarge, Print } from '../elements/Icons';
 import { InputLabel } from '../elements/InputLabel';
 import { MenuItem } from '../elements/MenuItem';
-import { OneLine } from '../elements/ommons/OneLine';
 import { ISelectChangeEventProps, Select } from '../elements/Select';
 import { Skeleton } from '../elements/Skeleton';
 import { Typography } from '../elements/Typography';

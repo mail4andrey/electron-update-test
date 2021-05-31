@@ -1,4 +1,3 @@
-import { ITextFieldChangeEventProps } from 'elements/TextField';
 import * as LocalStorage from 'local-storage';
 import { inject } from 'react-ioc';
 
@@ -12,8 +11,9 @@ import { SettingsViewModel } from './SettingsViewModel';
 
 import { ApplicationSettingsController } from '../application/ApplicationSettingsController';
 import { ISelectChangeEventProps } from '../elements/Select';
+import { ITextFieldChangeEventProps } from '../elements/TextField';
 import { MapperHelper } from '../helpers/MapperHelper';
-import { DesignSettingsModel } from '../src-front/models/FilesModel';
+import { DesignSettingsModel } from '../src-front/models/DesignSettingsModel';
 import { KioskSettingsLocalStorage } from '../src-front/views/KioskSettingsLocalStorage';
 
 

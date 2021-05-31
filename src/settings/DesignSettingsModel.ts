@@ -1,6 +1,6 @@
 import { observable } from 'mobx';
 
-import { DesignSettingsModel } from '../src-front/models/FilesModel';
+import { DesignSettingsModel } from '../src-front/models/DesignSettingsModel';
 
 /** Модель настроек приложения */
 export class DesignSettingsViewModel implements DesignSettingsModel {

@@ -10,11 +10,11 @@ import { LanguageEnum } from './LanguageEnum';
 import { VideoItemSizeEnum } from './SizeEnum';
 
 import { Checkbox } from '../../elements/Checkbox';
+import { OneLine } from '../../elements/commons/OneLine';
+import { RightContainer } from '../../elements/commons/RightContainer';
 import { Grid } from '../../elements/Grid';
 import { IconButton } from '../../elements/IconButton';
 import { CheckBox, CheckBoxOutlineBlank, Mail, Print, PrintTwoTone } from '../../elements/Icons';
-import { OneLine } from '../../elements/ommons/OneLine';
-import { RightContainer } from '../../elements/ommons/RightContainer';
 import { Skeleton } from '../../elements/Skeleton';
 import { Tooltip } from '../../elements/Tooltip';
 import { PrintSendingItemModel } from '../../settings/PrintSendingItemModel';

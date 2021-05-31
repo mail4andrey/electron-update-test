@@ -4,9 +4,9 @@ import React from 'react';
 import { DesignSizeEnum } from './DesignSizeEnum';
 import { LanguageEnum } from './LanguageEnum';
 
+import { OneLine } from '../../elements/commons/OneLine';
 import { IconButton } from '../../elements/IconButton';
 import { Language } from '../../elements/Icons';
-import { OneLine } from '../../elements/ommons/OneLine';
 import { Tooltip } from '../../elements/Tooltip';
 import { KioskLocalization } from '../localization/KioskLocalization';
 

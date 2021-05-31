@@ -12,10 +12,10 @@ import React from 'react';
 
 import { SettingsLocalization } from './SettingsLocalization';
 
+import { OneLine } from '../elements/commons/OneLine';
 import { IconButton } from '../elements/IconButton';
 import { Folder, KeyboardArrowDown, KeyboardArrowUp, Remove } from '../elements/Icons';
 import { InputAdornment } from '../elements/InputAdornment';
-import { OneLine } from '../elements/ommons/OneLine';
 import { ITextFieldChangeEventProps, TextField } from '../elements/TextField';
 import { Tooltip } from '../elements/Tooltip';
 import { LanguageEnum } from '../src-front/views/LanguageEnum';

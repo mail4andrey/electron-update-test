@@ -1,0 +1,8 @@
+{
+	"name": "selfiebox-clipmaker",
+	"productName": "Clipmaker (SelfieBox)",
+	"version": "1.0.0",
+	"description": "",
+	"main": ".webpack/main",
+	"repository": "github:mail4andrey/selfiebox-clipmaker"
+}

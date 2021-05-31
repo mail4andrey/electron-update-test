@@ -2,7 +2,8 @@
 import fs from 'fs';
 import path from 'path';
 
-import { PathSourceFileModel, PathSourceFilesModel } from '../src-front/models/FilesModel';
+import { PathSourceFileModel } from '../src-front/models/PathSourceFileModel';
+import { PathSourceFilesModel } from '../src-front/models/PathSourceFilesModel';
 
 /** */
 export class FilesHelper {

@@ -7,11 +7,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 /** Общие настройки webpack */
 module.exports = env => {
-	console.log('env: ', env);
+	console.log('front env: ', env);
+	console.log('front APPLICATION: ', process.env.APPLICATION);
 	/** адрес сервера, для rest api запросов */
 	const serverUrl = env.server_url || 'http://127.0.0.1:8001';
 	/** режим сборки - development / production */
-	const buildMode = env.build_mode || 'development';
+	const buildMode = env.build_mode || 'production';
 	/** путь, в котором лежат Sources в браузере */
 	const publicPath = env.public_path || '';
 	/** базовый адрес приложения */
@@ -26,9 +27,13 @@ module.exports = env => {
 		},
 		/** Точка входа приложения */
 		entry: {
-			main: ['core-js', './src/src-front/boot.tsx']
-			// main: ['core-js', 'react-hot-loader/patch', './src/boot.tsx']
+			main: ['core-js', './src/src-front/' + process.env.APPLICATION + '/boot.tsx']
 		},
+		/** Точка входа приложения */
+		// entry: {
+		// 	main: ['core-js', './src/src-front/boot.tsx']
+		// 	// main: ['core-js', 'react-hot-loader/patch', './src/boot.tsx']
+		// },
 		resolve: {
 			extensions: ['.js', '.jsx', '.ts', '.tsx'],
 			modules: ['./src/src-front','./src/elements', 'node_modules'],
@@ -45,18 +50,18 @@ module.exports = env => {
 		},
 		module: {
 			rules: [
-				{
-					test: /\.(js|jsx)$/,
-					loader: 'babel-loader',
-					query: {
-						presets: ['es2015']
-						// presets: ['es2015', 'stage-0', 'react']
-					},
-					include: [
-						path.resolve(__dirname, 'node_modules/@tinkoff-ui/cardLogo'),
-						path.resolve(__dirname, 'node_modules/@tinkoff-ui/icon')
-					]
-				},
+				// {
+				// 	test: /\.(js|jsx)$/,
+				// 	loader: 'babel-loader',
+				// 	query: {
+				// 		presets: ['es2015']
+				// 		// presets: ['es2015', 'stage-0', 'react']
+				// 	},
+				// 	include: [
+				// 		path.resolve(__dirname, 'node_modules/@tinkoff-ui/cardLogo'),
+				// 		path.resolve(__dirname, 'node_modules/@tinkoff-ui/icon')
+				// 	]
+				// },
 				// {
 				// 	test: /\.(ts|tsx)?$/,
 				// 	// test: /\.ts$/,

@@ -7,7 +7,7 @@ import { ColorPicker } from '../elements/npm/ColorPicker';
 import { ISelectChangeEventProps } from '../elements/Select';
 import { ITextFieldChangeEventProps, TextField } from '../elements/TextField';
 import { Typography } from '../elements/Typography';
-import { DesignSettingsModel } from '../src-front/models/FilesModel';
+import { DesignSettingsModel } from '../src-front/models/DesignSettingsModel';
 import { LanguageEnum } from '../src-front/views/LanguageEnum';
 
 
