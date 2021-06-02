@@ -28,8 +28,8 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import '../src-front/content/style/normalize.css';
-import '../src-front/content/style/index.css';
+import '../../src-front/content/style/normalize.css';
+import '../../src-front/content/style/index.css';
 import { MemoryRouter, Route } from 'react-router-dom';
 
 import { App } from '../../App';
