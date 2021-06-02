@@ -11,9 +11,9 @@ module.exports = {
 				"config": {
 					"name": "selfiebox-" + process.env.APPLICATION
 				},
-				"platforms": [-
+				"platforms": [
 					"win32"
-				]7
+				]
 			},
 			{
 				"name": "@electron-forge/maker-zip",
