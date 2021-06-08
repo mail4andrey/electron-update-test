@@ -2,7 +2,12 @@
 	"name": "selfiebox-clipmaker",
 	"productName": "Clipmaker (SelfieBox)",
 	"version": "1.0.0",
-	"description": "",
-	"main": ".webpack/main",
-	"repository": "github:mail4andrey/selfiebox-clipmaker"
+	"description": "Clipmaker (SelfieBox)",
+	"repository": "github:mail4andrey/selfiebox-clipmaker",
+	"scripts": {
+		"start": "set DEFAULTPORT=8002&& set APPLICATION=clipmaker&& rimraf dist-front && webpack --config webpack.front.common.js --env build_mode=development && electron-forge start",
+		"package": "set DEFAULTPORT=8002&& set APPLICATION=clipmaker&& rimraf dist-front && webpack --config webpack.front.common.js && electron-forge package",
+		"make": "set DEFAULTPORT=8002&& set APPLICATION=clipmaker&& rimraf dist-front && webpack --config webpack.front.common.js && electron-forge make",
+		"publish": "set DEFAULTPORT=8002&& set APPLICATION=clipmaker&& rimraf dist-front && webpack --config webpack.front.common.js && electron-forge publish"
+	}
 }

@@ -1,4 +1,4 @@
-import { EmailSettingsModel } from '../settings/EmailSettingsModel';
+import { EmailSettingsModel } from '../applications/kiosk/settings/tabs/email/EmailSettingsModel';
 import { UrlHelper } from '../src-front/helpers/UrlHelper';
 
 

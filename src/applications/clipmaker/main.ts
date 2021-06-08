@@ -13,12 +13,14 @@ import path from 'path';
 
 
 import { ApplicationSettingsController } from '../../application/ApplicationSettingsController';
-import { createWindow } from '../../ApplicationWindow';
 import { ElectronCommands } from '../../ElectronCommands';
 import { EmailHelper } from '../../helpers/EmailHelper';
-import { EmailSendingModel } from '../../settings/EmailSendingModel';
+import { UrlConsts } from '../../src-front/const/UrlConsts';
 import { DesignSettingsModel } from '../../src-front/models/DesignSettingsModel';
-import { setupUpdates } from '../../update';
+import { BaseApplicationSettingsModel } from '../base/settings/BaseApplicationSettingsModel';
+import { createWindow } from '../createWindow';
+import { EmailSendingModel } from '../kiosk/settings/EmailSendingModel';
+import { setupUpdates } from '../update';
 
 setupUpdates();
 
@@ -71,7 +73,7 @@ const settingsСontroller = new ApplicationSettingsController();
 /**  */
 const getSettings = (app?: Electron.App) => settingsСontroller.loadDefaultSettings(app);
 
-router.get('/settings', (req, res) => {
+router.get(`/${UrlConsts.settingsUrl}`, (req, res) => {
 	try {
 		const settings = getSettings(app);
 		const designSettings = settings.designSettings ?? {} as DesignSettingsModel;
@@ -100,8 +102,8 @@ router.get('/', (req, res) => {
 expressApp.use('/', router);
 
 const applicationController = new ApplicationSettingsController();
-const settingsDefault = applicationController.loadDefaultSettings(app);
-const port = settingsDefault.serverSettings?.port ?? 8001;
+const settingsDefault = applicationController.loadDefaultSettings<BaseApplicationSettingsModel>(app);
+const port = settingsDefault.serverSettings?.port ?? process.env.DEFAULTPORT;
 try {
 	http.createServer(expressApp).listen(port);
 } catch (error) {

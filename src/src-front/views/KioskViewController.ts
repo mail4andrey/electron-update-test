@@ -4,7 +4,7 @@ import { inject } from 'react-ioc';
 
 import { DesignSizeEnum } from './DesignSizeEnum';
 import { GroupByEnum } from './GroupByEnum';
-import { KioskSettingsLocalStorage } from './KioskSettingsLocalStorage';
+import { KioskSettingsLocalStorage, LanguageSettingsLocalStorage } from './KioskSettingsLocalStorage';
 import { KioskViewFilesViewModel, KioskViewFileViewModel } from './KioskViewFileViewModel';
 import { KioskViewItemEventProps } from './KioskViewItemEventProps';
 import { KioskViewStore } from './KioskViewStore';
@@ -16,7 +16,7 @@ import { ITextFieldChangeEventProps } from '../../elements/TextField';
 import { EmailProxy } from '../../helpers/EmailProxy';
 import { PrintProxy } from '../../helpers/PrintProxy';
 import { ITimer, Timer } from '../../helpers/Timer';
-import { PrintSendingItemModel } from '../../settings/PrintSendingItemModel';
+import { PrintSendingItemModel } from '../../applications/kiosk/settings/PrintSendingItemModel';
 import { UrlHelper } from '../helpers/UrlHelper';
 import { PathSourceFileModel } from '../models/PathSourceFileModel';
 import { PathSourceFilesModel } from '../models/PathSourceFilesModel';
@@ -43,8 +43,11 @@ export class KioskViewController {
 		this.store.groupBy = localSettings?.groupBy;
 		this.store.currentItemSize = localSettings?.size;
 		this.store.sortOrder = localSettings?.sortOrder;
-		this.store.language = localSettings?.language;
 		this.store.iconSize = localSettings?.iconSize;
+
+		const languageSettings = LocalStorage.get<LanguageSettingsLocalStorage>('language-settings') as LanguageSettingsLocalStorage|undefined;
+		this.store.language = languageSettings?.language;
+
 		await this.loadFiles();
 		this.store.loaded = true;
 		this.timer = new Timer(15000, this.loadFiles);

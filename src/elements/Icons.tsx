@@ -31,6 +31,12 @@ import {
 	CheckBoxOutlineBlank as UiCheckBoxOutlineBlank,
 	Block as UiBlock,
 	Settings as UiSettings,
+	Camera as UiCamera,
+	Movie as UiMovie,
+	SwitchVideo as UiSwitchVideo,
+	PictureInPicture as UiPictureInPicture,
+	MovieFilter as UiMovieFilter,
+	Audiotrack as UiAudiotrack,
 } from '@material-ui/icons';
 import React from 'react';
 
@@ -411,6 +417,73 @@ export class Settings extends React.PureComponent<IIconProps> {
 	public render(): React.ReactNode {
 		return (
 			<UiSettings
+				{...this.props}
+			/>
+		);
+	}
+}
+/** */
+export class Camera extends React.PureComponent<IIconProps> {
+	/** Отображение */
+	public render(): React.ReactNode {
+		return (
+			<UiCamera
+				{...this.props}
+			/>
+		);
+	}
+}
+/** */
+export class Movie extends React.PureComponent<IIconProps> {
+	/** Отображение */
+	public render(): React.ReactNode {
+		return (
+			<UiMovie
+				{...this.props}
+			/>
+		);
+	}
+}
+/** */
+export class SwitchVideo extends React.PureComponent<IIconProps> {
+	/** Отображение */
+	public render(): React.ReactNode {
+		return (
+			<UiSwitchVideo
+				{...this.props}
+			/>
+		);
+	}
+}
+/** */
+export class PictureInPicture extends React.PureComponent<IIconProps> {
+	/** Отображение */
+	public render(): React.ReactNode {
+		return (
+			<UiPictureInPicture
+				{...this.props}
+			/>
+		);
+	}
+}
+/** */
+export class MovieFilter extends React.PureComponent<IIconProps> {
+	/** Отображение */
+	public render(): React.ReactNode {
+		return (
+			<UiMovieFilter
+				{...this.props}
+			/>
+		);
+	}
+}
+
+/** */
+export class Audiotrack extends React.PureComponent<IIconProps> {
+	/** Отображение */
+	public render(): React.ReactNode {
+		return (
+			<UiAudiotrack
 				{...this.props}
 			/>
 		);

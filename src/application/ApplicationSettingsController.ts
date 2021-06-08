@@ -4,12 +4,10 @@ import { remote } from 'electron';
 import fs from 'fs';
 import path from 'path';
 
-import { SettingsModel } from '../settings/SettingsModel';
-
 /** aa */
 export class ApplicationSettingsController {
 	/** aa */
-	public saveDefaultSettings(settings: SettingsModel, app?: Electron.App): void {
+	public saveDefaultSettings<T>(settings: T, app?: Electron.App): void {
 		const application = app ?? remote.app;
 		const userData = application.getPath('userData');
 		const settingsFile = path.join(userData, 'settings', 'settings.cfg');
@@ -17,7 +15,7 @@ export class ApplicationSettingsController {
 	}
 
 	/** aa */
-	public saveSettings(settingsFile: string, settings: SettingsModel): void {
+	public saveSettings<T>(settingsFile: string, settings: T): void {
 		const settingsPath = path.dirname(settingsFile);
 		if (!fs.existsSync(settingsPath)) {
 			fs.mkdirSync(settingsPath);
@@ -28,7 +26,7 @@ export class ApplicationSettingsController {
 	}
 
 	/** aa */
-	public loadDefaultSettings(app?: Electron.App): SettingsModel {
+	public loadDefaultSettings<T>(app?: Electron.App): T {
 		const application = app ?? remote.app;
 		const userData = application.getPath('userData');
 		const settingsFile = path.join(userData, 'settings', 'settings.cfg');
@@ -36,13 +34,13 @@ export class ApplicationSettingsController {
 	}
 
 	/** aa */
-	public loadSettings(settingsFile: string): SettingsModel {
+	public loadSettings<T>(settingsFile: string): T {
 		if (!fs.existsSync(settingsFile)) {
-			return new SettingsModel();
+			return {} as T;
 		}
 
 		const settingsData = fs.readFileSync(settingsFile, { encoding: 'utf-8' });
-		const settings = JSON.parse(settingsData) as SettingsModel;
+		const settings = JSON.parse(settingsData) as T;
 		return settings;
 	}
 }

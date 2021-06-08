@@ -1,7 +1,7 @@
-import { BrowserWindow, PrinterInfo } from 'electron';
+import { BrowserWindow } from 'electron';
 
-import { PrintSendingItemModel } from '../settings/PrintSendingItemModel';
-import { PrintFitOnPageEnum, PrintLayoutEnum, PrintSettingsModel } from '../settings/PrintSettingsModel';
+import { PrintSendingItemModel } from '../applications/kiosk/settings/PrintSendingItemModel';
+import { PrintFitOnPageEnum, PrintLayoutEnum, PrintSettingsModel } from '../applications/kiosk/settings/tabs/print/PrintSettingsModel';
 
 /** */
 export class PrintHelper {

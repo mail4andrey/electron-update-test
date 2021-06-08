@@ -19,13 +19,13 @@ module.exports = {
 		context: path.resolve(__dirname),
 
 		plugins: [
-		new CopyPlugin({
-			patterns: [
-				{ from: "dist-front", to: "front" },
-				// { from: "src/front/", to: "dest" },
-				// { from: "src/front", to: "dest" }
-			],
-		}),
+			new CopyPlugin({
+				patterns: [
+					{ from: "dist-front", to: "front" },
+					// { from: "src/front/", to: "dest" },
+					// { from: "src/front", to: "dest" }
+				],
+			})
 		],
 	// };
 };

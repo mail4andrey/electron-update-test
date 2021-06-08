@@ -1,6 +1,6 @@
 import * as nodemailer from 'nodemailer';
 
-import { EmailSendingModel } from '../settings/EmailSendingModel';
+import { EmailSendingModel } from '../applications/kiosk/settings/EmailSendingModel';
 
 /** */
 export class EmailHelper {

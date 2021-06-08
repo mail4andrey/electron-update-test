@@ -10,7 +10,7 @@ module.exports = env => {
 	console.log('front env: ', env);
 	console.log('front APPLICATION: ', process.env.APPLICATION);
 	/** адрес сервера, для rest api запросов */
-	const serverUrl = env.server_url || 'http://127.0.0.1:8001';
+	const serverUrl = env.server_url || ('http://127.0.0.1:' + process.env.DEFAULTPORT);
 	/** режим сборки - development / production */
 	const buildMode = env.build_mode || 'production';
 	/** путь, в котором лежат Sources в браузере */

@@ -17,7 +17,7 @@ import { IconButton } from '../../elements/IconButton';
 import { CheckBox, CheckBoxOutlineBlank, Mail, Print, PrintTwoTone } from '../../elements/Icons';
 import { Skeleton } from '../../elements/Skeleton';
 import { Tooltip } from '../../elements/Tooltip';
-import { PrintSendingItemModel } from '../../settings/PrintSendingItemModel';
+import { PrintSendingItemModel } from '../../applications/kiosk/settings/PrintSendingItemModel';
 import { UrlHelper } from '../helpers/UrlHelper';
 import { KioskLocalization } from '../localization/KioskLocalization';
 

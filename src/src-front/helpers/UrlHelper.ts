@@ -22,7 +22,6 @@ export class UrlHelper {
 		// return `http://${host}/${path}`;
 		// const applicationController = new ApplicationSettingsController();
 		// const settings = applicationController.loadDefaultSettings();
-		// const port = settings.serverSettings?.port ?? 8001;
 		// const hostname = location.hostname && location.hostname.length > 0 ? location.hostname : UrlHelper.getHostName();
 		return `http://${host}/${path}`;
 	}

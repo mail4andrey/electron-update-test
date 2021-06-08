@@ -2,11 +2,22 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import '../../src-front/content/style/normalize.css';
 import '../../src-front/content/style/index.css';
-import { MemoryRouter, Route } from 'react-router-dom';
+import { MemoryRouter, Route, RouteComponentProps } from 'react-router-dom';
 
-import { App } from '../../App';
+import { ClipmakerSettingsComponent } from './settings/ClipmakerSettingsComponent';
+
 import { Layout } from '../../Layout';
-import { SettingsComponent } from '../../settings/SettingsComponent';
+import { ApplicationFront } from '../../src-front/ApplicationFront';
+import { MainWindowPage } from '../MainWindowPage';
+
+/** */
+const getLayout = (props: RouteComponentProps): JSX.Element => (
+	<MainWindowPage {...props}>
+		<ApplicationFront/>
+	</MainWindowPage>
+);
+
+
 ReactDOM.render(
 	(
 		<Layout>
@@ -15,11 +26,14 @@ ReactDOM.render(
 					<Route
 						path='/'
 						exact={true}
-						component={App} />
+						// component={App}
+						render={getLayout}
+					/>
 					<Route
 						path="/settings"
 						exact
-						component={SettingsComponent} />
+						component={ClipmakerSettingsComponent}
+					/>
 				</div>
 			</MemoryRouter>
 		</Layout>

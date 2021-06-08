@@ -7,8 +7,8 @@ import { LanguageEnum } from '../views/LanguageEnum';
 /** */
 export class KioskLocalization {
 	/** */
-	public static administrative = (language?: LanguageEnum): string =>
-		language !== LanguageEnum.rus ? 'Administrative' : 'Администрирование';
+	public static administration = (language?: LanguageEnum): string =>
+		language !== LanguageEnum.rus ? 'Administration' : 'Администрирование';
 
 	/** */
 	public static sendEmailToError = (language?: LanguageEnum): string =>

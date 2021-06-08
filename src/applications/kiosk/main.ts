@@ -8,19 +8,23 @@ import { app, BrowserWindow, ipcMain, PrinterInfo } from 'electron';
 import express from 'express';
 
 
+import { EmailSettingsModel } from './settings/EmailSettingsModel';
+import { KioskSettingsModel } from './settings/KioskSettingsModel';
+import { PrintSendingItemModel } from './settings/PrintSendingItemModel';
+import { PrinterModel, PrintSettingsModel } from './settings/PrintSettingsModel';
+
 import http from 'http';
 import path from 'path';
 
+
 import { ApplicationSettingsController } from '../../application/ApplicationSettingsController';
-import { createWindow } from '../../ApplicationWindow';
 import { ElectronCommands } from '../../ElectronCommands';
 import { EmailHelper } from '../../helpers/EmailHelper';
 import { FilesHelper } from '../../helpers/FilesHelper';
 import { PrintHelper } from '../../helpers/PrintHelper';
-import { EmailSettingsModel } from '../../settings/EmailSettingsModel';
-import { PrintSendingItemModel } from '../../settings/PrintSendingItemModel';
-import { PrinterModel, PrintSettingsModel } from '../../settings/PrintSettingsModel';
+import { UrlConsts } from '../../src-front/const/UrlConsts';
 import { DesignSettingsModel } from '../../src-front/models/DesignSettingsModel';
+import { createWindow } from '../createWindow';
 
 
 // import { createWindow } from './windows';
@@ -134,9 +138,9 @@ const settingsСontroller = new ApplicationSettingsController();
 /**
  *
  */
-const getSettings = (app?: Electron.App) => settingsСontroller.loadDefaultSettings(app);
+const getSettings = (app?: Electron.App) => settingsСontroller.loadDefaultSettings<KioskSettingsModel>(app);
 
-router.get('/settings', (req, res) => {
+router.get(`/${UrlConsts.settingsUrl}`, (req, res) => {
 	try {
 		const settings = getSettings(app);
 		const designSettings = settings.designSettings ?? {} as DesignSettingsModel;
@@ -299,8 +303,8 @@ router.get('/', (req, res) => {
 expressApp.use('/', router);
 
 const applicationController = new ApplicationSettingsController();
-const settingsDefault = applicationController.loadDefaultSettings(app);
-const port = settingsDefault.serverSettings?.port ?? 8001;
+const settingsDefault = applicationController.loadDefaultSettings<KioskSettingsModel>(app);
+const port = settingsDefault.serverSettings?.port ?? process.env.DEFAULTPORT;
 // UrlHelper.setport(port);
 try {
 	http.createServer(expressApp).listen(port);

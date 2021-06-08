@@ -32,7 +32,7 @@ import { TextField } from '../../elements/TextField';
 import { Toolbar } from '../../elements/Toolbar';
 import { Tooltip } from '../../elements/Tooltip';
 import { Typography } from '../../elements/Typography';
-import { PrintSendingItemModel } from '../../settings/PrintSendingItemModel';
+import { PrintSendingItemModel } from '../../applications/kiosk/settings/PrintSendingItemModel';
 import { KioskLocalization } from '../localization/KioskLocalization';
 
 

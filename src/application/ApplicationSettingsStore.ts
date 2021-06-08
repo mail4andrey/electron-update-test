@@ -1,4 +1,4 @@
-import { SettingsModel } from '../settings/SettingsModel';
+import { KioskSettingsModel } from '../applications/kiosk/settings/KioskSettingsModel';
 
 /** */
 export class ApplicationSettingsStore {

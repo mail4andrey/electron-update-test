@@ -4,6 +4,8 @@ import { observer } from 'mobx-react';
 import { SnackbarProvider } from 'notistack';
 import * as React from 'react';
 
+import { StringHelper } from './helpers/StringHelper';
+import { DesignSettingsModel } from './models/DesignSettingsModel';
 import KioskView from './views/KioskView';
 
 import './content/style/normalize.css';
@@ -12,7 +14,6 @@ import './content/style/index.css';
 import { Loader } from '../elements/Loader';
 import { SettingsProxy } from '../helpers/SettingsProxy';
 
-import { DesignSettingsModel } from './models/DesignSettingsModel';
 
 @observer
 /** Приложение */
@@ -43,7 +44,7 @@ export class ApplicationFront extends React.PureComponent {
 	public async componentDidMount(): Promise<void> {
 		this.settings = await this.client.getSettings();
 		const { titleFrontPage } = this.settings;
-		document.title = titleFrontPage && titleFrontPage.length > 0 ? titleFrontPage : 'Kiosk';
+		document.title = titleFrontPage && titleFrontPage.length > 0 ? titleFrontPage : StringHelper.capitalizeFirstLetter(process.env.APPLICATION);
 		this.loaded = true;
 	}
 

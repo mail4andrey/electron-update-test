@@ -3,7 +3,7 @@ import { observable } from 'mobx';
 
 import { KioskItemStateEnum } from './KioskItemStateEnum';
 
-import { PrintSendingItemModel } from '../../settings/PrintSendingItemModel';
+import { PrintSendingItemModel } from '../../applications/kiosk/settings/PrintSendingItemModel';
 
 
 /** */

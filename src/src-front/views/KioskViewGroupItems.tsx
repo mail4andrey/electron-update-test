@@ -12,7 +12,7 @@ import { SortOrderEnum } from './SortOrderEnum';
 
 import { Grid } from '../../elements/Grid';
 import { Typography } from '../../elements/Typography';
-import { PrintSendingItemModel } from '../../settings/PrintSendingItemModel';
+import { PrintSendingItemModel } from '../../applications/kiosk/settings/PrintSendingItemModel';
 
 /** */
 export interface KioskViewGroupItemsProps {

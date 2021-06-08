@@ -1,0 +1,13 @@
+{
+	"name": "selfiebox-kiosk",
+	"productName": "Kiosk (SelfieBox)",
+	"version": "1.0.0",
+	"description": "Kiosk (SelfieBox)",
+	"repository": "github:mail4andrey/selfiebox-kiosk",
+	"scripts": {
+		"start": "set DEFAULTPORT=8001&& set APPLICATION=kiosk&& rimraf dist-front && webpack --config webpack.front.common.js --env build_mode=development && electron-forge start",
+		"package": "set DEFAULTPORT=8001&& set APPLICATION=kiosk&& rimraf dist-front && webpack --config webpack.front.common.js && electron-forge package",
+		"make": "set DEFAULTPORT=8001&& set APPLICATION=kiosk&& rimraf dist-front && webpack --config webpack.front.common.js && electron-forge make",
+		"publish": "set DEFAULTPORT=8001&& set APPLICATION=kiosk&& rimraf dist-front && webpack --config webpack.front.common.js && electron-forge publish"
+	}
+}
