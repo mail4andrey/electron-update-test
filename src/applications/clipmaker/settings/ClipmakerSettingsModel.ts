@@ -1,5 +1,6 @@
 import { GoProSettingsModel } from './tabs/goPro/GoProSettingsModel';
 import { PathSourcesSettingsModel } from './tabs/pathSources/PathSourcesSettingsModel';
+import { VideoSettingsModel } from './tabs/video/VideoSettingsModel';
 
 import { DesignSettingsModel } from '../../../src-front/models/DesignSettingsModel';
 import { BaseApplicationSettingsModel } from '../../base/settings/BaseApplicationSettingsModel';
@@ -14,6 +15,9 @@ export class ClipmakerSettingsModel extends BaseApplicationSettingsModel {
 
 	/** */
 	public goProSettings?: GoProSettingsModel;
+
+	/** */
+	public videoSettings?: VideoSettingsModel;
 
 	/** */
 	// public emailSettings = new EmailSettingsModel();

@@ -6,6 +6,7 @@ import { ClipmakerSettingsModel } from './ClipmakerSettingsModel';
 import { DesignSettingsViewModel } from './tabs/design/DesignSettingsModel';
 import { GoProSettingsViewModel } from './tabs/goPro/GoProSettingsModel';
 import { PathSourcesSettingsViewModel } from './tabs/pathSources/PathSourcesSettingsModel';
+import { VideoSettingsViewModel } from './tabs/video/VideoSettingsModel';
 
 import { ServerSettingsViewModel } from '../../base/settings/tabs/server/ServerSettingsModel';
 
@@ -26,6 +27,10 @@ export class ClipmakerSettingsViewModel extends ClipmakerSettingsModel {
 	@observable
 	/** */
 	public goProSettings = new GoProSettingsViewModel();
+
+	@observable
+	/** */
+	public videoSettings = new VideoSettingsViewModel();
 
 	// // @observable
 	// /** */

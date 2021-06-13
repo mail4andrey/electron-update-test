@@ -7,7 +7,7 @@ import { KioskSettingsStore } from './KioskSettingsStore';
 import { KioskSettingsViewModel } from './KioskSettingsViewModel';
 import { EmailSettingsModel } from './tabs/email/EmailSettingsModel';
 import { PrintSettingsModel } from './tabs/print/PrintSettingsModel';
-import { ServerSettingsModel } from '../../base/settings/tabs/server/ServerSettingsModel';
+
 
 import { ApplicationSettingsController } from '../../../application/ApplicationSettingsController';
 import { ISelectChangeEventProps } from '../../../elements/Select';
@@ -15,6 +15,7 @@ import { ITextFieldChangeEventProps } from '../../../elements/TextField';
 import { MapperHelper } from '../../../helpers/MapperHelper';
 import { DesignSettingsModel } from '../../../src-front/models/DesignSettingsModel';
 import { LanguageSettingsLocalStorage } from '../../../src-front/views/KioskSettingsLocalStorage';
+import { ServerSettingsModel } from '../../base/settings/tabs/server/ServerSettingsModel';
 
 
 /** */
@@ -31,7 +32,7 @@ export class KioskSettingsController {
 		this.store.language = languageSettings?.language;
 
 		const settings = this.settingsСontroller.loadDefaultSettings<KioskSettingsModel>();
-		this.store.settings = MapperHelper.Map(settings, KioskSettingsViewModel);
+		this.store.settings = MapperHelper.map(settings, KioskSettingsViewModel);
 	};
 
 	/** */
@@ -106,7 +107,7 @@ export class KioskSettingsController {
 		const pathSources = this.store.settings.pathSources ?? [];
 		this.store.settings.pathSources = pathSources
 			.filter((value: string, index: number, array: string[]) => array.indexOf(value) === index);
-		const settings = MapperHelper.Map(this.store.settings, KioskSettingsModel);
+		const settings = MapperHelper.map(this.store.settings, KioskSettingsModel);
 		this.settingsСontroller.saveDefaultSettings(settings);
 	};
 }

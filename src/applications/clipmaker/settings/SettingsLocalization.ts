@@ -3,6 +3,7 @@
 /* eslint-disable max-classes-per-file */
 
 import { GoProStateEnum } from './tabs/goPro/GoProSettingsModel';
+import { FitWithinEnum, RenderOnEnum } from './tabs/video/VideoSettingsModel';
 
 import { LanguageEnum } from '../../../src-front/views/LanguageEnum';
 
@@ -107,6 +108,101 @@ export class SettingsLocalization {
 		/** */
 		public static title = (language?: LanguageEnum): string =>
 			language !== LanguageEnum.rus ? 'Video' : 'Видео';
+
+		/** */
+		public static addThumbnail = (language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'Add thumbnail from middle frame' : 'Добавить эскиз из среднего кадра';
+
+		/** */
+		public static fadeIn = (language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'Fade In' : 'Проявление';
+
+		/** */
+		public static fadeOut = (language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'Fade Out' : 'Затухание';
+
+		/** */
+		public static duration = (language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'Duration' : 'Длительность';
+
+		/** */
+		public static seconds = (language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'seconds' : 'секунд';
+
+		/** */
+		public static fps = (language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'Fps' : 'Fps';
+
+		/** */
+		public static maxBitrate = (language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'Max bitrate' : 'Максимальный битрейт';
+
+		/** */
+		public static kbitPerSeconds = (language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'KBit/s' : 'KBit/s';
+
+		/** */
+		public static resolution = (language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'Resolution' : 'Разрешение';
+
+		/** */
+		public static width = (language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'Width' : 'Ширина';
+
+		/** */
+		public static height = (language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'Height' : 'Высота';
+
+		/** */
+		public static renderOn = (language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'Render on' : 'Рендер на';
+
+		/** */
+		public static fitWithin = (language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'Fit within' : 'Растяжение';
+
+		/** */
+		public static encode = (language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'Encode video' : 'Создание видео';
+
+		/** */
+		public static fitWithinItemDescription = (language?: LanguageEnum, value?: FitWithinEnum): string => {
+			if (language !== LanguageEnum.rus) {
+				switch (value) {
+					case FitWithinEnum.byHeight:
+						return 'By Height';
+					case FitWithinEnum.byWidth:
+						return 'By Width';
+					default:
+					case FitWithinEnum.fitAll:
+						return 'By Width and Height';
+				}
+			}
+			switch (value) {
+				case FitWithinEnum.byHeight:
+					return 'По высоте';
+				case FitWithinEnum.byWidth:
+					return 'По ширине';
+				default:
+				case FitWithinEnum.fitAll:
+					return 'По ширине и высоте';
+			}
+		};
+
+		/** */
+		public static renderOnItemDescription = (language?: LanguageEnum, value?: RenderOnEnum): string => {
+			switch (value) {
+				case RenderOnEnum.nvidiaH264:
+					return 'Nvidia (h264qsv)';
+				case RenderOnEnum.nvidiaNvench:
+					return 'Nvidia (nvench264)';
+				case RenderOnEnum.radeon:
+					return 'Radeon (h264amf)';
+				default:
+				case RenderOnEnum.cpu:
+					return 'CPU (libx264)';
+			}
+		};
 	};
 
 	/** Вкладка Intro Outro */

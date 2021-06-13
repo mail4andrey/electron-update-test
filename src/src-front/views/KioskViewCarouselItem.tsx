@@ -9,20 +9,17 @@ import { KioskItemStateEnum } from './KioskItemStateEnum';
 import { KioskViewFilesViewModel, KioskViewFileViewModel } from './KioskViewFileViewModel';
 import { KioskViewItemEventProps } from './KioskViewItemEventProps';
 import { LanguageEnum } from './LanguageEnum';
-import { VideoItemSizeEnum } from './SizeEnum';
 import { SortOrderEnum } from './SortOrderEnum';
 
+import { PrintSendingItemModel } from '../../applications/kiosk/settings/PrintSendingItemModel';
 import { Checkbox } from '../../elements/Checkbox';
 import { OneLine } from '../../elements/commons/OneLine';
 import { RightContainer } from '../../elements/commons/RightContainer';
-import { Grid } from '../../elements/Grid';
 import { IconButton } from '../../elements/IconButton';
 import { CheckBox, CheckBoxOutlineBlank, KeyboardArrowLeft, KeyboardArrowRight, Mail, Print, PrintTwoTone } from '../../elements/Icons';
-import { MobileStepper } from '../../elements/MobileStepper';
 import { Skeleton } from '../../elements/Skeleton';
 import { Tooltip } from '../../elements/Tooltip';
 import { Typography } from '../../elements/Typography';
-import { PrintSendingItemModel } from '../../applications/kiosk/settings/PrintSendingItemModel';
 import { UrlHelper } from '../helpers/UrlHelper';
 import { KioskLocalization } from '../localization/KioskLocalization';
 

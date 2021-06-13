@@ -14,10 +14,12 @@ export class GoProSettingsViewModel implements GoProSettingsModel {
 	// @observable
 	/** */
 
-	public removeFromGoPro?: boolean;
+	@observable
+	public removeFromGoPro = false;
 
 	/** */
-	public showColorStateGoPro?: boolean;
+	@observable
+	public showColorStateGoPro = false;
 }
 
 export enum GoProStateEnum {

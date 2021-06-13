@@ -7,7 +7,7 @@ import { ClipmakerSettingsStore } from './ClipmakerSettingsStore';
 import { ClipmakerSettingsViewModel } from './ClipmakerSettingsViewModel';
 import { GoProSettingsModel } from './tabs/goPro/GoProSettingsModel';
 import { PathSourcesSettingsModel } from './tabs/pathSources/PathSourcesSettingsModel';
-
+import { VideoSettingsModel } from './tabs/video/VideoSettingsModel';
 
 import { ApplicationSettingsController } from '../../../application/ApplicationSettingsController';
 import { ISelectChangeEventProps } from '../../../elements/Select';
@@ -32,7 +32,7 @@ export class ClipmakerSettingsController {
 		this.store.language = languageSettings?.language;
 
 		const settings = this.settingsСontroller.loadDefaultSettings();
-		this.store.settings = MapperHelper.Map(settings, ClipmakerSettingsViewModel);
+		this.store.settings = MapperHelper.map(settings, ClipmakerSettingsViewModel);
 	};
 
 	/** */
@@ -103,13 +103,21 @@ export class ClipmakerSettingsController {
 
 	/** */
 	public readonly onServerSettingsChange = (_event: ISelectChangeEventProps, settings: ServerSettingsModel): void => {
-		this.store.settings.serverSettings.port = settings.port;
+		MapperHelper.mapValues(settings, this.store.settings.serverSettings);
+		// this.store.settings.serverSettings.port = settings.port;
 	};
 
 	/** */
 	public readonly onGoProSettingsChange = (_event: ISelectChangeEventProps, settings: GoProSettingsModel): void => {
-		this.store.settings.goProSettings.removeFromGoPro = settings.removeFromGoPro;
-		this.store.settings.goProSettings.showColorStateGoPro = settings.showColorStateGoPro;
+		MapperHelper.mapValues(settings, this.store.settings.goProSettings);
+		// this.store.settings.goProSettings.removeFromGoPro = settings.removeFromGoPro;
+		// this.store.settings.goProSettings.showColorStateGoPro = settings.showColorStateGoPro;
+	};
+
+	/** */
+	public readonly onVideoSettingsChange = (_event: ISelectChangeEventProps, settings: VideoSettingsModel): void => {
+		// this.store.settings.videoSettings.fadeInDuration = settings.fadeInDuration;
+		MapperHelper.mapValues(settings, this.store.settings.videoSettings);
 	};
 
 	/** */
@@ -117,7 +125,7 @@ export class ClipmakerSettingsController {
 		// const pathSources = this.store.settings.pathSources ?? [];
 		// this.store.settings.pathSources = pathSources
 		// 	.filter((value: string, index: number, array: string[]) => array.indexOf(value) === index);
-		const settings = MapperHelper.Map(this.store.settings, ClipmakerSettingsModel);
+		const settings = MapperHelper.map(this.store.settings, ClipmakerSettingsModel);
 		this.settingsСontroller.saveDefaultSettings(settings);
 	};
 }

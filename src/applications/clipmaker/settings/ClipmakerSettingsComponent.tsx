@@ -8,7 +8,7 @@ import { SettingsLocalization } from './SettingsLocalization';
 import { DesignSettingsTab } from './tabs/design/DesignSettingsTab';
 import { GoProSettingsTab } from './tabs/goPro/GoProSettingsTab';
 import { PathSourcesSettingsTab } from './tabs/pathSources/PathSourcesSettingsTab';
-
+import { VideoSettingsTab } from './tabs/video/VideoSettingsTab';
 
 import { BaseRoutedComponent } from '../../../common/BaseRoutedComponent';
 import { IMainRoutedProps } from '../../../common/props/IMainRoutedProps';
@@ -49,7 +49,8 @@ export class ClipmakerSettingsComponent extends BaseRoutedComponent<IMainRoutedP
 			onPathSourceChange,
 			onDesignSettingsChange,
 			onServerSettingsChange,
-			onGoProSettingsChange
+			onGoProSettingsChange,
+			onVideoSettingsChange
 		} = this.controller;
 		const { settings, tabSelected, language } = this.store;
 		return (
@@ -160,9 +161,10 @@ export class ClipmakerSettingsComponent extends BaseRoutedComponent<IMainRoutedP
 						index={1}
 					>
 						<GoProSettingsTab
+							{...settings.goProSettings}
 							language={language}
-							removeFromGoPro={settings.goProSettings.removeFromGoPro}
-							showColorStateGoPro={settings.goProSettings.showColorStateGoPro}
+							// removeFromGoPro={settings.goProSettings.removeFromGoPro}
+							// showColorStateGoPro={settings.goProSettings.showColorStateGoPro}
 							onChange={onGoProSettingsChange}
 						/>
 					</TabPanel>
@@ -170,11 +172,23 @@ export class ClipmakerSettingsComponent extends BaseRoutedComponent<IMainRoutedP
 						value={tabSelected}
 						index={2}
 					>
-						{/* <PrintSettingsTab
+						<VideoSettingsTab
+							{...settings.videoSettings}
 							language={language}
-							settings={settings.printSettings}
-							onChange={onPrintSettingsChange}
-						/> */}
+							// addThumbnail={settings.videoSettings.addThumbnail}
+							// fadeIn={settings.videoSettings.fadeIn}
+							// fadeInDuration={settings.videoSettings.fadeInDuration}
+							// fadeOut={settings.videoSettings.fadeOut}
+							// fadeOutDuration={settings.videoSettings.fadeInDuration}
+							// ={settings.videoSettings.fitWithin}
+							// ={settings.videoSettings.fps}
+							// ={settings.videoSettings.maxBitrate}
+							// ={settings.videoSettings.renderOn}
+							// ={settings.videoSettings.}
+							// ={settings.videoSettings.}
+							// ={settings.videoSettings.}
+							onChange={onVideoSettingsChange}
+						/>
 					</TabPanel>
 					<TabPanel
 						value={tabSelected}

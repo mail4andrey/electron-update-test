@@ -13,6 +13,7 @@ export interface IFormControlProps {
 	margin?: 'dense' | 'none' | 'normal';
 
 	className?: string;
+	component?: React.ElementType;
 }
 /** Кнопка */
 export class FormControl extends React.PureComponent<IFormControlProps> {

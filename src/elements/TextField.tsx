@@ -9,8 +9,18 @@ export interface ITextFieldChangeEventProps {
 
 /** Свойства кнопки */
 export interface ITextFieldProps {
+	/**
+	 * If `true`, the `input` element will be disabled.
+	 */
+	disabled?: boolean;
+
+	/**
+	 * If `true`, the label will be displayed in an error state.
+	 */
+	error?: boolean;
+
 	/** Описание */
-	label?: string;
+	label?: React.ReactNode;
 
 	/** Обязательное поле */
 	required?: boolean;
