@@ -1,8 +1,10 @@
+import type { App } from 'electron';
 import { BrowserWindow, Menu, dialog } from 'electron';
 
 import { ApplicationSettingsController } from '../application/ApplicationSettingsController';
 
 
+declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: any;
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
 
 // let mainWindow: BrowserWindow | null = null;
@@ -11,11 +13,8 @@ declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
  *
  */
 // @provider(ApplicationSettingsStore)
-export function createWindow(app: Electron.App): BrowserWindow {
-
+export function createWindow(app: App): BrowserWindow {
 	const application = app;
-	//   if (mainWindow) return mainWindow;
-
 	// Create the browser window.
 	const mainWindow = new BrowserWindow({
 		width: 1024,
@@ -24,16 +23,14 @@ export function createWindow(app: Electron.App): BrowserWindow {
 		// other
 		// useContentSize: true,
 		webPreferences: {
-
-			// preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
-			nodeIntegration: true,
+			preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
+			nodeIntegration: true
 			// sandbox: false,
 			// webviewTag: false
-			webSecurity: false
+			// webSecurity: false
 		}
 	});
 
-	//   mainWindow.loadFile("./dist/static/index.html");
 	// and load the index.html of the app.
 	mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
@@ -42,13 +39,12 @@ export function createWindow(app: Electron.App): BrowserWindow {
 		mainWindow.webContents.openDevTools();
 	}
 
-	// mainWindow.on('ready', () => {
-	// 	alert('ready');
-	// });
-
+	// Emitted when the window is closed.
 	// mainWindow.on('closed', () => {
-	// 	alert('close');
-	// 	mainWindow = null;
+	// 	// Dereference the window object, usually you would store windows
+	// 	// in an array if your app supports multi windows, this is the time
+	// 	// when you should delete the corresponding element.
+	// 	// mainWindow = null;
 	// });
 
 	const menu = Menu.buildFromTemplate([
@@ -80,7 +76,7 @@ export function createWindow(app: Electron.App): BrowserWindow {
 									settingsController.saveDefaultSettings(settings, application);
 									mainWindow.reload();
 								}
-							},
+							}
 						},
 						{
 							label: 'Save Configuration',
@@ -103,7 +99,7 @@ export function createWindow(app: Electron.App): BrowserWindow {
 									const settings = settingsController.loadDefaultSettings(application);
 									settingsController.saveSettings(result.filePath, settings);
 								}
-							},
+							}
 						}
 					]
 				},

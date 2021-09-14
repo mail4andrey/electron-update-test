@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { IBasicProps } from './props/IBasicProps';
+import type { IBasicProps } from './props/IBasicProps';
 
 
 /** Базовый реакт компонент */

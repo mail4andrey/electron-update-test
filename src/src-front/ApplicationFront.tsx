@@ -4,19 +4,18 @@ import { observer } from 'mobx-react';
 import { SnackbarProvider } from 'notistack';
 import * as React from 'react';
 
+import './content/style/normalize.css';
+import './content/style/index.css';
+
 import { StringHelper } from './helpers/StringHelper';
 import { DesignSettingsModel } from './models/DesignSettingsModel';
 import KioskView from './views/KioskView';
 
-import './content/style/normalize.css';
-import './content/style/index.css';
-
 import { Loader } from '../elements/Loader';
 import { SettingsProxy } from '../helpers/SettingsProxy';
 
-
-@observer
 /** Приложение */
+@observer
 export class ApplicationFront extends React.PureComponent {
 
 	/** ctor */
@@ -68,7 +67,7 @@ export class ApplicationFront extends React.PureComponent {
 					maxSnack={3}
 					anchorOrigin={{
 						vertical: 'bottom',
-						horizontal: 'right',
+						horizontal: 'right'
 					}}
 				>
 					<KioskView

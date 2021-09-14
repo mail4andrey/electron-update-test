@@ -1,6 +1,6 @@
 import { BaseComponent } from './BaseComponent';
-import { IBasicProps } from './props/IBasicProps';
-import { IBasicRoutedProps } from './props/IBasicRoutedProps';
+import type { IBasicProps } from './props/IBasicProps';
+import type { IBasicRoutedProps } from './props/IBasicRoutedProps';
 
 /** Базовый реакт компонент с навигацией */
 export class BaseRoutedComponent<P extends Partial<IBasicRoutedProps<IBasicProps>>>

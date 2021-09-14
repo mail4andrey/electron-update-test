@@ -1,15 +1,14 @@
 import * as LocalStorage from 'local-storage';
-// import { ButtonGroup, Button } from '@material-ui/core';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import React from 'react';
 
 
-import { BaseApplicationSettingsModel } from './base/settings/BaseApplicationSettingsModel';
+import type { BaseApplicationSettingsModel } from './base/settings/BaseApplicationSettingsModel';
 
 import { ApplicationSettingsController } from '../application/ApplicationSettingsController';
 import { BaseRoutedComponent } from '../common/BaseRoutedComponent';
-import { IMainRoutedProps } from '../common/props/IMainRoutedProps';
+import type { IMainRoutedProps } from '../common/props/IMainRoutedProps';
 import { OneLine } from '../elements/commons/OneLine';
 import { RightContainer } from '../elements/commons/RightContainer';
 import { Grid } from '../elements/Grid';
@@ -19,11 +18,11 @@ import { Typography } from '../elements/Typography';
 import { UrlConsts } from '../src-front/const/UrlConsts';
 import { UrlHelper } from '../src-front/helpers/UrlHelper';
 import { KioskLocalization } from '../src-front/localization/KioskLocalization';
-import { LanguageSettingsLocalStorage } from '../src-front/views/KioskSettingsLocalStorage';
+import type { LanguageSettingsLocalStorage } from '../src-front/views/KioskSettingsLocalStorage';
 import { LanguageEnum } from '../src-front/views/LanguageEnum';
 
-@observer
 /** Основное окно приложения */
+@observer
 export class MainWindowPage extends BaseRoutedComponent<IMainRoutedProps> {
 	@observable
 	private port?: number;
@@ -49,10 +48,7 @@ export class MainWindowPage extends BaseRoutedComponent<IMainRoutedProps> {
 		this.port = port;
 		// location.host = this.hostname;
 
-		const localSettings = LocalStorage.get<LanguageSettingsLocalStorage>('language-settings') as LanguageSettingsLocalStorage|undefined;
-		// this.store.groupBy = localSettings?.groupBy;
-		// this.store.currentItemSize = localSettings?.size;
-		// this.store.sortOrder = localSettings?.sortOrder;
+		const localSettings = LocalStorage.get<LanguageSettingsLocalStorage>('language-settings') as LanguageSettingsLocalStorage | undefined;
 		this.language = localSettings?.language;
 	}
 

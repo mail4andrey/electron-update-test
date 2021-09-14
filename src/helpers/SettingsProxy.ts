@@ -1,6 +1,6 @@
 import { UrlConsts } from '../src-front/const/UrlConsts';
 import { UrlHelper } from '../src-front/helpers/UrlHelper';
-import { DesignSettingsModel } from '../src-front/models/DesignSettingsModel';
+import type { DesignSettingsModel } from '../src-front/models/DesignSettingsModel';
 
 
 /** */
@@ -16,7 +16,7 @@ export class SettingsProxy {
 			headers: {
 				'Content-Type': 'application/json'
 				// 'Content-Type': 'application/x-www-form-urlencoded',
-			},
+			}
 			// redirect: 'follow', // manual, *follow, error
 			// referrerPolicy: 'no-referrer', // no-referrer, *client
 			// body: JSON.stringify(value?.data) // body data type must match "Content-Type" header

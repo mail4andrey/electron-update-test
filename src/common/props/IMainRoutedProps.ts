@@ -1,5 +1,5 @@
-import { IBasicProps } from './IBasicProps';
-import { IBasicRoutedProps } from './IBasicRoutedProps';
+import type { IBasicProps } from './IBasicProps';
+import type { IBasicRoutedProps } from './IBasicRoutedProps';
 
 /** Роутинг */
 export interface IMainRoutedProps extends IBasicRoutedProps<IBasicProps> {

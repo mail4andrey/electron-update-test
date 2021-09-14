@@ -7,9 +7,9 @@ export interface IIconButtonProps {
 	children?: React.ReactNode;
 
 	/** Тип кнопки */
-	color?: 'inherit' | 'primary' | 'secondary' | 'default';
-	size?: 'small' | 'medium';
-	edge?: 'start' | 'end' | false;
+	color?: 'default' | 'inherit' | 'primary' | 'secondary';
+	size?: 'medium' | 'small';
+	edge?: 'end' | 'start' | false;
 	className?: string;
 	disabled?: boolean;
 	disableRipple?: boolean;

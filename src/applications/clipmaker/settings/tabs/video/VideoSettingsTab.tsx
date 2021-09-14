@@ -15,11 +15,13 @@ import { Grid } from '../../../../../elements/Grid';
 import { InputAdornment } from '../../../../../elements/InputAdornment';
 import { InputLabel } from '../../../../../elements/InputLabel';
 import { MenuItem } from '../../../../../elements/MenuItem';
-import { ISelectChangeEventProps, Select } from '../../../../../elements/Select';
-import { ITextFieldChangeEventProps, TextField } from '../../../../../elements/TextField';
+import type { ISelectChangeEventProps } from '../../../../../elements/Select';
+import { Select } from '../../../../../elements/Select';
+import type { ITextFieldChangeEventProps } from '../../../../../elements/TextField';
+import { TextField } from '../../../../../elements/TextField';
 import { Typography } from '../../../../../elements/Typography';
 import { MapperHelper } from '../../../../../helpers/MapperHelper';
-import { LanguageEnum } from '../../../../../src-front/views/LanguageEnum';
+import type { LanguageEnum } from '../../../../../src-front/views/LanguageEnum';
 import { SettingsLocalization } from '../../SettingsLocalization';
 
 
@@ -42,6 +44,9 @@ export interface VideoSettingsTabProps {
 	onChange: (event: ITextFieldChangeEventProps, settings: VideoSettingsModel) => void;
 }
 
+/**
+ *
+ */
 @observer
 /** */
 export class VideoSettingsTab extends React.PureComponent<VideoSettingsTabProps> {

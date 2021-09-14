@@ -27,7 +27,7 @@ module.exports = {
 	ignorePatterns: [],
 	parser: '@typescript-eslint/parser',
 	parserOptions: {
-		"ecmaVersion": 2019,
+		"ecmaVersion": 2020,
 		project: 'tsconfig.json',
 		sourceType: 'module'
 	},
@@ -501,7 +501,10 @@ module.exports = {
 		'no-unneeded-ternary': 'error',
 		'no-whitespace-before-property': 'error',
 		'object-curly-newline': 'error',
-		'object-curly-spacing': ['error', 'always'],
+		// 'object-curly-spacing': ['error', 'always'],
+		// note you must disable the base rule as it can report incorrect errors
+		"object-curly-spacing": "off",
+		"@typescript-eslint/object-curly-spacing": ["error", 'always'],
 		'semi-spacing': 'error',
 		'space-before-blocks': 'error',
 

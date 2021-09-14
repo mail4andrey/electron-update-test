@@ -11,7 +11,7 @@ import { PathSourcesSettingsTab } from './tabs/pathSources/PathSourcesSettingsTa
 import { VideoSettingsTab } from './tabs/video/VideoSettingsTab';
 
 import { BaseRoutedComponent } from '../../../common/BaseRoutedComponent';
-import { IMainRoutedProps } from '../../../common/props/IMainRoutedProps';
+import type { IMainRoutedProps } from '../../../common/props/IMainRoutedProps';
 import { AppBar } from '../../../elements/AppBar';
 import { Button } from '../../../elements/Button';
 import { ButtonGroup } from '../../../elements/ButtonGroup';
@@ -23,6 +23,9 @@ import { TabPanel } from '../../../elements/TabPanel';
 import { Tabs } from '../../../elements/Tabs';
 import { ServerSettingsTab } from '../../base/settings/tabs/server/ServerSettingsTab';
 
+/**
+ *
+ */
 @provider(ClipmakerSettingsController, ClipmakerSettingsStore)
 @observer
 /** */

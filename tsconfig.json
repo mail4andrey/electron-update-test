@@ -2,19 +2,23 @@
 	"compilerOptions": {
 		"jsx": "react",
 		"allowJs": true,
-		"module": "es2015",
+		"module": "es6",
 		"skipLibCheck": true,
 		"esModuleInterop": true,
 		"noImplicitAny": true,
 		"sourceMap": true,
+		// "baseUrl": ".",
 		"baseUrl": "./src",
 		"outDir": "dist",
 		"moduleResolution": "node",
 		"resolveJsonModule": true,
-		// "paths": {
-		// 	"*": ["node_modules/*"]
-		// },
+		"paths": {
+			"*": ["node_modules/*"]
+		},
 		"experimentalDecorators": true,
+		// "lib": [
+		//   "es2019","DOM", "DOM.Iterable", "ScriptHost"
+		// ],
 		"strict": true,
 		"strictNullChecks": true,
 		"strictPropertyInitialization": true,
@@ -25,21 +29,25 @@
 			// "webpack-env",
 			"node"
 		],
-		"typeRoots": [
-			"node_modules/@types",
-			"src/@types",
-			"src/src-front/@types"
-		],
-		"paths": {
-			"~/*": [
-				"*"
-			]
-		},
+		// "typeRoots": [
+		// 	"node_modules/@types",
+		// 	"src/@types",
+		// 	"src/src-front/@types"
+		// ],
+		// "paths": {
+		// 	"~/*": [
+		// 		"*"
+		// 	]
+		// },
 		"target": "es6",
-		"lib": [ "es2019", "DOM", "ES6" ,"DOM.Iterable", "ScriptHost"],
-		"skipDefaultLibCheck": true,
+		"lib": [ "es2019", "DOM", "ES6", "DOM.Iterable", "ScriptHost"],
+		// "lib": [ "es2019", "DOM", "ES6" ,"DOM.Iterable", "ScriptHost"],
+		// "skipDefaultLibCheck": true,
 	},
 	"include": [
 		"src/**/*"
-	]
+	],
+	// "exclude": [
+	//   "./node_modules/**/*"
+	// ]
 }

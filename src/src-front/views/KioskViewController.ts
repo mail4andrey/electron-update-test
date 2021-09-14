@@ -2,24 +2,25 @@
 import * as LocalStorage from 'local-storage';
 import { inject } from 'react-ioc';
 
-import { DesignSizeEnum } from './DesignSizeEnum';
-import { GroupByEnum } from './GroupByEnum';
-import { KioskSettingsLocalStorage, LanguageSettingsLocalStorage } from './KioskSettingsLocalStorage';
+import type { DesignSizeEnum } from './DesignSizeEnum';
+import type { GroupByEnum } from './GroupByEnum';
+import type { KioskSettingsLocalStorage, LanguageSettingsLocalStorage } from './KioskSettingsLocalStorage';
 import { KioskViewFilesViewModel, KioskViewFileViewModel } from './KioskViewFileViewModel';
-import { KioskViewItemEventProps } from './KioskViewItemEventProps';
+import type { KioskViewItemEventProps } from './KioskViewItemEventProps';
 import { KioskViewStore } from './KioskViewStore';
-import { LanguageEnum } from './LanguageEnum';
-import { VideoItemSizeEnum } from './SizeEnum';
-import { SortOrderEnum } from './SortOrderEnum';
+import type { LanguageEnum } from './LanguageEnum';
+import type { VideoItemSizeEnum } from './SizeEnum';
+import type { SortOrderEnum } from './SortOrderEnum';
 
-import { ITextFieldChangeEventProps } from '../../elements/TextField';
+import type { PrintSendingItemModel } from '../../applications/kiosk/settings/PrintSendingItemModel';
+import type { ITextFieldChangeEventProps } from '../../elements/TextField';
 import { EmailProxy } from '../../helpers/EmailProxy';
 import { PrintProxy } from '../../helpers/PrintProxy';
-import { ITimer, Timer } from '../../helpers/Timer';
-import { PrintSendingItemModel } from '../../applications/kiosk/settings/PrintSendingItemModel';
+import type { ITimer } from '../../helpers/Timer';
+import { Timer } from '../../helpers/Timer';
 import { UrlHelper } from '../helpers/UrlHelper';
-import { PathSourceFileModel } from '../models/PathSourceFileModel';
-import { PathSourceFilesModel } from '../models/PathSourceFilesModel';
+import type { PathSourceFileModel } from '../models/PathSourceFileModel';
+import type { PathSourceFilesModel } from '../models/PathSourceFilesModel';
 
 
 /** */
@@ -39,14 +40,14 @@ export class KioskViewController {
 	/** */
 	public init = async (): Promise<void> => {
 		this.store.loaded = false;
-		const localSettings = LocalStorage.get<KioskSettingsLocalStorage>('local-settings') as KioskSettingsLocalStorage|undefined;
+		const localSettings = LocalStorage.get<KioskSettingsLocalStorage>('local-settings') as KioskSettingsLocalStorage | undefined;
 		this.store.groupBy = localSettings?.groupBy;
 		this.store.currentItemSize = localSettings?.size;
 		this.store.sortOrder = localSettings?.sortOrder;
 		this.store.iconSize = localSettings?.iconSize;
 
-		const languageSettings = LocalStorage.get<LanguageSettingsLocalStorage>('language-settings') as LanguageSettingsLocalStorage|undefined;
-		this.store.language = languageSettings?.language;
+		const languageSettings = LocalStorage.get<LanguageSettingsLocalStorage>('language-settings');
+		this.store.language = languageSettings.language;
 
 		await this.loadFiles();
 		this.store.loaded = true;
@@ -132,7 +133,7 @@ export class KioskViewController {
 			sortOrder: this.store.sortOrder,
 			language: this.store.language,
 			groupBy: this.store.groupBy,
-			iconSize: this.store.iconSize,
+			iconSize: this.store.iconSize
 		} as KioskSettingsLocalStorage;
 		LocalStorage.set('local-settings', data);
 	}

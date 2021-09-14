@@ -32,7 +32,7 @@ export interface ITextFieldProps {
 	// endAdornment?: React.ReactNode;
 
 	/** Дизайн ввода */
-	variant?: 'filled' | 'outlined';
+	variant?: 'standard';
 
 	/** event.target.value (string) */
 	onChange?: (event: ITextFieldChangeEventProps) => void;

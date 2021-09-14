@@ -1,6 +1,6 @@
 import * as nodemailer from 'nodemailer';
 
-import { EmailSendingModel } from '../applications/kiosk/settings/EmailSendingModel';
+import type { EmailSendingModel } from '../applications/kiosk/settings/EmailSendingModel';
 
 /** */
 export class EmailHelper {
@@ -47,8 +47,8 @@ export class EmailHelper {
 			// console.log('verify', options);
 			// await transporter.verify();
 			console.log('Message Sending', options);
-			const info = await transporter.sendMail(options) as {response: string;};
-			console.log('Message Sent', info.response);
+			const info = await transporter.sendMail(options);// as {response: string;};
+			console.log('Message Sent');// , info.response);
 		} catch (error) {
 			console.error(`error: ${error}`);
 			// throw error;

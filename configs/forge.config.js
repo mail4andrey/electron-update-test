@@ -41,20 +41,28 @@ module.exports = {
 			[
 				"@electron-forge/plugin-webpack",
 				{
-					"mainConfig": "./webpack.main.common.js",
+					"mainConfig": "./webpack.main.config.js",
 					// "mainConfig": "./webpack.main." + process.env.APPLICATION + ".js",
 					"renderer": {
 						"config": "./webpack.renderer.config.js",
 						"entryPoints": [
 							{
 								"html": "./src/index.html",
-								"js": "./src/applications/" + process.env.APPLICATION + "/renderer.tsx",
+								"js": "./src/renderer-" + process.env.APPLICATION + ".ts",
+								"js0": "./src/renderer.ts",
+								"js1": "./src/applications/" + process.env.APPLICATION + "/renderer.tsx",
 								"name": "main_window"
 							}
 						]
 					}
 				}
 			]
+			// [
+			// 	'@electron-forge/plugin-electronegativity',
+			// 	{
+			// 		isSarif: true
+			// 	}
+			// ]
 		]
 	// };
 };

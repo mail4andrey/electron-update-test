@@ -5,17 +5,17 @@ import { inject } from 'react-ioc';
 import { ClipmakerSettingsModel } from './ClipmakerSettingsModel';
 import { ClipmakerSettingsStore } from './ClipmakerSettingsStore';
 import { ClipmakerSettingsViewModel } from './ClipmakerSettingsViewModel';
-import { GoProSettingsModel } from './tabs/goPro/GoProSettingsModel';
-import { PathSourcesSettingsModel } from './tabs/pathSources/PathSourcesSettingsModel';
-import { VideoSettingsModel } from './tabs/video/VideoSettingsModel';
+import type { GoProSettingsModel } from './tabs/goPro/GoProSettingsModel';
+import type { PathSourcesSettingsModel } from './tabs/pathSources/PathSourcesSettingsModel';
+import type { VideoSettingsModel } from './tabs/video/VideoSettingsModel';
 
 import { ApplicationSettingsController } from '../../../application/ApplicationSettingsController';
-import { ISelectChangeEventProps } from '../../../elements/Select';
-import { ITextFieldChangeEventProps } from '../../../elements/TextField';
+import type { ISelectChangeEventProps } from '../../../elements/Select';
+import type { ITextFieldChangeEventProps } from '../../../elements/TextField';
 import { MapperHelper } from '../../../helpers/MapperHelper';
-import { DesignSettingsModel } from '../../../src-front/models/DesignSettingsModel';
-import { LanguageSettingsLocalStorage } from '../../../src-front/views/KioskSettingsLocalStorage';
-import { ServerSettingsModel } from '../../base/settings/tabs/server/ServerSettingsModel';
+import type { DesignSettingsModel } from '../../../src-front/models/DesignSettingsModel';
+import type { LanguageSettingsLocalStorage } from '../../../src-front/views/KioskSettingsLocalStorage';
+import type { ServerSettingsModel } from '../../base/settings/tabs/server/ServerSettingsModel';
 
 
 /** */
@@ -28,7 +28,7 @@ export class ClipmakerSettingsController {
 	/** */
 	public loadSettings = (): void => {
 		// const localSettings = LocalStorage.get<KioskSettingsLocalStorage>('local-settings') as KioskSettingsLocalStorage|undefined;
-		const languageSettings = LocalStorage.get<LanguageSettingsLocalStorage>('language-settings') as LanguageSettingsLocalStorage|undefined;
+		const languageSettings = LocalStorage.get<LanguageSettingsLocalStorage>('language-settings') as LanguageSettingsLocalStorage | undefined;
 		this.store.language = languageSettings?.language;
 
 		const settings = this.settingsСontroller.loadDefaultSettings();

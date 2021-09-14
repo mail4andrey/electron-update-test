@@ -2,18 +2,16 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Kiosk - Administration</title>
+    <title>Administration</title>
     
     <link rel="icon" href="/content/favicon.ico" />
+    <!-- <link rel="icon" href="./favicon.ico" /> -->
     <!-- <link rel="icon" href="%PUBLIC_URL%/favicon.ТТР  ico" /> -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
     <meta
       name="Kiosk (SelfieBox)"
-      content="Web site created using create-react-app"
     />
-    <!-- <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" /> -->
     <link rel="apple-touch-icon" href="/content/logo192.png" />
     <link rel="manifest" href="/content/manifest.json" />
     <!-- <style>
@@ -100,49 +98,5 @@
 			</div>
 		</div>
     </div>
-    <!-- We are using node <script>document.write(process.versions.node)</script>,
-    Chrome <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>. -->
-    <!-- <div id="notification" class="hidden">
-      <p id="message"></p>
-      <button id="close-button" onClick="closeNotification()">
-        Close
-      </button>
-      <button id="restart-button" onClick="restartApp()" class="hidden">
-        Restart
-      </button>
-    </div> -->
-    <!-- <script>
-      const { ipcRenderer } = require('electron');
-      const version = document.getElementById('version');
-      
-      ipcRenderer.send('app_version');
-      ipcRenderer.on('app_version', (event, arg) => {
-        ipcRenderer.removeAllListeners('app_version');
-        version.innerText = 'Version ' + arg.version;
-      });
-
-      const notification = document.getElementById('notification');
-      const message = document.getElementById('message');
-      const restartButton = document.getElementById('restart-button');
-      ipcRenderer.on('update_available', () => {
-        ipcRenderer.removeAllListeners('update_available');
-        message.innerText = 'A new update is available. Downloading now...';
-        notification.classList.remove('hidden');
-      });
-      ipcRenderer.on('update_downloaded', () => {
-        ipcRenderer.removeAllListeners('update_downloaded');
-        message.innerText = 'Update Downloaded. It will be installed on restart. Restart now?';
-        restartButton.classList.remove('hidden');
-        notification.classList.remove('hidden');
-      });
-
-      function closeNotification() {
-        notification.classList.add('hidden');
-      }
-      function restartApp() {
-        ipcRenderer.send('restart_app');
-      }
-    </script> -->
   </body>
 </html>

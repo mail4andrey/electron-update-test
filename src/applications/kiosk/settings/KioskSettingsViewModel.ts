@@ -1,10 +1,10 @@
 import { observable } from 'mobx';
 
+import { KioskSettingsModel } from './KioskSettingsModel';
+import { ServerSettingsViewModel } from './tabs/-server/ServerSettingsModel';
 import { DesignSettingsViewModel } from './tabs/design/DesignSettingsModel';
 import { EmailSettingsViewModel } from './tabs/email/EmailSettingsViewModel';
-import { KioskSettingsModel } from './KioskSettingsModel';
-import { PrintSettingsModel } from './tabs/print/PrintSettingsModel';
-import { ServerSettingsViewModel } from './tabs/server/ServerSettingsModel';
+import type { PrintSettingsModel } from './tabs/print/PrintSettingsModel';
 
 /** Можель настроек приложения */
 export class KioskSettingsViewModel extends KioskSettingsModel {

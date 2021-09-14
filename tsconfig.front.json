@@ -1,8 +1,17 @@
 {
 	"compilerOptions": {
+
+		// "target": "es6",
+		// "module": "commonjs",
+		// "moduleResolution": "node",
+		// "noResolve": false,
+		// "noImplicitAny": false,
+		// "removeComments": true,
+		
 		"jsx": "react",
 		"allowJs": true,
 		"module": "es2015",
+		// "module": "es6",
 		"skipLibCheck": true,
 		"esModuleInterop": true,
 		"noImplicitAny": true,
@@ -41,5 +50,8 @@
 	"include": [
 		"src/src-front/**/*",
 		"src/elements/**/*"
-	]
+	],
+	// "exclude": [
+	//   "./node_modules/**/*"
+	// ]
 }

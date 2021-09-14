@@ -1,21 +1,21 @@
 /** Модель настроек приложения */
-
-export interface DesignSettingsModel {
+export class DesignSettingsModel {
 	/** */
-	titleFrontPage?: string;
-	/** */
-	background?: string;
+	public titleFrontPage?: string;
 
 	/** */
-	backgroundToolbar?: string;
+	public background?: string;
 
 	/** */
-	backgroundGroupName?: string;
+	public backgroundToolbar?: string;
 
 	/** */
-	backgroundFileCard?: string;
+	public backgroundGroupName?: string;
 
 	/** */
-	iconColor?: string;
+	public backgroundFileCard?: string;
+
+	/** */
+	public iconColor?: string;
 
 }
