@@ -1,3 +1,4 @@
+import { remote } from 'electron';
 
 import fs from 'fs';
 import path from 'path';
@@ -7,6 +8,14 @@ import { PathSourceFilesModel } from '../src-front/models/PathSourceFilesModel';
 
 /** */
 export class FilesHelper {
+	/** aa */
+	public static getUserFolder(subFolder: string, app?: Electron.App): string {
+		const application = app ?? remote.app;
+		const userData = application.getPath('userData');
+		const folder = path.join(userData, subFolder);
+		return folder;
+	}
+
 	/** */
 	public static getFiles(directories?: string[]): PathSourceFilesModel[] {
 		if (!directories) {
@@ -15,6 +24,10 @@ export class FilesHelper {
 
 		const result: PathSourceFilesModel[] = [];
 		for (const dirname of directories) {
+			if (!dirname) {
+				continue;
+			}
+
 			const files = fs.readdirSync(dirname, { withFileTypes: true })
 				.filter((item: fs.Dirent) => !item.isDirectory())
 				.map((item: fs.Dirent) => item.name);

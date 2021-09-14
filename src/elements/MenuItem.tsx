@@ -3,7 +3,8 @@ import React from 'react';
 
 /** Свойства кнопки */
 export interface IMenuItemProps {
-	value?: string;
+	value?: string | ReadonlyArray<string> | number;
+		// value?: string;
 }
 /** Кнопка */
 export class MenuItem extends React.PureComponent<IMenuItemProps> {

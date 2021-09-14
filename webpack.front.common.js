@@ -1,9 +1,10 @@
 const path = require('path');
 const webpack = require('webpack');
 const CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+// const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+// const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 /** Общие настройки webpack */
 module.exports = env => {
@@ -23,27 +24,32 @@ module.exports = env => {
 		mode: buildMode,
 		context: path.resolve(__dirname),
 		stats: {
-			modules: false
+			modules: false,
+			chunks: false,
+			assets: false,
+			version: false,
+			timings: false,
+			logging: false,
+			hash: false
 		},
-		/** Точка входа приложения */
 		entry: {
-			main: ['core-js', './src/src-front/' + process.env.APPLICATION + '/boot.tsx']
+			main: ['core-js', './src/src-front/applications/' + process.env.APPLICATION + '/boot.tsx']
+			// main: ['core-js', './src/src-front/' + process.env.APPLICATION + '/boot.tsx']
 		},
-		/** Точка входа приложения */
-		// entry: {
-		// 	main: ['core-js', './src/src-front/boot.tsx']
-		// 	// main: ['core-js', 'react-hot-loader/patch', './src/boot.tsx']
-		// },
 		resolve: {
 			extensions: ['.js', '.jsx', '.ts', '.tsx'],
 			modules: ['./src/src-front','./src/elements', 'node_modules'],
-			// alias: { 'react-dom': '@hot-loader/react-dom'  }
+			// alias: { 'react-dom': '@hot-loader/react-dom'  },
+			// fallback: {
+			// 	fs: false,
+			// 	"os": require.resolve("os-browserify/browser")
+			// },
+			// plugins: [new TsconfigPathsPlugin({ configFile: "./tsconfig.front.json" })]
 		},
 		output: {
 			path: path.resolve(__dirname, 'dist-front'),
 			filename: 'front.js',
 			publicPath: publicPath
-			// publicPath: ''
 		},
 		node: {
 			fs: 'empty'
@@ -77,6 +83,35 @@ module.exports = env => {
 				// 	}],
 				// 	// exclude: /node_modules/,
 				// },
+				
+				// {
+				// 	test: /\.tsx?$/,
+				// 	use: 'ts-loader',
+				// 	exclude: /node_modules/,
+				// },
+				// {
+				// 	test: /\.(ts|tsx)?$/,
+				// 	// include: /src/,
+				// 	include: [
+				// 		path.resolve(__dirname, 'src/src-front'),
+				// 		path.resolve(__dirname, 'src/elements'),
+				// 		path.resolve(__dirname, 'src/helpers'),
+				// 	],
+				// 	loader: 'awesome-typescript-loader',
+				// 	options: {
+				// 		configFileName: "tsconfig.front.json"
+				// 	}
+				// },
+				// {
+				// 	test: /\.(ts|tsx)?$/,
+				// 	use: [{
+				// 		loader: 'ts-loader',
+				// 		options: {
+				// 			configFile: "tsconfig.front.json"
+				// 		}
+				// 	}],
+				// 	exclude: /node_modules/,
+				// },
 				{
 					test: /\.(ts|tsx)?$/,
 					// include: /src/,
@@ -89,6 +124,7 @@ module.exports = env => {
 					options: {
 						configFileName: "tsconfig.front.json"
 					}
+					// exclude: /node_modules/
 				},
 				{
 					test: /\.(png|woff|woff2|eot|ttf|jpg|jpeg|gif)$/,

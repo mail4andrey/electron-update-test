@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IBasicProps } from './common/props/IBasicProps';
+import type { IBasicProps } from './common/props/IBasicProps';
 
 /** Основное окно приложения */
 export class Layout extends React.PureComponent<IBasicProps> {
@@ -16,7 +16,7 @@ export class Layout extends React.PureComponent<IBasicProps> {
 	public render(): React.ReactNode {
 		return (
 			<div
-				className='background-whitesmoke'
+				className='background-whitesmoke min-height-100vh'
 			>
 				{this.props.children}
 			</div>

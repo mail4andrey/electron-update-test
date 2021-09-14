@@ -2,7 +2,7 @@ import { observable } from 'mobx';
 
 import { ClipmakerSettingsViewModel } from './ClipmakerSettingsViewModel';
 
-import { LanguageEnum } from '../../../src-front/views/LanguageEnum';
+import { LanguageEnum } from '../../../src-front/models/LanguageEnum';
 
 
 /** */

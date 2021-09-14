@@ -1,16 +1,17 @@
 import { observable } from 'mobx';
 
-// import { EmailSettingsViewModel } from './tabs/email/EmailSettingsViewModel';
 import { ClipmakerSettingsModel } from './ClipmakerSettingsModel';
-// import { PrintSettingsModel } from './PrintSettingsModel';
-import { DesignSettingsViewModel } from './tabs/design/DesignSettingsModel';
-import { GoProSettingsViewModel } from './tabs/goPro/GoProSettingsModel';
-import { PathSourcesSettingsViewModel } from './tabs/pathSources/PathSourcesSettingsModel';
-import { VideoSettingsViewModel } from './tabs/video/VideoSettingsModel';
+import { DesignSettingsViewModel } from '../../base/settings/tabs/design/DesignSettingsViewModel';
+import { GoProSettingsViewModel } from '../../base/settings/tabs/goPro/GoProSettingsModel';
+import { IntroOutroSettingsViewModel } from '../../base/settings/tabs/introOutro/IntroOutroSettingsModel';
+import { PathSourcesSettingsViewModel } from '../../base/settings/tabs/pathSources/PathSourcesSettingsModel';
+import { VideoSettingsViewModel } from '../../base/settings/tabs/video/VideoSettingsModel';
 
 import { ServerSettingsViewModel } from '../../base/settings/tabs/server/ServerSettingsModel';
+import { OverlaySettingsViewModel } from '../../base/settings/tabs/overlay/OverlaySettingsModel';
+import { AudioSettingsViewModel } from '../../base/settings/tabs/audio/AudioSettingsModel';
 
-/** Можель настроек приложения */
+/** Модель настроек приложения */
 export class ClipmakerSettingsViewModel extends ClipmakerSettingsModel {
 	@observable
 	/** */
@@ -32,20 +33,15 @@ export class ClipmakerSettingsViewModel extends ClipmakerSettingsModel {
 	/** */
 	public videoSettings = new VideoSettingsViewModel();
 
-	// // @observable
-	// /** */
-	// public emailSettings = new EmailSettingsViewModel();
-
-	// // @observable
-	// /** */
-	// public printSettings = {} as PrintSettingsModel;
-
-	/** Патерн выборки файлов из папок */
-	// public filesPattern = '*';
-
+	@observable
 	/** */
-	public viewSetting?: string;
+	public introOutroSettings = new IntroOutroSettingsViewModel();
 
+	@observable
 	/** */
-	public theme?: string;
+	public overlaySettings = new OverlaySettingsViewModel();
+
+	@observable
+	/** */
+	public audioSettings = new AudioSettingsViewModel();
 }

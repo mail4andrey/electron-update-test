@@ -14,8 +14,9 @@ import { ISelectChangeEventProps } from '../../../elements/Select';
 import { ITextFieldChangeEventProps } from '../../../elements/TextField';
 import { MapperHelper } from '../../../helpers/MapperHelper';
 import { DesignSettingsModel } from '../../../src-front/models/DesignSettingsModel';
-import { LanguageSettingsLocalStorage } from '../../../src-front/views/KioskSettingsLocalStorage';
+import { LanguageSettingsLocalStorage } from "../../../src-front/models/LanguageSettingsLocalStorage";
 import { ServerSettingsModel } from '../../base/settings/tabs/server/ServerSettingsModel';
+import { LocalStorageConsts } from '../../../src-front/const/LocalStorageConsts';
 
 
 /** */
@@ -27,8 +28,7 @@ export class KioskSettingsController {
 
 	/** */
 	public loadSettings = (): void => {
-		// const localSettings = LocalStorage.get<KioskSettingsLocalStorage>('local-settings') as KioskSettingsLocalStorage|undefined;
-		const languageSettings = LocalStorage.get<LanguageSettingsLocalStorage>('language-settings') as LanguageSettingsLocalStorage|undefined;
+		const languageSettings = LocalStorage.get<LanguageSettingsLocalStorage>(LocalStorageConsts.languageSettings) as LanguageSettingsLocalStorage|undefined;
 		this.store.language = languageSettings?.language;
 
 		const settings = this.settingsСontroller.loadDefaultSettings<KioskSettingsModel>();

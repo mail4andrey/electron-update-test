@@ -1,5 +1,15 @@
 /** */
-export class ArrayHelper {
+export class ArrayHelper {/**
+	/**
+	* Преобразует массив строк в одну строку через разделитель.
+	* По умолчанию разделитель - запятая
+	*/
+	public static arrayToString(array: string[], delimiter = ', '): string {
+		if (array.length === 0) {
+			return '';
+		}
+		return array.reduce((a: string, b: string) => `${a}${delimiter}${b}`);
+	}
 
 	/** */
 	public static groupBy<T, K>(list: T[], getKey: (item: T) => K): Map<K, T[]> {

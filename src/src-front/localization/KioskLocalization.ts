@@ -2,7 +2,7 @@
 /* eslint-disable max-classes-per-file */
 import plural from 'plural-ru';
 
-import { LanguageEnum } from '../views/LanguageEnum';
+import { LanguageEnum } from '../models/LanguageEnum';
 
 /** */
 export class KioskLocalization {
@@ -79,5 +79,5 @@ export class KioskLocalization {
 	public static fileSizeInMb = (filesize?: number): string => `${((filesize ?? 0) / 1024 / 1024).toFixed(2)} Mb`;
 
 	/** */
-	public static fileResolution = (width: number, height: number): string => `${width}:${height}`;
+	public static fileResolution = (width?: number, height?: number): string => width && height ? `${width}:${height}` : '';
 }

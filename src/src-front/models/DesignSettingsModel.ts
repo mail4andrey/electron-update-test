@@ -1,21 +1,20 @@
 /** Модель настроек приложения */
 export class DesignSettingsModel {
 	/** */
-	public titleFrontPage?: string;
+	public titleFrontPage?: string = '';
 
 	/** */
-	public background?: string;
+	public background?: string = 'white';
 
 	/** */
-	public backgroundToolbar?: string;
+	public backgroundToolbar?: string = 'gray';
 
 	/** */
-	public backgroundGroupName?: string;
+	public backgroundGroupName?: string = 'gray';
 
 	/** */
-	public backgroundFileCard?: string;
+	public backgroundFileCard?: string = 'gray';
 
 	/** */
-	public iconColor?: string;
-
+	public iconColor?: string = 'gray';
 }

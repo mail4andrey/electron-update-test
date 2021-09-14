@@ -1,14 +1,14 @@
 import { observable } from 'mobx';
 
 /** Модель настроек приложения */
-export interface ServerSettingsModel {
+export class ServerSettingsModel {
 	/** */
-	port?: number;
+	public port?: number = Number(process.env.DEFAULTPORT);
 }
 
 /** Модель настроек приложения */
-export class ServerSettingsViewModel implements ServerSettingsModel {
+export class ServerSettingsViewModel extends ServerSettingsModel {
 	@observable
 	/** */
-	public port?: number;
+	public port?: number = Number(process.env.DEFAULTPORT);
 }

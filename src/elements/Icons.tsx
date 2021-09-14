@@ -37,6 +37,20 @@ import {
 	PictureInPicture as UiPictureInPicture,
 	MovieFilter as UiMovieFilter,
 	Audiotrack as UiAudiotrack,
+	ExpandMore as UiExpandMore,
+	ArrowDownward as UiArrowDownward,
+	ArrowUpward as UiArrowUpward,
+	Delete as UiDelete,
+	PhotoCamera as UiPhotoCamera,
+	Videocam as UiVideocam,
+	PowerSettingsNew as UiPowerSettingsNew,
+	BatteryChargingFull as UiBatteryChargingFull,
+	BatteryFull as UiBatteryFull,
+	Battery50 as UiBattery50,
+	Battery20 as UiBattery20,
+	BatteryAlert as UiBatteryAlert,
+	ZoomIn as UiZoomIn,
+	OpenInNew as UiOpenInNew,
 } from '@material-ui/icons';
 import React from 'react';
 
@@ -484,6 +498,167 @@ export class Audiotrack extends React.PureComponent<IIconProps> {
 	public render(): React.ReactNode {
 		return (
 			<UiAudiotrack
+				{...this.props}
+			/>
+		);
+	}
+}
+
+/** */
+export class ExpandMore extends React.PureComponent<IIconProps> {
+	/** Отображение */
+	public render(): React.ReactNode {
+		return (
+			<UiExpandMore
+				{...this.props}
+			/>
+		);
+	}
+}
+
+/** */
+export class ArrowUpward extends React.PureComponent<IIconProps> {
+	/** Отображение */
+	public render(): React.ReactNode {
+		return (
+			<UiArrowUpward
+				{...this.props}
+			/>
+		);
+	}
+}
+
+/** */
+export class ArrowDownward extends React.PureComponent<IIconProps> {
+	/** Отображение */
+	public render(): React.ReactNode {
+		return (
+			<UiArrowDownward
+				{...this.props}
+			/>
+		);
+	}
+}
+
+/** */
+export class Delete extends React.PureComponent<IIconProps> {
+	/** Отображение */
+	public render(): React.ReactNode {
+		return (
+			<UiDelete
+				{...this.props}
+			/>
+		);
+	}
+}
+
+
+/** */
+export class PhotoCamera extends React.PureComponent<IIconProps> {
+	/** Отображение */
+	public render(): React.ReactNode {
+		return (
+			<UiPhotoCamera
+				{...this.props}
+			/>
+		);
+	}
+}
+/** */
+export class Videocam extends React.PureComponent<IIconProps> {
+	/** Отображение */
+	public render(): React.ReactNode {
+		return (
+			<UiVideocam
+				{...this.props}
+			/>
+		);
+	}
+}
+/** */
+export class PowerSettingsNew extends React.PureComponent<IIconProps> {
+	/** Отображение */
+	public render(): React.ReactNode {
+		return (
+			<UiPowerSettingsNew
+				{...this.props}
+			/>
+		);
+	}
+}
+/** */
+export class BatteryChargingFull extends React.PureComponent<IIconProps> {
+	/** Отображение */
+	public render(): React.ReactNode {
+		return (
+			<UiBatteryChargingFull
+				{...this.props}
+			/>
+		);
+	}
+}
+/** */
+export class BatteryFull extends React.PureComponent<IIconProps> {
+	/** Отображение */
+	public render(): React.ReactNode {
+		return (
+			<UiBatteryFull
+				{...this.props}
+			/>
+		);
+	}
+}
+
+/** */
+export class Battery50 extends React.PureComponent<IIconProps> {
+	/** Отображение */
+	public render(): React.ReactNode {
+		return (
+			<UiBattery50
+				{...this.props}
+			/>
+		);
+	}
+}
+/** */
+export class Battery20 extends React.PureComponent<IIconProps> {
+	/** Отображение */
+	public render(): React.ReactNode {
+		return (
+			<UiBattery20
+				{...this.props}
+			/>
+		);
+	}
+}
+/** */
+export class BatteryAlert extends React.PureComponent<IIconProps> {
+	/** Отображение */
+	public render(): React.ReactNode {
+		return (
+			<UiBatteryAlert
+				{...this.props}
+			/>
+		);
+	}
+}
+/** */
+export class ZoomIn extends React.PureComponent<IIconProps> {
+	/** Отображение */
+	public render(): React.ReactNode {
+		return (
+			<UiZoomIn
+				{...this.props}
+			/>
+		);
+	}
+}
+/** */
+export class OpenInNew extends React.PureComponent<IIconProps> {
+	/** Отображение */
+	public render(): React.ReactNode {
+		return (
+			<UiOpenInNew
 				{...this.props}
 			/>
 		);

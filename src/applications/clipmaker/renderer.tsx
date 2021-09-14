@@ -8,7 +8,7 @@ import { MemoryRouter, Route } from 'react-router-dom';
 import { ClipmakerSettingsComponent } from './settings/ClipmakerSettingsComponent';
 
 import { Layout } from '../../Layout';
-import { ApplicationFront } from '../../src-front/ApplicationFront';
+import { ClipmakerFront } from '../../src-front/applications/clipmaker/ClipmakerFront';
 import { MainWindowPage } from '../MainWindowPage';
 
 /** */
@@ -18,7 +18,7 @@ export class Сlipmaker {
 		/** */
 		const getLayout = (props: RouteComponentProps): React.ReactNode => (
 			<MainWindowPage {...props}>
-				<ApplicationFront/>
+				<ClipmakerFront/>
 			</MainWindowPage>
 		);
 
@@ -27,7 +27,7 @@ export class Сlipmaker {
 			(
 				<Layout>
 					<MemoryRouter>
-						<div className="clipmaker">
+						<div className=''>
 							<Route
 								path='/'
 								exact={true}

@@ -2,7 +2,7 @@ import { observable } from 'mobx';
 
 import { KioskSettingsViewModel } from './KioskSettingsViewModel';
 
-import { LanguageEnum } from '../../../src-front/views/LanguageEnum';
+import { LanguageEnum } from '../../../src-front/models/LanguageEnum';
 
 
 /** */

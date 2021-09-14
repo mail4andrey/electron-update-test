@@ -15,8 +15,8 @@ import { MenuItem } from '../../../../../elements/MenuItem';
 import { ISelectChangeEventProps, Select } from '../../../../../elements/Select';
 import { Skeleton } from '../../../../../elements/Skeleton';
 import { Typography } from '../../../../../elements/Typography';
-import { PrintProxy } from '../../../../../helpers/PrintProxy';
-import { LanguageEnum } from '../../../../../src-front/views/LanguageEnum';
+import { PrintProxy } from '../../../../../helpers/proxy/PrintProxy';
+import { LanguageEnum } from '../../../../../src-front/models/LanguageEnum';
 
 
 /** */

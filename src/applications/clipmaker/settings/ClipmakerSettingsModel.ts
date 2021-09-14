@@ -1,17 +1,24 @@
-import { GoProSettingsModel } from './tabs/goPro/GoProSettingsModel';
-import { PathSourcesSettingsModel } from './tabs/pathSources/PathSourcesSettingsModel';
-import { VideoSettingsModel } from './tabs/video/VideoSettingsModel';
+import { GoProSettingsModel } from '../../base/settings/tabs/goPro/GoProSettingsModel';
+import { PathSourcesSettingsModel } from '../../base/settings/tabs/pathSources/PathSourcesSettingsModel';
+import { VideoSettingsModel } from '../../base/settings/tabs/video/VideoSettingsModel';
 
 import { DesignSettingsModel } from '../../../src-front/models/DesignSettingsModel';
 import { BaseApplicationSettingsModel } from '../../base/settings/BaseApplicationSettingsModel';
+import { ServerSettingsModel } from '../../base/settings/tabs/server/ServerSettingsModel';
+import { IntroOutroSettingsModel } from '../../base/settings/tabs/introOutro/IntroOutroSettingsModel';
+import { OverlaySettingsModel } from '../../base/settings/tabs/overlay/OverlaySettingsModel';
+import { AudioSettingsModel } from '../../base/settings/tabs/audio/AudioSettingsModel';
 
 /** Модель настроек приложения */
 export class ClipmakerSettingsModel extends BaseApplicationSettingsModel {
-	/** Патерн выборки файлов из папок */
-	public filesPattern?: string;
-
 	/** */
 	public pathSources?: PathSourcesSettingsModel;
+
+	/** */
+	public designSettings?: DesignSettingsModel;
+
+	/** */
+	public serverSettings?: ServerSettingsModel;
 
 	/** */
 	public goProSettings?: GoProSettingsModel;
@@ -20,23 +27,11 @@ export class ClipmakerSettingsModel extends BaseApplicationSettingsModel {
 	public videoSettings?: VideoSettingsModel;
 
 	/** */
-	// public emailSettings = new EmailSettingsModel();
+	public introOutroSettings?: IntroOutroSettingsModel;
 
 	/** */
-	// public printSettings?: PrintSettingsModel;
+	public overlaySettings?: OverlaySettingsModel;
 
 	/** */
-	public designSettings?: DesignSettingsModel;
-
-	/** */
-	// public serverSettings?: ServerSettingsModel;
-
-	/** */
-	// public language?: LanguageEnum;
-
-	/** */
-	public viewSetting?: string;
-
-	// /** */
-	// public theme?: string;
+	public audioSettings?: AudioSettingsModel;
 }

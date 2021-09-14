@@ -1,13 +1,13 @@
 import { observer } from 'mobx-react';
 import React from 'react';
 
-import { PathSelector } from '../../../../../common/PathSelector';
+import { PathSelectorComponent } from '../../../../../common/PathSelectorComponent';
 import { Button } from '../../../../../elements/Button';
 import { FormControl } from '../../../../../elements/FormControl';
 import { PlaylistAdd } from '../../../../../elements/Icons';
-import { ITextFieldChangeEventProps } from '../../../../../elements/TextField';
+import type { ITextFieldChangeEventProps } from '../../../../../elements/TextField';
 import { Typography } from '../../../../../elements/Typography';
-import { LanguageEnum } from '../../../../../src-front/views/LanguageEnum';
+import type { LanguageEnum } from '../../../../../src-front/models/LanguageEnum';
 import { SettingsLocalization } from '../../SettingsLocalization';
 
 
@@ -39,11 +39,12 @@ export class PathSourceSettingsTab extends React.PureComponent<PathSourcesSettin
 				<div
 					key={index}
 				>
-					<PathSelector
+					<PathSelectorComponent
 						id={index}
 						path={path}
 						removeButtonTitle={SettingsLocalization.pathSourcesTab.pathRemoveButtonTitle(language)}
 						selectButtonTitle={SettingsLocalization.pathSourcesTab.pathSelectButtonTitle(language)}
+						openButtonTitle={SettingsLocalization.pathSourcesTab.pathOpenButtonTitle(language)}
 						disableUpButton={disableUpButton}
 						disableDownButton={disableDownButton}
 						showUpButton={true}
@@ -53,6 +54,7 @@ export class PathSourceSettingsTab extends React.PureComponent<PathSourcesSettin
 						onUpClick={this.props.onPathSourceUp}
 						onDownClick={this.props.onPathSourceDown}
 						onDeleteClick={this.props.onPathSourceDelete}
+						properties={['openDirectory']}
 					/>
 				</div>
 			);

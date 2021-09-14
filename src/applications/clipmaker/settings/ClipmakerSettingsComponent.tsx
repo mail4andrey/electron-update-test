@@ -4,11 +4,12 @@ import { inject, provider } from 'react-ioc';
 
 import { ClipmakerSettingsController } from './ClipmakerSettingsController';
 import { ClipmakerSettingsStore } from './ClipmakerSettingsStore';
-import { SettingsLocalization } from './SettingsLocalization';
-import { DesignSettingsTab } from './tabs/design/DesignSettingsTab';
-import { GoProSettingsTab } from './tabs/goPro/GoProSettingsTab';
-import { PathSourcesSettingsTab } from './tabs/pathSources/PathSourcesSettingsTab';
-import { VideoSettingsTab } from './tabs/video/VideoSettingsTab';
+import { SettingsLocalization } from '../../base/settings/SettingsLocalization';
+import { DesignSettingsTab } from '../../base/settings/tabs/design/DesignSettingsTab';
+import { GoProSettingsTab } from '../../base/settings/tabs/goPro/GoProSettingsTab';
+import { IntroOutroSettingsTab } from '../../base/settings/tabs/introOutro/IntroOutroSettingsTab';
+import { PathSourcesSettingsTab } from '../../base/settings/tabs/pathSources/PathSourcesSettingsTab';
+import { VideoSettingsTab } from '../../base/settings/tabs/video/VideoSettingsTab';
 
 import { BaseRoutedComponent } from '../../../common/BaseRoutedComponent';
 import type { IMainRoutedProps } from '../../../common/props/IMainRoutedProps';
@@ -22,6 +23,8 @@ import { Tab } from '../../../elements/Tab';
 import { TabPanel } from '../../../elements/TabPanel';
 import { Tabs } from '../../../elements/Tabs';
 import { ServerSettingsTab } from '../../base/settings/tabs/server/ServerSettingsTab';
+import { OverlaySettingsTab } from '../../base/settings/tabs/overlay/OverlaySettingsTab';
+import { AudioSettingsTab } from '../../base/settings/tabs/audio/AudioSettingsTab';
 
 /**
  *
@@ -47,32 +50,24 @@ export class ClipmakerSettingsComponent extends BaseRoutedComponent<IMainRoutedP
 
 	/** Отображение */
 	public render(): React.ReactNode {
-
-		const {
-			onPathSourceChange,
-			onDesignSettingsChange,
-			onServerSettingsChange,
-			onGoProSettingsChange,
-			onVideoSettingsChange
-		} = this.controller;
 		const { settings, tabSelected, language } = this.store;
 		return (
 			<div>
 				<OneLine className='padding-left-12px box-sizing-border-box'>
-					<h1>{SettingsLocalization.title(language)}</h1>
+					<h1>{SettingsLocalization.common.title(language)}</h1>
 					<RightContainer className='padding-right-12px'>
 						<ButtonGroup>
 							<Button
 								color='primary'
 								onClick={this.onSaveClick}
 							>
-								{SettingsLocalization.saveButton(language)}
+								{SettingsLocalization.common.saveButton(language)}
 							</Button>
 							<Button
 								color='secondary'
 								onClick={this.onCancelClick}
 							>
-								{SettingsLocalization.cancelButton(language)}
+								{SettingsLocalization.common.cancelButton(language)}
 							</Button>
 						</ButtonGroup>
 					</RightContainer>
@@ -146,17 +141,10 @@ export class ClipmakerSettingsComponent extends BaseRoutedComponent<IMainRoutedP
 						index={0}
 					>
 						<PathSourcesSettingsTab
+							{...settings.pathSources}
+							testPath='directory'
 							language={language}
-							pathSource={settings.pathSources.pathSource}
-							pathTestSource={settings.pathSources.pathTestSource}
-							pathDestination={settings.pathSources.pathDestination}
-							fileNamePattern={settings.pathSources.fileNamePattern}
-							// settings={settings.pathSources}
-							// onPathSourceAdd={onPathSourceAdd}
-							onChange={onPathSourceChange}
-							// onPathSourceUp={onPathSourceUp}
-							// onPathSourceDown={onPathSourceDown}
-							// onPathSourceDelete={onPathSourceDelete}
+							onChange={this.controller.onPathSourceChange}
 						/>
 					</TabPanel>
 					<TabPanel
@@ -166,9 +154,7 @@ export class ClipmakerSettingsComponent extends BaseRoutedComponent<IMainRoutedP
 						<GoProSettingsTab
 							{...settings.goProSettings}
 							language={language}
-							// removeFromGoPro={settings.goProSettings.removeFromGoPro}
-							// showColorStateGoPro={settings.goProSettings.showColorStateGoPro}
-							onChange={onGoProSettingsChange}
+							onChange={this.controller.onGoProSettingsChange}
 						/>
 					</TabPanel>
 					<TabPanel
@@ -178,50 +164,38 @@ export class ClipmakerSettingsComponent extends BaseRoutedComponent<IMainRoutedP
 						<VideoSettingsTab
 							{...settings.videoSettings}
 							language={language}
-							// addThumbnail={settings.videoSettings.addThumbnail}
-							// fadeIn={settings.videoSettings.fadeIn}
-							// fadeInDuration={settings.videoSettings.fadeInDuration}
-							// fadeOut={settings.videoSettings.fadeOut}
-							// fadeOutDuration={settings.videoSettings.fadeInDuration}
-							// ={settings.videoSettings.fitWithin}
-							// ={settings.videoSettings.fps}
-							// ={settings.videoSettings.maxBitrate}
-							// ={settings.videoSettings.renderOn}
-							// ={settings.videoSettings.}
-							// ={settings.videoSettings.}
-							// ={settings.videoSettings.}
-							onChange={onVideoSettingsChange}
+							onChange={this.controller.onVideoSettingsChange}
 						/>
 					</TabPanel>
 					<TabPanel
 						value={tabSelected}
 						index={3}
 					>
-						{/* <PrintSettingsTab
+						<IntroOutroSettingsTab
+							{...settings.introOutroSettings}
 							language={language}
-							settings={settings.printSettings}
-							onChange={onPrintSettingsChange}
-						/> */}
+							onChange={this.controller.onIntroOutroSettingsChange}
+						/>
 					</TabPanel>
 					<TabPanel
 						value={tabSelected}
 						index={4}
 					>
-						{/* <PrintSettingsTab
+						<OverlaySettingsTab
+							{...settings.overlaySettings}
 							language={language}
-							settings={settings.printSettings}
-							onChange={onPrintSettingsChange}
-						/> */}
+							onChange={this.controller.onOverlaySettingsChange}
+						/>
 					</TabPanel>
 					<TabPanel
 						value={tabSelected}
 						index={5}
 					>
-						{/* <PrintSettingsTab
+						<AudioSettingsTab
+							{...settings.audioSettings}
 							language={language}
-							settings={settings.printSettings}
-							onChange={onPrintSettingsChange}
-						/> */}
+							onChange={this.controller.onAudioSettingsChange}
+						/>
 					</TabPanel>
 					<TabPanel
 						value={tabSelected}
@@ -238,15 +212,9 @@ export class ClipmakerSettingsComponent extends BaseRoutedComponent<IMainRoutedP
 						index={7}
 					>
 						<DesignSettingsTab
+							{...settings.designSettings}
 							language={language}
-							titleFrontPage={settings.designSettings.titleFrontPage}
-							// size={settings.designSettings.size}
-							background={settings.designSettings.background}
-							backgroundToolbar={settings.designSettings.backgroundToolbar}
-							backgroundGroupName={settings.designSettings.backgroundGroupName}
-							backgroundFileCard={settings.designSettings.backgroundFileCard}
-							iconColor={settings.designSettings.iconColor}
-							onChange={onDesignSettingsChange}
+							onChange={this.controller.onDesignSettingsChange}
 						/>
 					</TabPanel>
 					<TabPanel
@@ -254,9 +222,9 @@ export class ClipmakerSettingsComponent extends BaseRoutedComponent<IMainRoutedP
 						index={8}
 					>
 						<ServerSettingsTab
+							{...settings.serverSettings}
 							language={language}
-							port={settings.serverSettings.port}
-							onChange={onServerSettingsChange}
+							onChange={this.controller.onServerSettingsChange}
 						/>
 					</TabPanel>
 				</AppBar>

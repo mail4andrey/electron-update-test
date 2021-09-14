@@ -3,6 +3,7 @@ import React from 'react';
 
 /** Свойства кнопки */
 export interface IFormControlLabelProps {
+	className?: string;
 
 	/**
 	 * If `true`, the component appears selected.
@@ -27,7 +28,7 @@ export interface IFormControlLabelProps {
 	/**
 	 * The position of the label.
 	 */
-	labelPlacement?: 'end' | 'start' | 'top' | 'bottom';
+	labelPlacement?: 'bottom' | 'end' | 'start' | 'top';
 	name?: string;
 	/**
 	 * Callback fired when the state is changed.

@@ -133,6 +133,11 @@ export interface ISelectProps {
 	 */
 	variant?: 'standard' | 'outlined' | 'filled';
 
+	/**
+	 * If `true`, the `input` element will be disabled.
+	 */
+	disabled?: boolean;
+
 	className?: string;
 }
 /** Кнопка */

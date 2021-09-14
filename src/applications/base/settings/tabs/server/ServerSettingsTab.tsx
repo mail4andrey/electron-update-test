@@ -8,8 +8,8 @@ import { ServerSettingsModel } from './ServerSettingsModel';
 import { FormControl } from '../../../../../elements/FormControl';
 import { ITextFieldChangeEventProps, TextField } from '../../../../../elements/TextField';
 import { Typography } from '../../../../../elements/Typography';
-import { LanguageEnum } from '../../../../../src-front/views/LanguageEnum';
-import { SettingsLocalization } from '../../../../clipmaker/settings/SettingsLocalization';
+import { LanguageEnum } from '../../../../../src-front/models/LanguageEnum';
+import { SettingsLocalization } from '../../SettingsLocalization';
 
 
 /** */

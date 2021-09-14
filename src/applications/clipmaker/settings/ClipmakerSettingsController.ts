@@ -5,17 +5,21 @@ import { inject } from 'react-ioc';
 import { ClipmakerSettingsModel } from './ClipmakerSettingsModel';
 import { ClipmakerSettingsStore } from './ClipmakerSettingsStore';
 import { ClipmakerSettingsViewModel } from './ClipmakerSettingsViewModel';
-import type { GoProSettingsModel } from './tabs/goPro/GoProSettingsModel';
-import type { PathSourcesSettingsModel } from './tabs/pathSources/PathSourcesSettingsModel';
-import type { VideoSettingsModel } from './tabs/video/VideoSettingsModel';
+import type { GoProSettingsModel } from '../../base/settings/tabs/goPro/GoProSettingsModel';
+import type { IntroOutroSettingsModel } from '../../base/settings/tabs/introOutro/IntroOutroSettingsModel';
+import type { PathSourcesSettingsModel } from '../../base/settings/tabs/pathSources/PathSourcesSettingsModel';
+import type { VideoSettingsModel } from '../../base/settings/tabs/video/VideoSettingsModel';
 
 import { ApplicationSettingsController } from '../../../application/ApplicationSettingsController';
 import type { ISelectChangeEventProps } from '../../../elements/Select';
 import type { ITextFieldChangeEventProps } from '../../../elements/TextField';
 import { MapperHelper } from '../../../helpers/MapperHelper';
 import type { DesignSettingsModel } from '../../../src-front/models/DesignSettingsModel';
-import type { LanguageSettingsLocalStorage } from '../../../src-front/views/KioskSettingsLocalStorage';
+import { LanguageSettingsLocalStorage } from "../../../src-front/models/LanguageSettingsLocalStorage";
 import type { ServerSettingsModel } from '../../base/settings/tabs/server/ServerSettingsModel';
+import { OverlaySettingsModel } from '../../base/settings/tabs/overlay/OverlaySettingsModel';
+import { AudioSettingsModel } from '../../base/settings/tabs/audio/AudioSettingsModel';
+import { LocalStorageConsts } from '../../../src-front/const/LocalStorageConsts';
 
 
 /** */
@@ -27,8 +31,7 @@ export class ClipmakerSettingsController {
 
 	/** */
 	public loadSettings = (): void => {
-		// const localSettings = LocalStorage.get<KioskSettingsLocalStorage>('local-settings') as KioskSettingsLocalStorage|undefined;
-		const languageSettings = LocalStorage.get<LanguageSettingsLocalStorage>('language-settings') as LanguageSettingsLocalStorage | undefined;
+		const languageSettings = LocalStorage.get<LanguageSettingsLocalStorage>(LocalStorageConsts.languageSettings) as LanguageSettingsLocalStorage | undefined;
 		this.store.language = languageSettings?.language;
 
 		const settings = this.settingsСontroller.loadDefaultSettings();
@@ -37,94 +40,46 @@ export class ClipmakerSettingsController {
 
 	/** */
 	public onPathSourceChange = (_event: ITextFieldChangeEventProps, settings: PathSourcesSettingsModel): void => {
-		this.store.settings.pathSources.pathSource = settings.pathSource ?? '';
-		this.store.settings.pathSources.pathTestSource = settings.pathTestSource ?? '';
-		this.store.settings.pathSources.pathDestination = settings.pathDestination ?? '';
-		this.store.settings.pathSources.fileNamePattern = settings.fileNamePattern ?? '';
-		// if (this.store.settings.pathSources && id >= 0) {
-		// 	const { value } = event.target;
-		// 	this.store.settings.pathSources[id] = value;
-		// }
+		MapperHelper.mapValues(settings, this.store.settings.pathSources);
 	};
 
 	/** */
-	// public readonly onPathSourceAdd = (_event: React.MouseEvent<Element, MouseEvent>): void => {
-	// 	if (!this.store.settings.pathSources) {
-	// 		this.store.settings.pathSources = [];
-	// 	}
-	// 	this.store.settings.pathSources.push('');
-	// };
-
-	// /** */
-	// public readonly onPathSourceDelete = (_event: React.MouseEvent<Element, MouseEvent>, id: number): void => {
-	// 	if (this.store.settings.pathSources && id >= 0 && id < this.store.settings.pathSources.length) {
-	// 		this.store.settings.pathSources.splice(id, 1);
-	// 	}
-	// };
-
-	// /** */
-	// public readonly onPathSourceUp = (_event: React.MouseEvent<Element, MouseEvent>, id: number): void => {
-	// 	if (this.store.settings.pathSources && id >= 1 && id < this.store.settings.pathSources.length) {
-	// 		const newValue = this.store.settings.pathSources[id - 1];
-	// 		this.store.settings.pathSources[id - 1] = this.store.settings.pathSources[id];
-	// 		this.store.settings.pathSources[id] = newValue;
-	// 	}
-	// };
-
-	// /** */
-	// public readonly onPathSourceDown = (_event: React.MouseEvent<Element, MouseEvent>, id: number): void => {
-	// 	if (this.store.settings.pathSources && id >= 0 && id < this.store.settings.pathSources.length - 1) {
-	// 		const newValue = this.store.settings.pathSources[id + 1];
-	// 		this.store.settings.pathSources[id + 1] = this.store.settings.pathSources[id];
-	// 		this.store.settings.pathSources[id] = newValue;
-	// 	}
-	// };
-
-	/** */
-	// public readonly onEmailSettingsChange = (_event: ITextFieldChangeEventProps, settings: EmailSettingsModel): void => {
-	// 	this.store.settings.emailSettings = settings;
-	// };
-
-	// /** */
-	// public readonly onPrintSettingsChange = (_event: ISelectChangeEventProps, settings: PrintSettingsModel): void => {
-	// 	this.store.settings.printSettings = settings;
-	// };
-
-	/** */
 	public readonly onDesignSettingsChange = (_event: ISelectChangeEventProps | undefined, settings: DesignSettingsModel): void => {
-		this.store.settings.designSettings.titleFrontPage = settings.titleFrontPage ?? '';
-		this.store.settings.designSettings.background = settings.background ?? 'white';
-		this.store.settings.designSettings.backgroundToolbar = settings.backgroundToolbar ?? 'gray';
-		this.store.settings.designSettings.backgroundGroupName = settings.backgroundGroupName ?? 'gray';
-		this.store.settings.designSettings.backgroundFileCard = settings.backgroundFileCard ?? 'gray';
-		this.store.settings.designSettings.iconColor = settings.iconColor ?? 'gray';
-		// this.store.settings.designSettings.size = settings.size;
+		MapperHelper.mapValues(settings, this.store.settings.designSettings);
 	};
 
 	/** */
 	public readonly onServerSettingsChange = (_event: ISelectChangeEventProps, settings: ServerSettingsModel): void => {
 		MapperHelper.mapValues(settings, this.store.settings.serverSettings);
-		// this.store.settings.serverSettings.port = settings.port;
 	};
 
 	/** */
 	public readonly onGoProSettingsChange = (_event: ISelectChangeEventProps, settings: GoProSettingsModel): void => {
 		MapperHelper.mapValues(settings, this.store.settings.goProSettings);
-		// this.store.settings.goProSettings.removeFromGoPro = settings.removeFromGoPro;
-		// this.store.settings.goProSettings.showColorStateGoPro = settings.showColorStateGoPro;
 	};
 
 	/** */
 	public readonly onVideoSettingsChange = (_event: ISelectChangeEventProps, settings: VideoSettingsModel): void => {
-		// this.store.settings.videoSettings.fadeInDuration = settings.fadeInDuration;
 		MapperHelper.mapValues(settings, this.store.settings.videoSettings);
 	};
 
 	/** */
+	public readonly onIntroOutroSettingsChange = (_event: ISelectChangeEventProps, settings: IntroOutroSettingsModel): void => {
+		MapperHelper.mapValues(settings, this.store.settings.introOutroSettings);
+	};
+
+	/** */
+	public readonly onOverlaySettingsChange = (_event: ISelectChangeEventProps, settings:OverlaySettingsModel): void => {
+		MapperHelper.mapValues(settings, this.store.settings.overlaySettings);
+	};
+
+	/** */
+	public readonly onAudioSettingsChange = (_event: ISelectChangeEventProps, settings: AudioSettingsModel): void => {
+		MapperHelper.mapValues(settings, this.store.settings.audioSettings);
+	};
+
+	/** */
 	public readonly onSaveClick = (): void => {
-		// const pathSources = this.store.settings.pathSources ?? [];
-		// this.store.settings.pathSources = pathSources
-		// 	.filter((value: string, index: number, array: string[]) => array.indexOf(value) === index);
 		const settings = MapperHelper.map(this.store.settings, ClipmakerSettingsModel);
 		this.settingsСontroller.saveDefaultSettings(settings);
 	};

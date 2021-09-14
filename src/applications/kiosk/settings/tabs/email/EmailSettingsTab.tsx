@@ -10,8 +10,8 @@ import { FormControl } from '../../../../../elements/FormControl';
 import { Mail } from '../../../../../elements/Icons';
 import { ITextFieldChangeEventProps, TextField } from '../../../../../elements/TextField';
 import { Typography } from '../../../../../elements/Typography';
-import { EmailProxy } from '../../../../../helpers/EmailProxy';
-import { LanguageEnum } from '../../../../../src-front/views/LanguageEnum';
+import { EmailProxy } from '../../../../../helpers/proxy/EmailProxy';
+import { LanguageEnum } from '../../../../../src-front/models/LanguageEnum';
 
 
 /** */

@@ -99,6 +99,9 @@ body, div, video {
 .padding-bottom-6px {
 	padding-bottom: 6px;
 }
+.padding-bottom-12px {
+	padding-bottom: 12px;
+}
 
 
 .icon {
@@ -182,6 +185,12 @@ body, div, video {
 }
 .background-whitesmoke {
 	background: whitesmoke;
+}
+.min-height-100vh {
+	min-height: 100vh;
+}
+.width-110px {
+	width: 110px;
 }
 
 
@@ -344,7 +353,7 @@ body, div, video {
 }
 
 .file-item-container-carousel-group-height {
-	height: calc(100vh - 229px);
+	height: calc(100vh - 229px) !important;
 	margin-bottom: -4px;
 }
 .file-item-container-carousel-nogroup-height {
@@ -370,4 +379,40 @@ body, div, video {
 }
 .padding-right-12px-important {
 	padding-right: 12px !important;
+}
+.background-color-gray-opacity {
+	background-color: #5555 !important;;
+}
+.background-color-red {
+	background-color: red !important;
+}
+.background-color-pink {
+	background-color: pink !important;
+}
+.background-color-green {
+	background-color: green !important;
+}
+.background-color-lightgreen {
+	background-color: lightgreen !important;
+}
+.font-bold-larger {
+	font-weight: bold;
+	font-size: larger;;
+}
+.bange {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	font-size: 16px;
+	font-weight: bold;
+	color: lightgreen;
+}
+.width-100-percent {
+	width: 100%;
+}
+.opacity-30-percent {
+	opacity: 0.3;
+}
+.display-block {
+	display: block;
 }

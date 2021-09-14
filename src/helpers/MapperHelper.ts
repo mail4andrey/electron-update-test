@@ -15,8 +15,12 @@ export class MapperHelper {
 		return Object.assign(destObject, sourceObject);
 	}
 
-	/** Копируем только значения из одного объекта в другой */
+	/** Копируем существующие значения из одного объекта в другой */
 	public static mapValues<T>(sourceObject: any, destObject: T): T {
+		if (!sourceObject || !destObject) {
+			return destObject;
+		}
+
 		for (const key in destObject) {
 			if (Object.prototype.hasOwnProperty.call(destObject, key)
 				&& Object.prototype.hasOwnProperty.call(sourceObject, key)) {

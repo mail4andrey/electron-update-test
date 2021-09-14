@@ -53,6 +53,7 @@ export interface ITextFieldProps {
 	// /** Событие при нажатии на кнопку */
 	// onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 	helperText?: React.ReactNode;
+	size?: 'small' | 'medium';
 }
 /** Кнопка */
 export class TextField extends React.PureComponent<ITextFieldProps> {

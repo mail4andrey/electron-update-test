@@ -51,13 +51,13 @@ export class Timer implements ITimer {
 	public execute(): void {
 		const { interval } = this;
 		this.timer = setTimeout(
-			() => {
+			async () => {
 				const { action, executeOneTime, stopFlag } = this;
 				if (stopFlag) {
 					return;
 				}
 
-				action();
+				await action();
 				if (!executeOneTime) {
 					this.execute();
 				}

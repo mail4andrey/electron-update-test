@@ -36,7 +36,7 @@ import { MemoryRouter, Route } from 'react-router-dom';
 import { KioskSettingsComponent } from './settings/KioskSettingsComponent';
 
 import { Layout } from '../../Layout';
-import { ApplicationFront } from '../../src-front/ApplicationFront';
+import { KioskFront } from '../../src-front/applications/kiosk/KioskFront';
 import { MainWindowPage } from '../MainWindowPage';
 
 
@@ -52,7 +52,7 @@ export class Kiosk {
 		/** */
 		const getLayout = (props: RouteComponentProps): JSX.Element => (
 			<MainWindowPage {...props}>
-				<ApplicationFront/>
+				<KioskFront/>
 			</MainWindowPage>
 		);
 

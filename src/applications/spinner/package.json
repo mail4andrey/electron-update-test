@@ -1,0 +1,13 @@
+{
+	"name": "selfiebox-spinner",
+	"productName": "Spinner (SelfieBox)",
+	"version": "1.0.0",
+	"description": "Spinner (SelfieBox)",
+	"repository": "github:mail4andrey/selfiebox-spinner",
+	"scripts": {
+		"start": "set DEFAULTPORT=8003&& set APPLICATION=spinner&& rimraf dist-front && webpack --config webpack.front.common.js --env build_mode=development && electron-forge start",
+		"package": "set DEFAULTPORT=8003&& set APPLICATION=spinner&& rimraf dist-front && webpack --config webpack.front.common.js && electron-forge package",
+		"make": "set DEFAULTPORT=8003&& set APPLICATION=spinner&& rimraf dist-front && webpack --config webpack.front.common.js && electron-forge make",
+		"publish": "set DEFAULTPORT=8003&& set APPLICATION=spinner&& rimraf dist-front && webpack --config webpack.front.common.js && electron-forge publish"
+	}
+}

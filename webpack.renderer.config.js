@@ -7,12 +7,17 @@ rules.push({
 });
 
 module.exports = {
-  module: {
-    rules,
-  },
-  plugins: plugins,
-  resolve: {
-    extensions: ['.js', '.ts', '.jsx', '.tsx', '.css']
-  },
-//   target: 'node'
+	module: {
+		rules,
+	},
+	plugins: plugins,
+	resolve: {
+		extensions: ['.js', '.ts', '.jsx', '.tsx', '.css'],
+		// fallback: {
+		// 	fs: false,
+		// 	"os": require.resolve("os-browserify/browser")
+		// }
+	},
+	// target: 'web'
+	// target: 'node'
 };

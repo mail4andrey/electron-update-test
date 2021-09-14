@@ -18,8 +18,9 @@ import { Typography } from '../elements/Typography';
 import { UrlConsts } from '../src-front/const/UrlConsts';
 import { UrlHelper } from '../src-front/helpers/UrlHelper';
 import { KioskLocalization } from '../src-front/localization/KioskLocalization';
-import type { LanguageSettingsLocalStorage } from '../src-front/views/KioskSettingsLocalStorage';
-import { LanguageEnum } from '../src-front/views/LanguageEnum';
+import { LanguageSettingsLocalStorage } from "../src-front/models/LanguageSettingsLocalStorage";
+import { LanguageEnum } from '../src-front/models/LanguageEnum';
+import { LocalStorageConsts } from '../src-front/const/LocalStorageConsts';
 
 /** Основное окно приложения */
 @observer
@@ -48,7 +49,7 @@ export class MainWindowPage extends BaseRoutedComponent<IMainRoutedProps> {
 		this.port = port;
 		// location.host = this.hostname;
 
-		const localSettings = LocalStorage.get<LanguageSettingsLocalStorage>('language-settings') as LanguageSettingsLocalStorage | undefined;
+		const localSettings = LocalStorage.get<LanguageSettingsLocalStorage>(LocalStorageConsts.languageSettings) as LanguageSettingsLocalStorage | undefined;
 		this.language = localSettings?.language;
 	}
 

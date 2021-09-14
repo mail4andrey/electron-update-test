@@ -4,7 +4,7 @@
 
 import { PrintFitOnPageEnum, PrintLayoutEnum } from './tabs/print/PrintSettingsModel';
 
-import { LanguageEnum } from '../../../src-front/views/LanguageEnum';
+import { LanguageEnum } from '../../../src-front/models/LanguageEnum';
 
 
 /** */
@@ -22,6 +22,10 @@ export class SettingsLocalization {
 		/** */
 		public static pathSelectButtonTitle = (language?: LanguageEnum): string =>
 			language !== LanguageEnum.rus ? 'Select source' : 'Выбрать папку';
+
+		/** */
+		public static pathOpenButtonTitle = (language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'Open source' : 'Открыть папку';
 
 		/** */
 		public static pathRemoveButtonTitle = (language?: LanguageEnum): string =>
