@@ -6,7 +6,7 @@ import { inject, provider } from 'react-ioc';
 import { AppBar } from '../../../../elements/AppBar';
 import { Badge } from '../../../../elements/Badge';
 import { IconButton } from '../../../../elements/IconButton';
-import { Mail, Print, Send, ExpandMore, PhotoCamera, Videocam, PowerSettingsNew, BatteryChargingFull, BatteryFull, Battery50, Battery20, BatteryAlert } from '../../../../elements/Icons';
+import { Mail, Print, Send, ExpandMore, PhotoCamera, Videocam, PowerSettingsNew, BatteryChargingFull, BatteryFull, Battery50, Battery20, BatteryAlert, PlaylistAdd, Delete } from '../../../../elements/Icons';
 import { InputAdornment } from '../../../../elements/InputAdornment';
 import { Loader } from '../../../../elements/Loader';
 import { OneLine } from '../../../../elements/commons/OneLine';
@@ -37,6 +37,22 @@ import { GroupByEnum } from '../../../../src-front/applications/kiosk/views/Grou
 import { DesignSizeEnum } from '../../../../src-front/applications/kiosk/views/DesignSizeEnum';
 import { SortOrderEnum } from '../../../../src-front/applications/kiosk/views/SortOrderEnum';
 import { KioskViewGroupItems } from '../../../../src-front/applications/kiosk/views/KioskViewGroupItems';
+import { ButtonGroup } from '../../../../elements/ButtonGroup';
+import { SortHelper } from '../../../../helpers/SortHelper';
+import { ItemComponent } from '../../../../elements/combine/ItemComponent';
+import { MultiplierEnum, SpinnerSettingsFrontItemViewModel, SpinnerSettingsFrontOverlayItemModel, SpinnerSettingsFrontOverlayItemViewModel, SpinnerSettingsFrontZoomItemViewModel, SpinnerSettingsFrontZoomItemModel } from '../frontSettings/SpinnerSettingsFrontModel';
+import { Slider } from '../../../../elements/Slider';
+import { MultiplierItem } from './MultiplierItem';
+import { FormControlLabel } from '../../../../elements/FormControlLabel';
+import { Checkbox } from '../../../../elements/Checkbox';
+import { Divider } from '../../../../elements/Divider';
+import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '../../../../elements/Table';
+import { CommonLocalization } from '../../../../src-front/localization/CommonLocalization';
+import { OverlayItemRow } from './OverlayItemRow';
+import { MapperHelper } from '../../../../helpers/MapperHelper';
+import { ZoomItemRow } from './ZoomItemRow';
+import { Switch } from '../../../../elements/Switch';
+import { FormGroup } from '../../../../elements/FormGroup';
 
 
 /** */
@@ -224,6 +240,7 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 		const cameraStatus = this.getCameraStatus(language);
 		const settings = this.getSettings(language);
 
+		const frontSettings = this.getFrontSettings(language);
 
 		return (
 			<div>
@@ -316,28 +333,15 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 						</Toolbar>
 					</div>
 				</AppBar>
-				{/* <div>
-					<div>
-						{this.store.loaded}
-					</div>
-				</div> */}
 				<div>
-					<Accordion
-						// expanded={true}
-					>
+					<Accordion>
 						<AccordionSummary
 							expandIcon={<ExpandMore />}
 							className={goProBackground}
 						>
 							<div className='width-100-percent'>
-								{/* <OneLine>
-									<div className='padding-right-12px-important'>
-										{SpinnerLocalization.camera(language)}
-									</div>
-								</OneLine> */}
 								<OneLine className='font-bold-larger'>
 									{SpinnerLocalization.cameraNotFound(language, this.store.cameraNotFound)}
-									{/* {SpinnerLocalization.modeInfo(language, this.store.localSettings?.mode)} */}
 								</OneLine>
 								{cameraStatus}
 							</div>
@@ -369,10 +373,7 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 								</FormControl>
 
 								<div className='padding-top-6px'>
-									<Accordion
-										// disabled={this.store.cameraNotFound}
-										// expanded={true}
-									>
+									<Accordion>
 										<AccordionSummary
 											expandIcon={<ExpandMore />}
 											className={goProBackground}
@@ -387,9 +388,7 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 											{settings}
 										</AccordionDetails>
 									</Accordion>
-									<Accordion
-										// expanded={true}
-									>
+									<Accordion>
 										<AccordionSummary
 											expandIcon={<ExpandMore />}
 											className='background-color-gray-opacity'
@@ -405,19 +404,6 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 												fullWidth={true}
 												margin='dense'
 											>
-												{/* <KioskViewGroupItems
-													language={language}
-													// size={iconSize}
-													files={this.store.goProGroupsFiles}
-													// currentItemSize={currentItemSize}
-													sortOrder={SortOrderEnum.desc}
-													// onPrintItemClick={this.onPrintItemClick}
-													// onSendByEmailItemClick={this.onSendByEmailItemClick}
-													// onSelectItemClick={this.controller.onSelectItem}
-													backgroundGroupName={this.props.backgroundGroupName}
-													backgroundFileCard={this.props.backgroundFileCard}
-													iconColor={this.props.iconColor}
-												/> */}
 												<KioskViewCarouselItem
 													language={language}
 													groupBy={GroupByEnum.groupByDir}
@@ -436,17 +422,11 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 										</AccordionDetails>
 									</Accordion>
 								</div>
-								{/* <FormControl
-									fullWidth={true}
-									margin='dense'
-								>
-								</FormControl> */}
 							</FormControl>
 						</AccordionDetails>
 					</Accordion>
 				</div>
-				<div>
-				</div>
+				{frontSettings}
 				{/* <Grid
 					// container={true}
 					// spacing={1}
@@ -474,6 +454,28 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 	private readonly onRecordVideoDurationChange = (event: ITextFieldChangeEventProps): void => {
 		this.store.localSettings.recordVideoDuration = event.target.value;
 		this.controller.saveSettingsToLocalStorage();
+	};
+
+	/** */
+	private readonly TestButtonClick = async (event: React.MouseEvent<Element, MouseEvent>): Promise<void> => {
+		// event.stopPropagation();
+		await this.controller.testVideo();
+	};
+
+	/** */
+	private readonly onManualStartClick = async (event: React.MouseEvent<Element, MouseEvent>): Promise<void> => {
+		// event.stopPropagation();
+		await this.controller.processVideo();
+	};
+
+	/** */
+	private readonly onAutoModeChange = async (event: React.ChangeEvent<HTMLInputElement>, checked: boolean): Promise<void> => {
+		if (this.store.settings?.frontSettings) {
+			this.store.settings.frontSettings.autoMode = checked;
+			this.controller.saveFrontSettings(this.store.settings?.frontSettings);
+		}
+		// event.stopPropagation();
+		// await this.controller.testVideo();
 	};
 
 	/** */
@@ -1747,6 +1749,721 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 				{status}
 			</div>
 		);
+	};
+
+	/** */
+	private getFrontSettings(language: LanguageEnum | undefined): React.ReactNode {
+		const selectedGuid = this.store.settings?.frontSettings?.selectedPresetGuid;
+		const selectedPreset = this.store.settings?.frontSettings?.presets?.find(preset => preset.guid === selectedGuid);
+
+
+		const presets = this.store.settings?.frontSettings?.presets
+			?.slice()
+			?.sort(SortHelper.dynamicSort('title'))
+			?.map(item => {
+				return <MenuItem key={item.guid} value={item.guid}>{item.title}</MenuItem>
+			}) ?? [];
+		const newPresetNumber = (this.store.settings?.frontSettings?.presets?.length ?? 0) + 1;
+		presets?.push(<Divider />);
+		presets?.push(<MenuItem className='font-style-italic' value={'new' + newPresetNumber}>{SpinnerLocalization.frontSettings.createNewPreset(newPresetNumber, language)}</MenuItem>);
+
+		const multipliers = this.getMultipliers(language);
+
+		const introOutroItems = [(
+				<MenuItem value=''>
+					<em>{SpinnerLocalization.frontSettings.none(language)}</em>
+				</MenuItem>
+			),
+			<Divider />
+		];
+		introOutroItems.push(...this.store.settings?.introOutroItems
+			?.sort(SortHelper.dynamicSort('title'))
+			?.map(item => {
+				return <MenuItem value={item.value}>{item.title}</MenuItem>
+			}) ?? []
+		);
+		const introOutro = this.store.settings?.introOutroItems?.length ?? 0 > 0
+			? (
+				<>
+					<FormControl
+						fullWidth={true}
+						margin='dense'
+					>
+						<InputLabel id='intro-select-label'>
+							{SpinnerLocalization.frontSettings.intro(language)}
+						</InputLabel>
+						<Select
+							labelId='intro-select-label'
+							value={selectedPreset?.selectedIntroGuid}
+							onChange={this.onIntroChange}
+						>
+							{introOutroItems}
+						</Select>
+					</FormControl>
+					<FormControl
+						fullWidth={true}
+						margin='dense'
+					>
+						<InputLabel id='outro-select-label'>
+							{SpinnerLocalization.frontSettings.outro(language)}
+						</InputLabel>
+						<Select
+							labelId='outro-select-label'
+							value={selectedPreset?.selectedOutroGuid}
+							onChange={this.onOutroChange}
+						>
+							{introOutroItems}
+						</Select>
+					</FormControl>
+				</>
+			)
+			: null;
+
+		const audioItems = [(
+				<MenuItem value=''>
+					<em>{SpinnerLocalization.frontSettings.none(language)}</em>
+				</MenuItem>
+			),
+			<Divider />
+		];
+		audioItems.push(...this.store.settings?.audioItems
+			?.sort(SortHelper.dynamicSort('title'))
+			?.map(item => {
+				return <MenuItem value={item.value}>{item.title}</MenuItem>
+			}) ?? []
+		);
+		const audio = this.store.settings?.audioItems?.length ?? 0 > 0
+			? (
+				<>
+					<FormControl
+						fullWidth={true}
+						margin='dense'
+					>
+						<InputLabel id='audio-select-label'>
+							{SpinnerLocalization.frontSettings.audio(language)}
+						</InputLabel>
+						<Select
+							// displayEmpty={true}
+							labelId='audio-select-label'
+							value={selectedPreset?.selectedAudioGuid}
+							onChange={this.onAudioChange}
+						>
+							{audioItems}
+						</Select>
+					</FormControl>
+				</>
+			)
+			: null;
+
+
+		const debug = process.env.NODE_ENV === 'development'
+		? (
+			<div>
+				{'guid:' + selectedPreset?.guid}
+				{'   selectedGuid:' + this.store.settings?.frontSettings?.selectedPresetGuid}
+			</div>
+		)
+		: null;
+
+		const overlays = this.getOverlays(language);
+		const zooms = this.getZooms(language);
+		const deletePresetButton = (
+			<Tooltip
+				title={SpinnerLocalization.frontSettings.deletePresetButton(language)}
+			>
+				<IconButton
+					size='small'
+					onClick={this.onDeletePresetClick}
+				>
+					<Delete />
+				</IconButton>
+			</Tooltip>
+		);
+
+		return (
+			<div className='padding-top-6px'>
+				<div className='padding-top-6px padding-left-16px'>
+					<Typography
+						variant='h6'
+					>
+						{/* {SpinnerLocalization.frontSettings.preset(selectedPreset?.title, language)} */}
+						
+						<FormControl
+							fullWidth={true}
+							margin='dense'
+						>
+							<InputLabel id='preset-select-label'>
+								{SpinnerLocalization.frontSettings.presets(language)}
+							</InputLabel>
+							<Select
+								// label={SpinnerLocalization.frontSettings.presets(language)}
+								labelId='preset-select-label'
+								value={this.store.settings?.frontSettings?.selectedPresetGuid}
+								onChange={this.onPresetChange}
+							>
+								{presets}
+							</Select>
+						</FormControl>
+					</Typography>
+					{debug}
+				</div>
+				<OneLine className='padding-top-6px padding-left-16px'>
+					<ButtonGroup>
+						<Button
+							className='width100px'
+							color='secondary'
+							onClick={this.TestButtonClick}
+						>
+							{SpinnerLocalization.buttonTest(language)}
+						</Button>
+						<Button
+							className='width100px'
+							color='primary'
+							onClick={this.onManualStartClick}
+						>
+							{SpinnerLocalization.buttonManualStart(language)}
+						</Button>
+					</ButtonGroup>
+					<div className='padding-left-12px'>
+						<FormControlLabel
+							control={
+								<Switch
+									checked={this.store.settings?.frontSettings?.autoMode}
+									onChange={this.onAutoModeChange}
+								/>
+							}
+							label={SpinnerLocalization.buttonAutoMode(language)}
+						/>
+					</div>
+				</OneLine>
+				<div className='padding-top-6px'>
+					<Accordion>
+						<AccordionSummary
+							expandIcon={<ExpandMore />}
+						>
+							<div className='width-100-percent'>
+								<div className='padding-top-6px'>
+									<Typography
+										variant='h6'
+									>
+										{SpinnerLocalization.settings(language)}
+									</Typography>
+								</div>
+							</div>
+						</AccordionSummary>
+						<AccordionDetails>
+							<FormControl
+								fullWidth={true}
+								margin='dense'
+							>
+								{/* <FormControl
+									fullWidth={true}
+									margin='dense'
+								>
+									<InputLabel id='preset-select-label'>
+										{SpinnerLocalization.frontSettings.presets(language)}
+									</InputLabel>
+									<Select
+										// label={SpinnerLocalization.frontSettings.presets(language)}
+										labelId='preset-select-label'
+										value={this.store.settings?.frontSettings?.selectedPresetGuid}
+										onChange={this.onPresetChange}
+									>
+										{presets}
+									</Select>
+								</FormControl> */}
+								<FormControl
+									fullWidth={true}
+									margin='dense'
+								>
+									<TextField
+										value={selectedPreset?.title}
+										label={SpinnerLocalization.frontSettings.presetName(language)}
+										// placeholder='0.0'
+										// disabled={!this.props.file || this.props.disabled}
+										// error={!recordVideoDurationValid}
+										onChange={this.onPresetTitleChange}
+										// helperText={SettingsLocalization.introOutroTab.durationForImageWarning(language)}
+										InputProps={{
+											// startAdornment: buttons,
+											endAdornment: deletePresetButton
+										}}
+									/>
+								</FormControl>
+								<FormControl
+									// className='padding-right-12px-important'
+									fullWidth={true}
+									margin='dense'
+								>
+									<FormControlLabel
+										control={
+											<Checkbox
+												checked={selectedPreset?.pingPong}
+												onChange={this.onPingPongChange}
+												color='primary'
+											/>
+										}
+										label={SpinnerLocalization.frontSettings.pingPong(language)}
+									/>
+								</FormControl>
+								{multipliers}
+								{introOutro}
+								{audio}
+								{overlays}
+								{zooms}
+							</FormControl>
+						</AccordionDetails>
+					</Accordion>
+					<Accordion>
+						<AccordionSummary
+							expandIcon={<ExpandMore />}
+							className='background-color-gray-opacity'
+						>
+							<div className='width-100-percent'>
+								{SpinnerLocalization.frontSettings.preview(language)}
+							</div>
+						</AccordionSummary>
+						<AccordionDetails
+							// className={goProSettingsBackground}
+						>
+							<FormControl
+								fullWidth={true}
+								margin='dense'
+							>
+								<KioskViewCarouselItem
+									language={language}
+									groupBy={GroupByEnum.groupByDir}
+									// buttonSize={DesignSizeEnum.}
+									groups={this.store.commonGroupsFiles}
+									// currentItemSize={currentItemSize}
+									sortOrder={SortOrderEnum.desc}
+									// onPrintItemClick={this.onPrintItemClick}
+									// onSendByEmailItemClick={this.onSendByEmailItemClick}
+									// onSelectItemClick={this.controller.onSelectItem}
+									// backgroundGroupName={this.props.backgroundGroupName}
+									// backgroundFileCard={this.props.backgroundFileCard}
+									// iconColor={this.props.iconColor}
+								/>
+							</FormControl>
+						</AccordionDetails>
+					</Accordion>
+				</div>
+			</div>
+		);
+	}
+
+	/** Отображение */
+	private getOverlays(language?: LanguageEnum): React.ReactNode {
+		if (!this.store.settings?.overlayItems || this.store.settings.overlayItems.length === 0) {
+			return null;
+		}
+
+		const selectedGuid = this.store.settings?.frontSettings?.selectedPresetGuid;
+		const selectedPreset = this.store.settings?.frontSettings?.presets?.find(preset => preset.guid === selectedGuid);
+
+		const rows = this.store.settings?.overlayItems?.map(item => {
+			let frontOverlay = selectedPreset?.overlays?.find(overlay => overlay.guid === item.value);
+			if (!frontOverlay) {
+				frontOverlay = new SpinnerSettingsFrontOverlayItemViewModel();
+				frontOverlay.guid = item.value;
+			}
+			return (
+				<OverlayItemRow
+					title={item.title}
+					{...frontOverlay}
+					onChange={this.onOverlayItemChange}
+				/>
+			);
+		});
+		return (
+			<div className='padding-top-12px padding-bottom-6px'>
+				{/* <Typography
+					variant='h6'
+				>
+					{SpinnerLocalization.frontSettings.overlay(language)}
+				</Typography> */}
+				<TableContainer>
+					<Table>
+						<TableHead>
+							<TableRow>
+								<TableCell>{SpinnerLocalization.frontSettings.overlay(language)}</TableCell>
+								{/* <TableCell>{CommonLocalization.title(language)}</TableCell> */}
+								<TableCell align='right'>{SpinnerLocalization.frontSettings.disable(language)}</TableCell>
+								<TableCell align='right'>{SpinnerLocalization.frontSettings.beforeSlow(language)}</TableCell>
+								<TableCell align='right'>{SpinnerLocalization.frontSettings.afterSlow(language)}</TableCell>
+								<TableCell align='right'>{SpinnerLocalization.frontSettings.afterPingPong(language)}</TableCell>
+								<TableCell align='right'>{SpinnerLocalization.frontSettings.forPhoto(language)}</TableCell>
+							</TableRow>
+						</TableHead>
+						<TableBody>
+							{rows}
+						</TableBody>
+					</Table>
+				</TableContainer>
+			</div>
+		);
+	}
+
+	/** Отображение */
+	private getZooms(language?: LanguageEnum): React.ReactNode {
+		if (!this.store.settings?.zoomItems || this.store.settings.zoomItems.length === 0) {
+			return null;
+		}
+
+		const selectedGuid = this.store.settings?.frontSettings?.selectedPresetGuid;
+		const selectedPreset = this.store.settings?.frontSettings?.presets?.find(preset => preset.guid === selectedGuid);
+
+		const rows = this.store.settings?.zoomItems?.map(item => {
+			let frontZoom = selectedPreset?.zooms?.find(zoom => zoom.guid === item.value);
+			if (!frontZoom) {
+				frontZoom = new SpinnerSettingsFrontZoomItemViewModel();
+				frontZoom.guid = item.value;
+			}
+			return (
+				<ZoomItemRow
+					title={item.title}
+					{...frontZoom}
+					onChange={this.onZoomItemChange}
+				/>
+			);
+		});
+		return (
+			<div className='padding-top-12px padding-bottom-6px'>
+				{/* <Typography
+					variant='h6'
+				>
+					{SpinnerLocalization.frontSettings.zoom(language)}
+				</Typography> */}
+				<TableContainer>
+					<Table>
+						<TableHead>
+							<TableRow>
+								<TableCell>{SpinnerLocalization.frontSettings.zoom(language)}</TableCell>
+								{/* <TableCell>{CommonLocalization.title(language)}</TableCell> */}
+								<TableCell align='right'>{SpinnerLocalization.frontSettings.disable(language)}</TableCell>
+								<TableCell align='right'>{SpinnerLocalization.frontSettings.beforeSlow(language)}</TableCell>
+								{/* <TableCell align='right'>{SpinnerLocalization.frontSettings.afterSlow(language)}</TableCell>
+								<TableCell align='right'>{SpinnerLocalization.frontSettings.afterPingPong(language)}</TableCell>
+								<TableCell align='right'>{SpinnerLocalization.frontSettings.forPhoto(language)}</TableCell> */}
+							</TableRow>
+						</TableHead>
+						<TableBody>
+							{rows}
+						</TableBody>
+					</Table>
+				</TableContainer>
+			</div>
+		);
+	}
+
+	/** Отображение */
+	private getMultipliers(language?: LanguageEnum): React.ReactNode {
+		const selectedGuid = this.store.settings?.frontSettings?.selectedPresetGuid;
+		const selectedPreset = this.store.settings?.frontSettings?.presets?.find(preset => preset.guid === selectedGuid);
+		const items = selectedPreset?.multipliers?.map((setting: MultiplierEnum, index: number, array: MultiplierEnum[]) => {
+			const disableUpButton = index === 0;
+			const disableDownButton = index === array.length - 1;
+			const title = (
+				<div className='width100prc'>
+					<Typography
+						variant='body2'
+						align='center'
+					>
+						{SpinnerLocalization.frontSettings.multiplierValue(setting, language)}
+					</Typography>
+					<OneLine className='slider-container0'>
+						<FormControl
+							fullWidth={true}
+							margin='dense'
+						>
+							<MultiplierItem
+								value={setting}
+								position={index}
+								language={language}
+								// disabled={!this.props.enable}
+								onChange={this.onMultiplierItemChange}
+								onChangeCommitted={this.onMultiplierItemChangeCommitted}
+							/>
+						</FormControl>
+					</OneLine>
+					{/* <RightContainer> */}
+					{/* </RightContainer> */}
+				</div>
+			);
+			return (
+				<div
+					key={index}
+					className='padding-bottom-12px'
+				>
+					<ItemComponent
+						language={language}
+						// disabled={!this.props.enable}
+						removeButtonTitle={SpinnerLocalization.frontSettings.deleteButton(language)}
+						disableUpButton={disableUpButton}
+						disableDownButton={disableDownButton}
+						showUpButton={true}
+						showDownButton={true}
+						showDeleteButton={true}
+						position={index}
+						title={title}
+
+						onUpClick={this.onMultiplierUpClick}
+						onDownClick={this.onMultiplierDownClick}
+						onDeleteClick={this.onMultiplierDeleteClick}
+					>
+						{/* <MultiplierItem
+							value={setting}
+							position={index}
+							language={language}
+							// disabled={!this.props.enable}
+							onChange={this.onMultiplierItemChange}
+						/> */}
+					</ItemComponent>
+				</div>
+			);
+		});
+
+		return (
+			<div className=''>
+				<Typography
+					variant='h6'
+				>
+					{SpinnerLocalization.frontSettings.speedMultipliers(language)}
+				</Typography>
+				{/* <FormControl
+					// className='padding-right-12px-important'
+					fullWidth={true}
+					margin='dense'
+				>
+					<FormControlLabel
+						control={
+							<Checkbox
+								checked={this.props.enable}
+								onChange={this.onEnableChange}
+								color='primary'
+							/>
+						}
+						label={SettingsLocalization.common.enable(language)}
+					/>
+				</FormControl> */}
+				<FormControl
+					fullWidth={true}
+					margin='dense'
+				>
+					<Button
+						onClick={this.onAddMultiplierClick}
+						color='primary'
+						variant='contained'
+						startIcon={<PlaylistAdd />}
+						// disabled={!this.props.enable}
+					>
+						{SpinnerLocalization.frontSettings.addButton(language)}
+					</Button>
+				</FormControl>
+				<FormControl
+					fullWidth={true}
+					margin='dense'
+				>
+					{items}
+				</FormControl>
+			</div>
+		);
+	}
+
+	/** */
+	private readonly onDeletePresetClick = (event: React.MouseEvent<Element, MouseEvent>): void => {
+		const selectedGuid = this.store.settings?.frontSettings?.selectedPresetGuid;
+		if (this.store.settings?.frontSettings?.presets) {
+			this.store.settings.frontSettings.presets = this.store.settings?.frontSettings?.presets?.filter(preset => preset.guid !== selectedGuid);
+			if (this.store.settings.frontSettings.presets?.length > 0) {
+				this.store.settings.frontSettings.selectedPresetGuid = this.store.settings.frontSettings
+					.presets
+					.sort(SortHelper.dynamicSort('title'))
+					[0].guid;
+			} else {
+				const newPresetNumber = (this.store.settings.frontSettings.presets.length ?? 0) + 1;
+				const newPreset = new SpinnerSettingsFrontItemViewModel();
+				newPreset.title = SpinnerLocalization.frontSettings.newPreset(newPresetNumber, this.store.language);
+				this.store.settings.frontSettings.presets.push(newPreset);
+				this.store.settings.frontSettings.selectedPresetGuid = newPreset.guid;
+			}
+		}
+
+		this.controller.saveFrontSettings(this.store.settings?.frontSettings);
+	};
+	/** */
+	private readonly onOverlayItemChange = (event: any, value: SpinnerSettingsFrontOverlayItemModel): void => {
+		const selectedGuid = this.store.settings?.frontSettings?.selectedPresetGuid;
+		const selectedPreset = this.store.settings?.frontSettings?.presets?.find(preset => preset.guid === selectedGuid);
+		let overlay = selectedPreset?.overlays?.find(item => item.guid === value.guid);
+		if (!overlay) {
+			overlay = new SpinnerSettingsFrontOverlayItemViewModel();
+			overlay.guid = value.guid;
+			selectedPreset?.overlays?.push(overlay);
+		}
+
+		MapperHelper.mapProperties(value, overlay);
+		this.controller.saveFrontSettings(this.store.settings?.frontSettings);
+	};
+
+	/** */
+	private readonly onZoomItemChange = (event: any, value: SpinnerSettingsFrontZoomItemModel): void => {
+		const selectedGuid = this.store.settings?.frontSettings?.selectedPresetGuid;
+		const selectedPreset = this.store.settings?.frontSettings?.presets?.find(preset => preset.guid === selectedGuid);
+		let zoom = selectedPreset?.zooms?.find(item => item.guid === value.guid);
+		if (!zoom) {
+			zoom = new SpinnerSettingsFrontZoomItemViewModel();
+			zoom.guid = value.guid;
+			selectedPreset?.zooms?.push(zoom);
+		}
+
+		MapperHelper.mapProperties(value, zoom);
+		this.controller.saveFrontSettings(this.store.settings?.frontSettings);
+	};
+
+	/** */
+	private readonly onMultiplierItemChange = (event: any, value: {value: MultiplierEnum, position: number}): void => {
+		const selectedGuid = this.store.settings?.frontSettings?.selectedPresetGuid;
+		const selectedPreset = this.store.settings?.frontSettings?.presets?.find(preset => preset.guid === selectedGuid);
+		const items = selectedPreset?.multipliers ?? [];
+		const id = value.position;
+		if (items && id >= 0 && id < items.length) {
+			items[id] = value.value;
+			selectedPreset!.multipliers = items;
+			// this.controller.saveFrontSettings(this.store.settings?.frontSettings);
+		}
+	};
+
+	/** */
+	private readonly onMultiplierItemChangeCommitted = (event: any, value: {value: MultiplierEnum, position: number}): void => {
+		const selectedGuid = this.store.settings?.frontSettings?.selectedPresetGuid;
+		const selectedPreset = this.store.settings?.frontSettings?.presets?.find(preset => preset.guid === selectedGuid);
+		const items = selectedPreset?.multipliers ?? [];
+		const id = value.position;
+		if (items && id >= 0 && id < items.length) {
+			items[id] = value.value;
+			selectedPreset!.multipliers = items;
+			this.controller.saveFrontSettings(this.store.settings?.frontSettings);
+		}
+	};
+
+	/** */
+	private readonly onMultiplierDeleteClick = (_event: React.MouseEvent<Element, MouseEvent>, id: number): void => {
+		const selectedGuid = this.store.settings?.frontSettings?.selectedPresetGuid;
+		const selectedPreset = this.store.settings?.frontSettings?.presets?.find(preset => preset.guid === selectedGuid);
+		const items = selectedPreset?.multipliers ?? [];
+		if (items && id >= 0 && id < items.length) {
+			items.splice(id, 1);
+			selectedPreset!.multipliers = items;
+			this.controller.saveFrontSettings(this.store.settings?.frontSettings);
+		}
+	};
+
+	/** */
+	private readonly onMultiplierUpClick = (_event: React.MouseEvent<Element, MouseEvent>, id: number): void => {
+		const selectedGuid = this.store.settings?.frontSettings?.selectedPresetGuid;
+		const selectedPreset = this.store.settings?.frontSettings?.presets?.find(preset => preset.guid === selectedGuid);
+		const items = selectedPreset?.multipliers ?? [];
+		if (items && id >= 1 && id < items.length) {
+			const newValue = items[id - 1];
+			items[id - 1] = items[id];
+			items[id] = newValue;
+			this.controller.saveFrontSettings(this.store.settings?.frontSettings);
+		}
+	};
+
+	/** */
+	private readonly onMultiplierDownClick = (_event: React.MouseEvent<Element, MouseEvent>, id: number): void => {
+		const selectedGuid = this.store.settings?.frontSettings?.selectedPresetGuid;
+		const selectedPreset = this.store.settings?.frontSettings?.presets?.find(preset => preset.guid === selectedGuid);
+		const items = selectedPreset?.multipliers ?? [];
+		if (items && id >= 0 && id < items.length - 1) {
+			const newValue = items[id + 1];
+			items[id + 1] = items[id];
+			items[id] = newValue;
+			this.controller.saveFrontSettings(this.store.settings?.frontSettings);
+		}
+	};
+
+	/** */
+	private readonly onAddMultiplierClick = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): Promise<void> => {
+		const selectedGuid = this.store.settings?.frontSettings?.selectedPresetGuid;
+		const selectedPreset = this.store.settings?.frontSettings?.presets?.find(preset => preset.guid === selectedGuid);
+
+		if (selectedPreset) {
+			selectedPreset.multipliers?.push(MultiplierEnum.slow5Times);
+			this.controller.saveFrontSettings(this.store.settings?.frontSettings);
+		}
+	};
+
+	/** */
+	private readonly onPingPongChange = async (event: React.ChangeEvent<HTMLInputElement>, checked: boolean): Promise<void> => {
+		const selectedGuid = this.store.settings?.frontSettings?.selectedPresetGuid;
+		const selectedPreset = this.store.settings?.frontSettings?.presets?.find(preset => preset.guid === selectedGuid);
+
+		if (selectedPreset) {
+			selectedPreset.pingPong = checked;
+			this.controller.saveFrontSettings(this.store.settings?.frontSettings);
+		}
+	};
+
+	/** */
+	private readonly onPresetTitleChange = async (event: ITextFieldChangeEventProps): Promise<void> => {
+		const selectedGuid = this.store.settings?.frontSettings?.selectedPresetGuid;
+		const selectedPreset = this.store.settings?.frontSettings?.presets?.find(preset => preset.guid === selectedGuid);
+
+		if (selectedPreset) {
+			selectedPreset.title = event.target.value;
+			this.controller.saveFrontSettings(this.store.settings?.frontSettings);
+		}
+	};
+
+	/** */
+	private readonly onIntroChange = async (event: ISelectChangeEventProps, child: React.ReactNode): Promise<void> => {
+		const selectedGuid = this.store.settings?.frontSettings?.selectedPresetGuid;
+		const selectedPreset = this.store.settings?.frontSettings?.presets?.find(preset => preset.guid === selectedGuid);
+
+		if (selectedPreset) {
+			selectedPreset.selectedIntroGuid = event.target.value as string;
+			this.controller.saveFrontSettings(this.store.settings?.frontSettings);
+		}
+	};
+
+	/** */
+	private readonly onOutroChange = async (event: ISelectChangeEventProps, child: React.ReactNode): Promise<void> => {
+		const selectedGuid = this.store.settings?.frontSettings?.selectedPresetGuid;
+		const selectedPreset = this.store.settings?.frontSettings?.presets?.find(preset => preset.guid === selectedGuid);
+
+		if (selectedPreset) {
+			selectedPreset.selectedOutroGuid = event.target.value as string;
+			this.controller.saveFrontSettings(this.store.settings?.frontSettings);
+		}
+	};
+
+	/** */
+	private readonly onAudioChange = async (event: ISelectChangeEventProps, child: React.ReactNode): Promise<void> => {
+		const selectedGuid = this.store.settings?.frontSettings?.selectedPresetGuid;
+		const selectedPreset = this.store.settings?.frontSettings?.presets?.find(preset => preset.guid === selectedGuid);
+
+		if (selectedPreset) {
+			selectedPreset.selectedAudioGuid = event.target.value as string;
+			this.controller.saveFrontSettings(this.store.settings?.frontSettings);
+		}
+	};
+
+	/** */
+	private readonly onPresetChange = async (event: ISelectChangeEventProps, child: React.ReactNode): Promise<void> => {
+		const value = event.target.value as string;
+		if (value.startsWith('new')) {
+			const newPresetNumber = (this.store.settings?.frontSettings?.presets?.length ?? 0) + 1;
+			const newPreset = new SpinnerSettingsFrontItemViewModel();
+			newPreset.title = SpinnerLocalization.frontSettings.newPreset(newPresetNumber, this.store.language);
+			this.store.settings?.frontSettings?.presets?.push(newPreset);
+			this.store.settings!.frontSettings!.selectedPresetGuid = newPreset.guid;
+		} else if (this.store.settings?.frontSettings) {
+			this.store.settings.frontSettings.selectedPresetGuid = value;
+		}
+		this.controller.saveFrontSettings(this.store.settings?.frontSettings);
 	};
 
 // 	/** zz */

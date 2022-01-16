@@ -1,5 +1,6 @@
 import { observable } from 'mobx';
 import { DesignSettingsModel } from '../../../../src-front/models/DesignSettingsModel';
+import { SpinnerSettingsFrontViewModel, SpinnerSettingsFrontModel } from '../frontSettings/SpinnerSettingsFrontModel';
 export interface ITitleValueModel {
 	title?: string;
 
@@ -25,6 +26,8 @@ export class SpinnerSettingsFromServerModel {
 	public goProVideoPath?: string = '';
 
 	public removeFromGoPro?: boolean = false;
+
+	public frontSettings?: SpinnerSettingsFrontModel;
 }
 
 export class SpinnerSettingsFromServerViewModel extends SpinnerSettingsFromServerModel  {
@@ -55,4 +58,7 @@ export class SpinnerSettingsFromServerViewModel extends SpinnerSettingsFromServe
 
 	// @observable
 	public removeFromGoPro?: boolean = false;
+
+	@observable
+	public frontSettings?: SpinnerSettingsFrontViewModel = new SpinnerSettingsFrontViewModel();
 }

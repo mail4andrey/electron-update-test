@@ -1,6 +1,7 @@
 import { PrintSendingItemModel } from '../../applications/kiosk/settings/PrintSendingItemModel';
 import { PrinterModel, PrintSettingsModel } from '../../applications/kiosk/settings/tabs/print/PrintSettingsModel';
 import { UrlHelper } from '../../src-front/helpers/UrlHelper';
+declare const fetch: Function;
 
 
 /** */

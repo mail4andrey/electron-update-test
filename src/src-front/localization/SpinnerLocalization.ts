@@ -6,6 +6,7 @@ import { LanguageEnum } from '../models/LanguageEnum';
 import { ApplicationSourceModeEnum } from '../applications/spinner/views/SpinnerLocalSettingsViewModel';
 import { VideoIsoLimit, EvComp, ProTune, FrameRate, CameraSubMode, CameraMode, PhotoIsoLimit, VideoResolution, PhotoResolution, CameraModeGoPro8 } from '../../src-front/models/CameraStateModel';
 import { StatusEnum } from '../../src-front/applications/spinner/views/SpinnerViewStore';
+import { MultiplierEnum } from '../../src-front/applications/spinner/frontSettings/SpinnerSettingsFrontModel';
 
 /** */
 export class SpinnerLocalization {
@@ -448,6 +449,375 @@ export class SpinnerLocalization {
 			default:
 				return 'Unknown';
 		}
+	};
+
+	
+	/** */
+	public static settings = (language?: LanguageEnum): string =>
+		language !== LanguageEnum.rus ? 'Settings' : 'Настройки';
+
+	/** */
+	public static buttonTest = (language?: LanguageEnum): string =>
+		language !== LanguageEnum.rus ? 'Test' : 'Тест';
+
+	/** */
+	public static buttonManualStart = (language?: LanguageEnum): string =>
+		language !== LanguageEnum.rus ? 'Start' : 'Запуск';
+
+	/** */
+	public static buttonAutoMode = (language?: LanguageEnum): string =>
+		language !== LanguageEnum.rus ? 'Auto mode' : 'Авт. режим';
+
+	/** Вкладка Источники */
+	public static frontSettings = class {
+		/** */
+		public static newPreset = (number: number, language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'Preset ' + number : 'Набор ' + number;
+		/** */
+		public static createNewPreset = (number: number, language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'Create new preset' : 'Создать новый набор';
+		/** */
+		public static preset = (name?: string, language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'Preset: ' + (name ?? '') : 'Набор: ' + (name ?? '');
+		/** */
+		public static presets = (language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'Presets' : 'Наборы';
+		/** */
+		public static presetName = (language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'Preset name' : 'Название набора';
+		/** */
+		public static pingPong = (language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'Ping pong' : 'Бумеранг';
+		/** */
+		public static multiplier = (language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'Multiplier' : 'Множитель';
+		/** */
+		public static multiplierValue = (value: MultiplierEnum, language?: LanguageEnum): string => {
+			if (language !== LanguageEnum.rus) {
+				switch (value) {
+					case MultiplierEnum.fast10Times:
+						return '10 times faster';
+					case MultiplierEnum.fast9Times:
+						return '9 times faster';
+					case MultiplierEnum.fast8Times:
+						return '8 times faster';
+					case MultiplierEnum.fast7Times:
+						return '7 times faster';
+					case MultiplierEnum.fast6Times:
+						return '6 times faster';
+					case MultiplierEnum.fast5Times:
+						return '5 times faster';
+					case MultiplierEnum.fast4Times:
+						return '4 times faster';
+					case MultiplierEnum.fast3Times:
+						return '3 times faster';
+					case MultiplierEnum.fast2Times:
+						return '2 times faster';
+
+					case MultiplierEnum.slow10Times:
+						return '10 times slower';
+					case MultiplierEnum.slow9Times:
+						return '9 times slower';
+					case MultiplierEnum.slow8Times:
+						return '8 times slower';
+					case MultiplierEnum.slow7Times:
+						return '7 times slower';
+					case MultiplierEnum.slow6Times:
+						return '6 times slower';
+					case MultiplierEnum.slow5Times:
+						return '5 times slower';
+					case MultiplierEnum.slow4Times:
+						return '4 times slower';
+					case MultiplierEnum.slow3Times:
+						return '3 times slower';
+					case MultiplierEnum.slow2Times:
+						return '2 times slower';
+				
+					case MultiplierEnum.normal:
+					default:
+						return 'Normal speed';
+				}
+			}
+
+			switch (value) {
+				case MultiplierEnum.fast10Times:
+					return 'Ускорение в 10 раз';
+				case MultiplierEnum.fast9Times:
+					return 'Ускорение в 9 раз';
+				case MultiplierEnum.fast8Times:
+					return 'Ускорение в 8 раз';
+				case MultiplierEnum.fast7Times:
+					return 'Ускорение в 7 раз';
+				case MultiplierEnum.fast6Times:
+					return 'Ускорение в 6 раз';
+				case MultiplierEnum.fast5Times:
+					return 'Ускорение в 5 раз';
+				case MultiplierEnum.fast4Times:
+					return 'Ускорение в 4 раза';
+				case MultiplierEnum.fast3Times:
+					return 'Ускорение в 3 раза';
+				case MultiplierEnum.fast2Times:
+					return 'Ускорение в 2 раза';
+
+				case MultiplierEnum.slow10Times:
+					return 'Замедление в 10 раз';
+				case MultiplierEnum.slow9Times:
+					return 'Замедление в 9 раз';
+				case MultiplierEnum.slow8Times:
+					return 'Замедление в 8 раз';
+				case MultiplierEnum.slow7Times:
+					return 'Замедление в 7 раз';
+				case MultiplierEnum.slow6Times:
+					return 'Замедление в 6 раз';
+				case MultiplierEnum.slow5Times:
+					return 'Замедление в 5 раз';
+				case MultiplierEnum.slow4Times:
+					return 'Замедление в 4 раза';
+				case MultiplierEnum.slow3Times:
+					return 'Замедление в 3 раза';
+				case MultiplierEnum.slow2Times:
+					return 'Замедление в 2 раза';
+			
+				case MultiplierEnum.normal:
+				default:
+					return 'Нормальная скорость';
+			}
+		}
+		/** */
+		public static multiplierValueShort0 = (value: MultiplierEnum, language?: LanguageEnum): string => {
+			if (language !== LanguageEnum.rus) {
+				switch (value) {
+					case MultiplierEnum.fast10Times:
+						return 'Faster 10x';
+					case MultiplierEnum.fast9Times:
+						return 'Faster 9x';
+					case MultiplierEnum.fast8Times:
+						return 'Faster 8x';
+					case MultiplierEnum.fast7Times:
+						return 'Faster 7x';
+					case MultiplierEnum.fast6Times:
+						return 'Faster 6x';
+					case MultiplierEnum.fast5Times:
+						return 'Faster 5x';
+					case MultiplierEnum.fast4Times:
+						return 'Faster 4x';
+					case MultiplierEnum.fast3Times:
+						return 'Faster 3x';
+					case MultiplierEnum.fast2Times:
+						return 'Faster 2x';
+
+					case MultiplierEnum.slow10Times:
+						return 'Slower 10x';
+					case MultiplierEnum.slow9Times:
+						return 'Slower 9x';
+					case MultiplierEnum.slow8Times:
+						return 'Slower 8x';
+					case MultiplierEnum.slow7Times:
+						return 'Slower 7x';
+					case MultiplierEnum.slow6Times:
+						return 'Slower 6x';
+					case MultiplierEnum.slow5Times:
+						return 'Slower 5x';
+					case MultiplierEnum.slow4Times:
+						return 'Slower 4x';
+					case MultiplierEnum.slow3Times:
+						return 'Slower 3x';
+					case MultiplierEnum.slow2Times:
+						return 'Slower 2x';
+				
+					case MultiplierEnum.normal:
+					default:
+						return 'Normal';
+				}
+			}
+
+
+			switch (value) {
+				case MultiplierEnum.fast10Times:
+					return 'Ускорение 10x';
+				case MultiplierEnum.fast9Times:
+					return 'Ускорение 9x';
+				case MultiplierEnum.fast8Times:
+					return 'Ускорение 8x';
+				case MultiplierEnum.fast7Times:
+					return 'Ускорение 7x';
+				case MultiplierEnum.fast6Times:
+					return 'Ускорение 6x';
+				case MultiplierEnum.fast5Times:
+					return 'Ускорение 5x';
+				case MultiplierEnum.fast4Times:
+					return 'Ускорение 4x';
+				case MultiplierEnum.fast3Times:
+					return 'Ускорение 3x';
+				case MultiplierEnum.fast2Times:
+					return 'Ускорение 2x';
+
+				case MultiplierEnum.slow10Times:
+					return 'Замедление 10x';
+				case MultiplierEnum.slow9Times:
+					return 'Замедление 9x';
+				case MultiplierEnum.slow8Times:
+					return 'Замедление 8x';
+				case MultiplierEnum.slow7Times:
+					return 'Замедление 7x';
+				case MultiplierEnum.slow6Times:
+					return 'Замедление 6x';
+				case MultiplierEnum.slow5Times:
+					return 'Замедление 5x';
+				case MultiplierEnum.slow4Times:
+					return 'Замедление 4x';
+				case MultiplierEnum.slow3Times:
+					return 'Замедление 3x';
+				case MultiplierEnum.slow2Times:
+					return 'Замедление 2x';
+			
+				case MultiplierEnum.normal:
+				default:
+					return 'Нормально';
+			}
+		}
+		/** */
+		public static multiplierValueShort = (value: MultiplierEnum, language?: LanguageEnum): string => {
+			if (language !== LanguageEnum.rus) {
+				switch (value) {
+					case MultiplierEnum.fast10Times:
+						return '10x';
+					case MultiplierEnum.fast9Times:
+						return '9x';
+					case MultiplierEnum.fast8Times:
+						return '8x';
+					case MultiplierEnum.fast7Times:
+						return '7x';
+					case MultiplierEnum.fast6Times:
+						return '6x';
+					case MultiplierEnum.fast5Times:
+						return '5x';
+					case MultiplierEnum.fast4Times:
+						return '4x';
+					case MultiplierEnum.fast3Times:
+						return '3x';
+					case MultiplierEnum.fast2Times:
+						return '2x';
+
+					case MultiplierEnum.slow10Times:
+						return '10x';
+					case MultiplierEnum.slow9Times:
+						return '9x';
+					case MultiplierEnum.slow8Times:
+						return '8x';
+					case MultiplierEnum.slow7Times:
+						return '7x';
+					case MultiplierEnum.slow6Times:
+						return '6x';
+					case MultiplierEnum.slow5Times:
+						return '5x';
+					case MultiplierEnum.slow4Times:
+						return '4x';
+					case MultiplierEnum.slow3Times:
+						return '3x';
+					case MultiplierEnum.slow2Times:
+						return '2x';
+				
+					case MultiplierEnum.normal:
+					default:
+						return 'Normal speed';
+				}
+			}
+
+
+			switch (value) {
+				case MultiplierEnum.fast10Times:
+					return 'Ускорение 10x';
+				case MultiplierEnum.fast9Times:
+					return 'Ускорение 9x';
+				case MultiplierEnum.fast8Times:
+					return 'Ускорение 8x';
+				case MultiplierEnum.fast7Times:
+					return 'Ускорение 7x';
+				case MultiplierEnum.fast6Times:
+					return 'Ускорение 6x';
+				case MultiplierEnum.fast5Times:
+					return 'Ускорение 5x';
+				case MultiplierEnum.fast4Times:
+					return 'Ускорение 4x';
+				case MultiplierEnum.fast3Times:
+					return 'Ускорение 3x';
+				case MultiplierEnum.fast2Times:
+					return 'Ускорение 2x';
+
+				case MultiplierEnum.slow10Times:
+					return 'Замедление 10x';
+				case MultiplierEnum.slow9Times:
+					return 'Замедление 9x';
+				case MultiplierEnum.slow8Times:
+					return 'Замедление 8x';
+				case MultiplierEnum.slow7Times:
+					return 'Замедление 7x';
+				case MultiplierEnum.slow6Times:
+					return 'Замедление 6x';
+				case MultiplierEnum.slow5Times:
+					return 'Замедление 5x';
+				case MultiplierEnum.slow4Times:
+					return 'Замедление 4x';
+				case MultiplierEnum.slow3Times:
+					return 'Замедление 3x';
+				case MultiplierEnum.slow2Times:
+					return 'Замедление 2x';
+			
+				case MultiplierEnum.normal:
+				default:
+					return 'Нормальная скорость';
+			}
+		}
+
+		/** */
+		public static speedMultipliers = (language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'Speed multipliers' : 'Множители скорости';
+		/** */
+		public static intro = (language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'Intro' : 'Intro';
+		/** */
+		public static outro = (language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'Outro' : 'Outro';
+		/** */
+		public static audio = (language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'Audio' : 'Аудио';
+		/** */
+		public static overlay = (language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'Overlay' : 'Наложение';
+		/** */
+		public static zoom = (language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'Zoom' : 'Увеличение';
+		/** */
+		public static disable = (language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'Disable' : 'Отключить';
+		/** */
+		public static beforeSlow = (language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'Before slow' : 'До замедления';
+		/** */
+		public static afterSlow = (language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'After slow' : 'После замедления';
+		/** */
+		public static afterPingPong = (language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'After pong pong' : 'После бумеранга';
+		/** */
+		public static forPhoto = (language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'For photo' : 'Для фото';
+		/** */
+		public static addButton = (language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'Add item' : 'Добавить значение';
+		/** */
+		public static deleteButton = (language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'Delete' : 'Удалить';
+		/** */
+		public static deletePresetButton = (language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'Delete preset' : 'Удалить набор';
+		/** */
+		public static none = (language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'None' : 'Нет';
+		/** */
+		public static preview = (language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'Preview' : 'Предпросмотр';
 	};
 	/** */
 	// public static administration = (language?: LanguageEnum): string =>

@@ -11,6 +11,7 @@ import { ServerSettingsViewModel } from '../../base/settings/tabs/server/ServerS
 import { OverlaySettingsViewModel } from '../../base/settings/tabs/overlay/OverlaySettingsModel';
 import { AudioSettingsViewModel } from '../../base/settings/tabs/audio/AudioSettingsModel';
 import { ZoomSettingsViewModel } from '../../base/settings/tabs/zoom/ZoomSettingsModel';
+import { SpinnerSettingsFrontViewModel } from '../../../src-front/applications/spinner/frontSettings/SpinnerSettingsFrontModel';
 
 /** Модель настроек приложения */
 export class SpinnerSettingsViewModel extends SpinnerSettingsModel {
@@ -49,4 +50,8 @@ export class SpinnerSettingsViewModel extends SpinnerSettingsModel {
 	@observable
 	/** */
 	public zoomSettings = new ZoomSettingsViewModel();
+
+	@observable
+	/** */
+	public frontSettings = new SpinnerSettingsFrontViewModel;
 }

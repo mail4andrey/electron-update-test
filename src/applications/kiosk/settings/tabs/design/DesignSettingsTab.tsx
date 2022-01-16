@@ -33,7 +33,7 @@ export interface DesignSettingsTabProps {
 	iconColor?: string;
 
 	/** */
-	onChange: (event: ISelectChangeEventProps | undefined, settings: DesignSettingsModel) => void;
+	onChange: (event: ITextFieldChangeEventProps | undefined, settings: DesignSettingsModel) => void;
 }
 
 /** */

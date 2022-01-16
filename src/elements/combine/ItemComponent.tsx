@@ -1,19 +1,16 @@
-import { remote } from 'electron';
 import { observer } from 'mobx-react';
 import React from 'react';
 
-import { OneLine } from '../elements/commons/OneLine';
-import { IconButton } from '../elements/IconButton';
-import { ArrowUpward, ArrowDownward, Delete, ExpandMore } from '../elements/Icons';
-import { InputAdornment } from '../elements/InputAdornment';
-import type { ITextFieldChangeEventProps } from '../elements/TextField';
-import { Tooltip } from '../elements/Tooltip';
-import { LanguageEnum } from '../src-front/models/LanguageEnum';
-import { Typography } from '../elements/Typography';
-import { RightContainer } from '../elements/commons/RightContainer';
-import { Accordion } from '../elements/Accordion';
-import { AccordionSummary } from '../elements/AccordionSummary';
-import { AccordionDetails } from '../elements/AccordionDetails';
+import { OneLine } from '../commons/OneLine';
+import { IconButton } from '../IconButton';
+import { ArrowUpward, ArrowDownward, Delete, ExpandMore } from '../Icons';
+import { InputAdornment } from '../InputAdornment';
+import { Tooltip } from '../Tooltip';
+import { LanguageEnum } from '../../src-front/models/LanguageEnum';
+import { RightContainer } from '../commons/RightContainer';
+import { Accordion } from '../Accordion';
+import { AccordionSummary } from '../AccordionSummary';
+import { AccordionDetails } from '../AccordionDetails';
 
 
 /** */
@@ -86,6 +83,16 @@ export class ItemComponent extends React.PureComponent<ItemComponentProps> {
 				</OneLine>
 			</InputAdornment>
 		);
+		if (!this.props.children) {
+			return (
+				<OneLine>
+					{this.props.title}
+					<RightContainer>
+						{rightButtons}
+					</RightContainer>
+				</OneLine>
+			);
+		}
 		return (
 			<Accordion>
 				<AccordionSummary

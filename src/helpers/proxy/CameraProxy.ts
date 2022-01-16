@@ -4,6 +4,7 @@ import { UrlConsts } from '../../src-front/const/UrlConsts';
 import { CameraSettingEnum, CameraStateModel } from '../../src-front/models/CameraStateModel';
 import { FetchHelper } from '../../helpers/FetchHelper';
 import { DownloadLastFileType } from '../../src-front/models/DownloadLastFileType';
+import { SpinnerSettingsFrontViewModel, SpinnerSettingsFrontModel } from '../../src-front/applications/spinner/frontSettings/SpinnerSettingsFrontModel';
 
 export class CameraNotFound extends Error {
 }
@@ -25,7 +26,7 @@ export class CameraProxy {
 	public async recordVideo(duration: number): Promise<void> {
 		const url = UrlHelper.getUrl(UrlConsts.camera.recordVideo);
 		const request = { duration };
-		await this.request(url, 'POST', request);
+		await this.request(url, 'POST', request, duration + 5);
 	}
 
 	/** */
@@ -86,7 +87,7 @@ export class CameraProxy {
 		url: string,
 		method: string = 'GET',
 		request?: any,
-		timeout: number = 30000
+		timeout: number = 3000
 	): Promise<any> {
 		const response = await FetchHelper.fetch(url, method, request, timeout);
 		return response;

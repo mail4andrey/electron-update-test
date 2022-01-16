@@ -25,6 +25,7 @@ import type { PathSourceFilesModel } from '../../../models/PathSourceFilesModel'
 import { LocalStorageConsts } from '../../../const/LocalStorageConsts';
 import { UrlConsts } from '../../../../src-front/const/UrlConsts';
 
+declare const fetch: Function;
 
 /** */
 export class KioskViewController {

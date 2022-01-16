@@ -1,5 +1,6 @@
 import { EmailSettingsModel } from '../../applications/kiosk/settings/tabs/email/EmailSettingsModel';
 import { UrlHelper } from '../../src-front/helpers/UrlHelper';
+declare const fetch: Function;
 
 
 /** */

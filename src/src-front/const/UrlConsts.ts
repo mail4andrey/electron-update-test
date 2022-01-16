@@ -5,6 +5,8 @@ export class UrlConsts {
 	public static fileUrl = 'file';
 	public static getFile = 'file';
 	public static dataUrl = 'data';
+	/** */
+	public static saveFrontSettings = 'frontSettings';
 	
 	/** Запросы к беку по командам к камере */
 	public static camera = class {
@@ -29,7 +31,16 @@ export class UrlConsts {
 		/** */
 		public static getFile = 'camera/file';
 	}
+
 	
+	/** Запросы к беку по командам к камере */
+	public static process = class {
+		/** */
+		public static processTestVideo = 'process/testvideo';
+		/** */
+		public static processVideo = 'process/video';
+	}
+
 	/** Запросы к GoPro */
 	/** https://github.com/KonradIT/goprowifihack/blob/master/HERO7/HERO7-Commands.md */
 	public static goPro = class {

@@ -13,10 +13,15 @@ import SpinnerView from './views/SpinnerView';
 
 import { Loader } from '../../../elements/Loader';
 import { SettingsProxy } from '../../../helpers/proxy/SettingsProxy';
+import { provider, inject } from 'react-ioc';
+import { EventLogger } from '../../../helpers/EventLogger';
 
 /** Приложение */
+@provider(EventLogger)
 @observer
 export class SpinnerFront extends React.PureComponent {
+	@inject
+	private eventLogger!: EventLogger;
 
 	@observable
 	private loaded = false;
@@ -32,6 +37,7 @@ export class SpinnerFront extends React.PureComponent {
 		const { titleFrontPage } = this.settings;
 		document.title = titleFrontPage && titleFrontPage.length > 0 ? titleFrontPage : StringHelper.capitalizeFirstLetter(process.env.APPLICATION);
 		this.loaded = true;
+		this.eventLogger.info('Settings is loaded');
 	}
 
 	/** Отображение */

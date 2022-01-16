@@ -5,3 +5,6 @@ export class BaseApplicationSettingsModel {
 	/** */
 	public serverSettings?: ServerSettingsModel;
 }
+/** Модель настроек приложения */
+export class BaseApplicationFrontSettingsModel {
+}

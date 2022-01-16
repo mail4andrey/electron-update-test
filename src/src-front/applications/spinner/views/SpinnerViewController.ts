@@ -11,12 +11,12 @@ import { UrlHelper } from '../../../helpers/UrlHelper';
 import type { PathSourceFileModel } from '../../../models/PathSourceFileModel';
 import type { PathSourceFilesModel } from '../../../models/PathSourceFilesModel';
 import { LocalStorageConsts } from '../../../const/LocalStorageConsts';
-import { SpinnerViewStore, StatusEnum } from './SpinnerViewStore';
+import { SpinnerViewStore, StatusEnum, ProcessFileEnum } from './SpinnerViewStore';
 import { LanguageSettingsLocalStorage } from "../../../models/LanguageSettingsLocalStorage";
 import { SpinnerSettingsLocalStorage } from './SpinnerSettingsLocalStorage';
 import { LanguageEnum } from '../../../../src-front/models/LanguageEnum';
 import { UrlConsts } from '../../../../src-front/const/UrlConsts';
-import { SpinnerSettingsFromServerModel } from './SpinnerSettingsFromServerViewModel';
+import { SpinnerSettingsFromServerModel, SpinnerSettingsFromServerViewModel } from './SpinnerSettingsFromServerViewModel';
 import { MapperHelper } from '../../../../helpers/MapperHelper';
 import { CameraProxy, CameraNotFound } from '../../../../helpers/proxy/CameraProxy';
 import { CameraSettingEnum, CameraMode, CameraSubMode, GoProVersion, CameraModeGoPro8 } from '../../../../src-front/models/CameraStateModel';
@@ -26,16 +26,26 @@ import { ErrorTypeEnum } from '../../../../helpers/ErrorTypeEnum';
 import { DownloadLastFileType, GetFilesFolderType } from '../../../../src-front/models/DownloadLastFileType';
 import { KioskViewFilesViewModel } from '../../../../src-front/applications/kiosk/views/KioskViewFileViewModel';
 import { KioskViewFileViewModel } from '../../../../src-front/applications/kiosk/views/KioskViewFileViewModel';
+import { EventLogger } from '../../../../helpers/EventLogger';
+import { SpinnerSettingsFrontViewModel, SpinnerSettingsFrontItemViewModel } from '../frontSettings/SpinnerSettingsFrontModel';
+import { SpinnerLocalization } from '../../../../src-front/localization/SpinnerLocalization';
+import { SettingsProxy } from '../../../../helpers/proxy/SettingsProxy';
 
+declare const fetch: Function;
 
 /** */
 export class SpinnerViewController {
 	/** */
 	@inject
 	private readonly store!: SpinnerViewStore;
+	
+	@inject
+	private eventLogger!: EventLogger;
 
 	/** */
 	private readonly cameraClient = new CameraProxy();
+	/** */
+	private readonly settingsProxy = new SettingsProxy();
 
 	// /** */
 	// private readonly clientPrint = new PrintProxy();
@@ -62,19 +72,23 @@ export class SpinnerViewController {
 		const languageSettings = LocalStorage.get<LanguageSettingsLocalStorage | undefined>(LocalStorageConsts.languageSettings);
 		this.store.language = languageSettings?.language;
 
-		await this.loadDataFromServer();
-		this.store.loaded = true;
-		this.timerApplicationSettings = new Timer(5000, this.loadDataFromServer);
-		this.timerApplicationSettings.execute();
+		await this.loadApplicationSettings();
+		this.timerApplicationSettings = new Timer(30000, this.loadApplicationSettings);
+		//this.timerApplicationSettings.execute();
 
 		await this.loadCameraSettings();
 		this.timerCameraSettings = new Timer(30000, this.loadCameraSettings);
 		this.timerCameraSettings.execute();
 
 		await this.loadFiles();
-		this.store.loaded = true;
 		this.timerGoProFiles = new Timer(15000, this.loadFiles);
 		this.timerGoProFiles.execute();
+
+		await this.convertVideoFiles();
+		this.timerGoProFiles = new Timer(500000, this.convertVideoFiles);
+		this.timerGoProFiles.execute();
+
+		this.store.loaded = true;
 	};
 
 	/** Сохраняем в local storage */
@@ -136,8 +150,8 @@ export class SpinnerViewController {
 			this.store.statusFilename = undefined;
 			this.store.status = undefined;
 			const errorType = ErrorHelper.getErrorType(error);
-			console.error(errorType);
-			console.error(error);
+			const message = errorType + ': ' + JSON.stringify(error);
+			this.eventLogger.error(message);
 		}
 	};
 
@@ -163,7 +177,7 @@ export class SpinnerViewController {
 				}
 		
 				await this.cameraClient.recordVideo(duration);
-				this.store.status = StatusEnum.DownloadFromCamera;
+				this.store.status = StatusEnum.GetLastFile;
 				const filename = await this.cameraClient.getLastFile(DownloadLastFileType.Video);
 				this.store.statusFilename = filename;
 				this.store.status = StatusEnum.DownloadFromCamera;
@@ -179,8 +193,8 @@ export class SpinnerViewController {
 			this.store.statusFilename = undefined;
 			this.store.status = undefined;
 			const errorType = ErrorHelper.getErrorType(error);
-			console.error(errorType);
-			console.error(error);
+			const message = errorType + ': ' + JSON.stringify(error);
+			this.eventLogger.error(message);
 		}
 	};
 
@@ -190,6 +204,11 @@ export class SpinnerViewController {
 		await TimerHelper.delay(500);
 		await this.loadCameraSettings();
 		// this.store.cameraSettings.videoSettingsIsoLimit = newSettings.videoSettingsIsoLimit;
+	};
+
+	/** */
+	public saveFrontSettings = async (setting?: SpinnerSettingsFrontViewModel): Promise<void> => {
+		await this.settingsProxy.saveFrontSettings(setting);
 	};
 
 	// /** zz */
@@ -255,6 +274,36 @@ export class SpinnerViewController {
 		LocalStorage.set(LocalStorageConsts.languageSettings, data);
 	};
 
+	public testVideo = async (): Promise<void> => {
+		const url = UrlHelper.getUrl(UrlConsts.process.processTestVideo);
+		const response = await fetch(url, {
+			method: 'POST', // *GET, POST, PUT, DELETE, etc.
+			headers: {
+				'Content-Type': 'application/json'
+			},
+		});
+		if (response.ok) {
+			this.eventLogger.success('Test file converted');
+		} else {
+			this.eventLogger.error(`Ошибка HTTP: ${response.status}`);
+		}
+	}
+
+	public processVideo = async (): Promise<void> => {
+		const url = UrlHelper.getUrl(UrlConsts.process.processVideo);
+		const response = await fetch(url, {
+			method: 'POST', // *GET, POST, PUT, DELETE, etc.
+			headers: {
+				'Content-Type': 'application/json'
+			},
+		});
+		if (response.ok) {
+			this.eventLogger.success('Test file converted');
+		} else {
+			this.eventLogger.error(`Ошибка HTTP: ${response.status}`);
+		}
+	}
+
 	// /** */
 	// public readonly onSizeChange = (_event: React.MouseEvent<Element, MouseEvent>, value: DesignSizeEnum): void => {
 	// 	this.store.iconSize = value;
@@ -275,15 +324,32 @@ export class SpinnerViewController {
 	// }
 
 	/** */
-	private readonly loadDataFromServer = async (): Promise<void> => {
+	private readonly loadApplicationSettings = async (): Promise<void> => {
 		const url = UrlHelper.getUrl(UrlConsts.settingsUrl);
 		const response = await fetch(url);
 		if (response.ok) {
 			const settings = await response.json() as SpinnerSettingsFromServerModel;
 			MapperHelper.mapValues(settings, this.store.settings);
+			if (!this.store.settings) {
+				this.store.settings = new SpinnerSettingsFromServerViewModel();
+			}
+			if (!this.store.settings?.frontSettings) {
+				this.store.settings.frontSettings = new SpinnerSettingsFrontViewModel();
+			}
+			if (!this.store.settings?.frontSettings?.presets) {
+				this.store.settings.frontSettings.presets = [];
+			}
+			if (!this.store.settings?.frontSettings?.presets?.length) {
+				const preset = new SpinnerSettingsFrontItemViewModel();
+				preset.title = SpinnerLocalization.frontSettings.newPreset(1, this.store.language);
+				this.store.settings.frontSettings.presets.push(preset);
+			}
+			if (!this.store.settings.frontSettings.selectedPresetGuid) {
+				this.store.settings.frontSettings.selectedPresetGuid = this.store.settings.frontSettings.presets[0].guid;
+			}
 			// this.updatePathSources(serverFiles, this.store.groupsFiles);
 		} else {
-			console.error(`Ошибка HTTP: ${response.status}`);
+			this.eventLogger.error(`Ошибка HTTP: ${response.status}`);
 		}
 	};
 	/** */
@@ -302,7 +368,8 @@ export class SpinnerViewController {
 				this.store.cameraNotFound = true;
 			}
 
-			console.error(error);
+			const message = errorType + ': ' + JSON.stringify(error);
+			this.eventLogger.error(message);
 		}
 		// const url = UrlHelper.getUrl(UrlConsts.settingsUrl);
 		// const response = await fetch(url);
@@ -360,11 +427,10 @@ export class SpinnerViewController {
 	// 	}
 	// }
 
-	
-
 	/** */
 	private readonly loadFiles = async (): Promise<void> => {
 		await this.loadGoProPaths();
+		await this.loadCommonPaths();
 		// await this.loadGoProPhotosOverlayed();
 		// await this.loadGoProVideos();
 	};
@@ -378,7 +444,20 @@ export class SpinnerViewController {
 			const serverFiles = await response.json() as PathSourceFilesModel[];
 			this.updatePathSources(serverFiles, this.store.goProGroupsFiles);
 		} else {
-			console.error(`Ошибка HTTP: ${response.status}`);
+			this.eventLogger.error(`Ошибка HTTP: ${response.status}`);
+		}
+	};
+
+	/** */
+	private readonly loadCommonPaths = async (): Promise<void> => {
+		const url = UrlHelper.getUrl(UrlConsts.camera.getFiles + '/' + GetFilesFolderType.Common);
+		const response = await fetch(url);
+		if (response.ok) {
+			// console.dir(response);
+			const serverFiles = await response.json() as PathSourceFilesModel[];
+			this.updatePathSources(serverFiles, this.store.commonGroupsFiles);
+		} else {
+			this.eventLogger.error(`Ошибка HTTP: ${response.status}`);
 		}
 	};
 
@@ -426,4 +505,9 @@ export class SpinnerViewController {
 			}
 		}
 	}
+
+	/** */
+	private readonly convertVideoFiles = async (): Promise<void> => {
+		return;
+	};
 }

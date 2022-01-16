@@ -5,7 +5,7 @@ import { OverlaySettingsItem } from './OverlaySettingsItem';
 import { OverlaySettingsItemModel, OverlaySettingsViewItemModel } from './OverlaySettingsItemModel';
 import { OverlaySettingsModel } from './OverlaySettingsModel';
 
-import { ItemComponent } from '../../../../../common/ItemComponent';
+import { ItemComponent } from '../../../../../elements/combine/ItemComponent';
 import { Button } from '../../../../../elements/Button';
 import { FormControl } from '../../../../../elements/FormControl';
 import { PlaylistAdd } from '../../../../../elements/Icons';
@@ -16,6 +16,7 @@ import type { LanguageEnum } from '../../../../../src-front/models/LanguageEnum'
 import { SettingsLocalization } from '../../SettingsLocalization';
 import { FormControlLabel } from '../../../../../elements/FormControlLabel';
 import { Checkbox } from '../../../../../elements/Checkbox';
+import { CommonHelper } from '../../../../../src-front/helpers/CommonHelper';
 
 
 /** */
@@ -150,7 +151,9 @@ export class OverlaySettingsTab extends React.PureComponent<OverlaySettingsTabPr
 	/** */
 	private readonly onAddClick = (event: React.MouseEvent<Element, MouseEvent>): void => {
 		const items = this.props.items ?? [];
-		items.push(new OverlaySettingsViewItemModel());
+		const newItem = new OverlaySettingsViewItemModel();
+		newItem.name = CommonHelper.getFreeName(items, this.props.language);
+		items.push(newItem);
 		this.onChange(event, { items });
 	};
 

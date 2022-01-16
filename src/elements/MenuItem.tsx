@@ -3,6 +3,7 @@ import React from 'react';
 
 /** Свойства кнопки */
 export interface IMenuItemProps {
+	className?: string;
 	value?: string | ReadonlyArray<string> | number;
 		// value?: string;
 }

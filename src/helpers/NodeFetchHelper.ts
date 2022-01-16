@@ -1,7 +1,56 @@
 import nodeFetch, { Response } from 'node-fetch';
-import AbortController from 'abort-controller';
+// import crossFetch, { Response } from 'cross-fetch';
+// import AbortController from 'abort-controller';
+import { AbortController } from 'node-abort-controller';
 import { throwException } from './CustomException';
 import { HttpCodes } from './HttpCodes';
+import { EventLogger } from './EventLogger';
+
+import EventEmitter from 'events'
+
+// export class AbortSignal extends EventEmitter {
+//     aborted: boolean;
+// 	constructor(signal) {
+// 		super();
+// 		this.signal = signal;
+// 		this.aborted = false;
+// 		signal.addEventListener('abort', (...e) => this.onabort(...e));
+// 		this.onabort = () => 0
+// 	}
+
+// 	static get name() {
+// 		return "AbortSignal";
+// 	}
+
+// 	addEventListener(...args) {
+// 		this.on(...args);
+// 	}
+
+// 	removeEventListener(...args) {
+// 		this.off(...args);
+// 	}
+
+// 	dispatchEvent(...args) {
+// 		return true;
+// 	}
+
+// 	// _onAbort(...e) {
+// 	// 	// noinspection JSConstantReassignment
+// 	// 	this.aborted = true;
+// 	// 	this.onabort();
+// 	// 	this.emit('abort', ...e)
+// 	// }
+// 	onabort(...e) {
+// 		// noinspection JSConstantReassignment
+// 		this.aborted = true;
+// 		this.onabort();
+// 		this.emit('abort', ...e)
+// 	}
+
+// 	get [Symbol.toStringTag]() {
+// 		return 'AbortSignal';
+// 	}
+// }
 
 export enum ResponseType {
 	default = 'default',
@@ -19,13 +68,18 @@ export class NodeFetchHelper {
 		timeout: number = 3000,
 		resposeType: ResponseType = ResponseType.default
 	): Promise<any> {
-		console.log(url, method, timeout, resposeType);
-		const controller = new AbortController();
-		const timer = setTimeout(() => {
-			controller.abort();
-		}, timeout);
+		const eventLogger = new EventLogger();
+		eventLogger.info(url + ' ' + method + ' ' + timeout + ' ' + resposeType);
 
+		let timer;
 		try {
+			// new AbortSignal(abortController.signal)
+			const controller = new AbortController();
+			timer = setTimeout(() => {
+				eventLogger.info(url + ' controller.abort');
+				controller.abort();
+			}, timeout);
+
 			const response = await nodeFetch(url, {
 				method: method,
 				headers: {
@@ -33,6 +87,7 @@ export class NodeFetchHelper {
 				},
 				body: JSON.stringify(body),
 				signal: controller.signal
+				// signal: new AbortSignal(controller.signal)
 			});
 
 			const status = response.status;
@@ -42,6 +97,7 @@ export class NodeFetchHelper {
 				response.headers.forEach((v: any, k: any) => headers[k] = v);
 			};
 
+			eventLogger.info(url + ' status: ' + status);
 			if (status === 200) {
 				const data = await NodeFetchHelper.parseResponse(response, resposeType);
 				return data;
@@ -71,7 +127,9 @@ export class NodeFetchHelper {
 
 			throw error;
 		} finally {
-			clearTimeout(timer);
+			if (timer) {
+				clearTimeout(timer);
+			}
 		}
 	}
 

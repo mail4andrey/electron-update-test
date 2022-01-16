@@ -44,37 +44,37 @@ export class ClipmakerSettingsController {
 	};
 
 	/** */
-	public readonly onDesignSettingsChange = (_event: ISelectChangeEventProps | undefined, settings: DesignSettingsModel): void => {
+	public readonly onDesignSettingsChange = (_event: ITextFieldChangeEventProps | undefined, settings: DesignSettingsModel): void => {
 		MapperHelper.mapValues(settings, this.store.settings.designSettings);
 	};
 
 	/** */
-	public readonly onServerSettingsChange = (_event: ISelectChangeEventProps, settings: ServerSettingsModel): void => {
+	public readonly onServerSettingsChange = (_event: ITextFieldChangeEventProps, settings: ServerSettingsModel): void => {
 		MapperHelper.mapValues(settings, this.store.settings.serverSettings);
 	};
 
 	/** */
-	public readonly onGoProSettingsChange = (_event: ISelectChangeEventProps, settings: GoProSettingsModel): void => {
+	public readonly onGoProSettingsChange = (_event: ITextFieldChangeEventProps, settings: GoProSettingsModel): void => {
 		MapperHelper.mapValues(settings, this.store.settings.goProSettings);
 	};
 
 	/** */
-	public readonly onVideoSettingsChange = (_event: ISelectChangeEventProps, settings: VideoSettingsModel): void => {
+	public readonly onVideoSettingsChange = (_event: ITextFieldChangeEventProps, settings: VideoSettingsModel): void => {
 		MapperHelper.mapValues(settings, this.store.settings.videoSettings);
 	};
 
 	/** */
-	public readonly onIntroOutroSettingsChange = (_event: ISelectChangeEventProps, settings: IntroOutroSettingsModel): void => {
+	public readonly onIntroOutroSettingsChange = (_event: ITextFieldChangeEventProps, settings: IntroOutroSettingsModel): void => {
 		MapperHelper.mapValues(settings, this.store.settings.introOutroSettings);
 	};
 
 	/** */
-	public readonly onOverlaySettingsChange = (_event: ISelectChangeEventProps, settings:OverlaySettingsModel): void => {
+	public readonly onOverlaySettingsChange = (_event: ITextFieldChangeEventProps, settings:OverlaySettingsModel): void => {
 		MapperHelper.mapValues(settings, this.store.settings.overlaySettings);
 	};
 
 	/** */
-	public readonly onAudioSettingsChange = (_event: ISelectChangeEventProps, settings: AudioSettingsModel): void => {
+	public readonly onAudioSettingsChange = (_event: ITextFieldChangeEventProps, settings: AudioSettingsModel): void => {
 		MapperHelper.mapValues(settings, this.store.settings.audioSettings);
 	};
 

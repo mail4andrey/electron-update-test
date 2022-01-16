@@ -24,7 +24,7 @@ export class FilesHelper {
 
 		const result: PathSourceFilesModel[] = [];
 		for (const dirname of directories) {
-			if (!dirname) {
+			if (!dirname || !fs.existsSync(dirname)) {
 				continue;
 			}
 

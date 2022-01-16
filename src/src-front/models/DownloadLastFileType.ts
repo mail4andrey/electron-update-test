@@ -7,5 +7,5 @@ export enum DownloadLastFileType {
 export enum GetFilesFolderType {
 	GoProPaths = 'GoProPaths',
 	// GoProPhotoOverlayed = 'GoProPhotoOverlayed',
-	// GoProVideo = 'GoProVideo'
+	Common = 'Common'
 }

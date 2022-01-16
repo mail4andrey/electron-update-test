@@ -2,9 +2,11 @@ import { Select as UiSelect } from '@material-ui/core';
 import React from 'react';
 
 export interface ISelectChangeEventProps {
+	stopPropagation(): void;
 	target: {
 		name?: string;
 		value: unknown;
+		// value?: string;
 	};
 }
 /** Свойства кнопки */
@@ -147,6 +149,7 @@ export class Select extends React.PureComponent<ISelectProps> {
 		return (
 			<UiSelect
 				{...this.props}
+				value={this.props.value ?? ''}
 			/>
 		);
 	}

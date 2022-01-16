@@ -96,6 +96,12 @@ body, div, video {
 .padding-top-6px {
 	padding-top: 6px;
 }
+.padding-top-12px {
+	padding-top: 12px;
+}
+.padding-left-16px {
+	padding-left: 16px;
+}
 .padding-bottom-6px {
 	padding-bottom: 6px;
 }
@@ -267,6 +273,9 @@ body, div, video {
 .centered-container {
 	margin: auto;
 }
+.text-align-center {
+	text-align: center;
+}
 .width40px {
 	width: 40px;
 }
@@ -415,4 +424,11 @@ body, div, video {
 }
 .display-block {
 	display: block;
+}
+.font-style-italic {
+	font-style: italic;
+}
+.slider-container {
+	padding-left: 30px;
+	padding-right: 30px;
 }

@@ -3,6 +3,8 @@ import React from 'react';
 
 /** Свойства кнопки */
 export interface IButtonProps {
+	className?: string;
+
 	/** Содержимое */
 	children?: React.ReactNode;
 	/**

@@ -5,6 +5,12 @@ import { SpinnerLocalSettingsViewModel } from './SpinnerLocalSettingsViewModel';
 import { CameraStateViewModel } from '../../../../src-front/models/CameraStateModel';
 import { KioskViewFilesViewModel } from '../../../../src-front/applications/kiosk/views/KioskViewFileViewModel';
 
+export enum ProcessFileEnum {
+	Zoom = 'Zoom',
+	PingPong = 'PingPong',
+	Audio = 'Audio',
+}
+
 export enum StatusEnum {
 	// Pairing = 'Pairing',
 	TakePhoto = 'TakePhoto',
@@ -25,7 +31,7 @@ export class SpinnerViewStore {
 	public language?: LanguageEnum;
 
 	@observable
-	public settings?: SpinnerSettingsFromServerViewModel;
+	public settings = new SpinnerSettingsFromServerViewModel();
 
 	@observable
 	public localSettings = new SpinnerLocalSettingsViewModel();
@@ -44,6 +50,9 @@ export class SpinnerViewStore {
 
 	@observable
 	public goProGroupsFiles: KioskViewFilesViewModel[] = [];
+
+	@observable
+	public commonGroupsFiles: KioskViewFilesViewModel[] = [];
 
 	// @observable
 	// public goProPhotoOverlayedGroupsFiles: KioskViewFilesViewModel[] = [];

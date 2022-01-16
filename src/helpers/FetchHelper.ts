@@ -1,9 +1,10 @@
 import AbortController from 'abort-controller';
 import { throwException } from './CustomException';
 import { HttpCodes } from './HttpCodes';
+declare const fetch: Function;
 
 
-
+ 
 /** */
 export class FetchHelper {
 	public static async fetch(

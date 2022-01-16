@@ -2,7 +2,7 @@ import * as LocalStorage from 'local-storage';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import React from 'react';
-
+import QRCode from 'qrcode.react';
 
 import type { BaseApplicationSettingsModel } from './base/settings/BaseApplicationSettingsModel';
 
@@ -66,22 +66,28 @@ export class MainWindowPage extends BaseRoutedComponent<IMainRoutedProps> {
 					<Grid
 						item={true}
 					>
-						<Typography
-							align='center'
-							variant='h6'
-						>
-							{this.localIp}
-						</Typography>
+						<div className='text-align-center'>
+							<Typography
+								align='center'
+								variant='h6'
+							>
+								{this.localIp}
+							</Typography>
+							<QRCode value={this.localIp ?? ''} />
+						</div>
 					</Grid>
 					<Grid
 						item={true}
 					>
-						<Typography
-							align='center'
-							variant='h6'
-						>
-							{this.hostname}
-						</Typography>
+						<div className='text-align-center'>
+							<Typography
+								align='center'
+								variant='h6'
+							>
+								{this.hostname}
+							</Typography>
+							<QRCode value={this.hostname ?? ''} />
+						</div>
 					</Grid>
 				</Grid>
 				<OneLine className='padding-left-12px padding-right-12px box-sizing-border-box'>

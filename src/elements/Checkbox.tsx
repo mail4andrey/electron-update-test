@@ -83,6 +83,7 @@ export class Checkbox extends React.PureComponent<ICheckboxProps> {
 		return (
 			<UiCheckbox
 				{...this.props}
+				checked={this.props.checked ?? false}
 			/>
 		);
 	}

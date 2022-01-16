@@ -1,5 +1,6 @@
 const path = require('path');
 const CopyPlugin = require("copy-webpack-plugin");
+// const TerserPlugin = require('terser-webpack-plugin')
 
 module.exports = {
 // module.exports = env => {
@@ -48,5 +49,16 @@ module.exports = {
 			],
 		})
 	],
+	optimization: {
+		minimize: false,
+		// minimize: true,
+		// minimizer: [
+		// 	new TerserPlugin({
+		// 	terserOptions: {
+		// 		keep_fnames: /AbortSignal/,
+		// 	},
+		// 	}),
+		// ],
+	}
 	// target: 'node'
 };

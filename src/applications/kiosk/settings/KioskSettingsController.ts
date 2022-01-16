@@ -87,7 +87,7 @@ export class KioskSettingsController {
 	};
 
 	/** */
-	public readonly onDesignSettingsChange = (_event: ISelectChangeEventProps | undefined, settings: DesignSettingsModel): void => {
+	public readonly onDesignSettingsChange = (_event: ITextFieldChangeEventProps | undefined, settings: DesignSettingsModel): void => {
 		this.store.settings.designSettings.titleFrontPage = settings.titleFrontPage ?? '';
 		this.store.settings.designSettings.background = settings.background ?? 'white';
 		this.store.settings.designSettings.backgroundToolbar = settings.backgroundToolbar ?? 'gray';
@@ -98,7 +98,7 @@ export class KioskSettingsController {
 	};
 
 	/** */
-	public readonly onServerSettingsChange = (_event: ISelectChangeEventProps, settings: ServerSettingsModel): void => {
+	public readonly onServerSettingsChange = (_event: ITextFieldChangeEventProps, settings: ServerSettingsModel): void => {
 		this.store.settings.serverSettings = settings;
 	};
 

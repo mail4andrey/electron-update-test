@@ -2,6 +2,7 @@ import { TextField as UiTextField } from '@material-ui/core';
 import React from 'react';
 
 export interface ITextFieldChangeEventProps {
+	// [x: string]: any;
 	target: {
 		value: string;
 	};
@@ -63,6 +64,7 @@ export class TextField extends React.PureComponent<ITextFieldProps> {
 			<UiTextField
 				{...this.props}
 				// size='large'
+				value={this.props.value ?? ''}
 			/>
 		);
 	}
