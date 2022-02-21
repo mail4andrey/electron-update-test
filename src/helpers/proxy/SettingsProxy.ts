@@ -3,10 +3,37 @@ import { UrlHelper } from '../../src-front/helpers/UrlHelper';
 import type { DesignSettingsModel } from '../../src-front/models/DesignSettingsModel';
 import { FetchHelper } from '../../helpers/FetchHelper';
 import { SpinnerSettingsFrontModel } from '../../src-front/applications/spinner/frontSettings/SpinnerSettingsFrontModel';
+import { SpinnerSettingsModel } from '../../applications/spinner/settings/SpinnerSettingsModel';
 declare const fetch: Function;
 
 /** */
 export class SettingsProxy {
+	/** */
+	public async getApplicationSettings(): Promise<SpinnerSettingsModel> {
+		const url = UrlHelper.getUrl(UrlConsts.settingsApplicationUrl);
+		const response = await fetch(url, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		});
+
+		if (!response.ok) {
+			const error = `Ошибка HTTP: ${response.status}`;
+			throw new Error(error);
+		}
+
+		const settings = await response.json() as SpinnerSettingsModel;
+		return settings;
+	}
+
+	/** */
+	public async saveApplicationSettings(setting?: SpinnerSettingsModel): Promise<void> {
+		const request = { setting };
+		const url = UrlHelper.getUrl(UrlConsts.settingsApplicationUrl);
+		await this.request(url, 'POST', request);
+	}
+
 	/** */
 	public async saveFrontSettings(setting?: SpinnerSettingsFrontModel): Promise<void> {
 		const request = { setting };

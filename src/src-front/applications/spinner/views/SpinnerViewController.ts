@@ -56,6 +56,7 @@ export class SpinnerViewController {
 	private timerApplicationSettings?: ITimer;
 	private timerCameraSettings?: ITimer;
 	private timerGoProFiles?: ITimer;
+	private timerProcessVideoAuto?: ITimer;
 
 	private delayMillisecondsAfterCommand = 1000;
 
@@ -84,9 +85,9 @@ export class SpinnerViewController {
 		this.timerGoProFiles = new Timer(15000, this.loadFiles);
 		this.timerGoProFiles.execute();
 
-		await this.convertVideoFiles();
-		this.timerGoProFiles = new Timer(500000, this.convertVideoFiles);
-		this.timerGoProFiles.execute();
+		await this.processVideoAuto();
+		this.timerProcessVideoAuto = new Timer(5000, this.processVideoAuto);
+		this.timerProcessVideoAuto.execute();
 
 		this.store.loaded = true;
 	};
@@ -138,7 +139,7 @@ export class SpinnerViewController {
 			const filename = await this.cameraClient.getLastFile(DownloadLastFileType.Photo);
 			this.store.statusFilename = filename;
 			this.store.status = StatusEnum.DownloadFromCamera;
-			await this.cameraClient.downloadFile(DownloadLastFileType.Photo, filename);
+			await this.cameraClient.downloadFile(DownloadLastFileType.Photo, filename, false);
 			if (this.store.settings?.removeFromGoPro) {
 				this.store.status = StatusEnum.DeleteFile;
 				await this.cameraClient.deleteFile(filename);
@@ -158,6 +159,7 @@ export class SpinnerViewController {
 	/** */
 	public recordVideo = async (): Promise<void> => {
 		try {
+			const processGoProVideo = this.store.localSettings.processGoProVideo ?? false;
 			this.store.status = StatusEnum.RecordVideo;
 			const duration = Number(this.store.localSettings.recordVideoDuration) * 1000;
 			if (duration > 0) {
@@ -181,7 +183,7 @@ export class SpinnerViewController {
 				const filename = await this.cameraClient.getLastFile(DownloadLastFileType.Video);
 				this.store.statusFilename = filename;
 				this.store.status = StatusEnum.DownloadFromCamera;
-				await this.cameraClient.downloadFile(DownloadLastFileType.Video, filename);
+				await this.cameraClient.downloadFile(DownloadLastFileType.Video, filename, processGoProVideo);
 				if (this.store.settings?.removeFromGoPro) {
 					this.store.status = StatusEnum.DeleteFile;
 					await this.cameraClient.deleteFile(filename);
@@ -275,6 +277,7 @@ export class SpinnerViewController {
 	};
 
 	public testVideo = async (): Promise<void> => {
+		this.store.localSettings.processVideo = true;
 		const url = UrlHelper.getUrl(UrlConsts.process.processTestVideo);
 		const response = await fetch(url, {
 			method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -287,9 +290,11 @@ export class SpinnerViewController {
 		} else {
 			this.eventLogger.error(`Ошибка HTTP: ${response.status}`);
 		}
+		this.store.localSettings.processVideo = false;
 	}
 
 	public processVideo = async (): Promise<void> => {
+		this.store.localSettings.processVideo = true;
 		const url = UrlHelper.getUrl(UrlConsts.process.processVideo);
 		const response = await fetch(url, {
 			method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -298,10 +303,11 @@ export class SpinnerViewController {
 			},
 		});
 		if (response.ok) {
-			this.eventLogger.success('Test file converted');
+			this.eventLogger.success('File converted');
 		} else {
 			this.eventLogger.error(`Ошибка HTTP: ${response.status}`);
 		}
+		this.store.localSettings.processVideo = false;
 	}
 
 	// /** */
@@ -507,7 +513,12 @@ export class SpinnerViewController {
 	}
 
 	/** */
-	private readonly convertVideoFiles = async (): Promise<void> => {
-		return;
+	private readonly processVideoAuto = async (): Promise<void> => {
+		if (this.store.settings.frontSettings?.autoMode
+			&& !this.store.settings.frontSettings.processVideoAutoMode) {
+			this.store.settings.frontSettings.processVideoAutoMode = true;
+			await this.processVideo();
+			this.store.settings.frontSettings.processVideoAutoMode = false;
+		}
 	};
 }

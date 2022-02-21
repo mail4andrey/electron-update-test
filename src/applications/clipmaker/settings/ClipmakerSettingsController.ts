@@ -27,19 +27,19 @@ export class ClipmakerSettingsController {
 	@inject
 	private readonly store!: ClipmakerSettingsStore;
 
-	private readonly settingsСontroller = new ApplicationSettingsController();
+	private readonly settingsController = new ApplicationSettingsController();
 
 	/** */
 	public loadSettings = (): void => {
 		const languageSettings = LocalStorage.get<LanguageSettingsLocalStorage>(LocalStorageConsts.languageSettings) as LanguageSettingsLocalStorage | undefined;
 		this.store.language = languageSettings?.language;
 
-		const settings = this.settingsСontroller.loadDefaultSettings();
+		const settings = this.settingsController.loadDefaultSettings();
 		this.store.settings = MapperHelper.map(settings, ClipmakerSettingsViewModel);
 	};
 
 	/** */
-	public onPathSourceChange = (_event: ITextFieldChangeEventProps, settings: PathSourcesSettingsModel): void => {
+	public onPathSourceChange = (_event: ITextFieldChangeEventProps | ISelectChangeEventProps, settings: PathSourcesSettingsModel): void => {
 		MapperHelper.mapValues(settings, this.store.settings.pathSources);
 	};
 
@@ -81,6 +81,6 @@ export class ClipmakerSettingsController {
 	/** */
 	public readonly onSaveClick = (): void => {
 		const settings = MapperHelper.map(this.store.settings, ClipmakerSettingsModel);
-		this.settingsСontroller.saveDefaultSettings(settings);
+		this.settingsController.saveDefaultSettings(settings);
 	};
 }

@@ -75,6 +75,10 @@ export class SpinnerLocalization {
 		language !== LanguageEnum.rus ? 'seconds' : 'секунд';
 
 	/** */
+	public static processGoProVideo = (language?: LanguageEnum): string =>
+		language !== LanguageEnum.rus ? 'Convert video' : 'Обработать видео';
+
+	/** */
 	public static cameraNotFound = (language?: LanguageEnum, value?: boolean): string =>
 		value ? language !== LanguageEnum.rus ? 'Camera not found. Check connection to camera!' : 'Камера не найдена. Проверьте подключение к камере.' : '';
 

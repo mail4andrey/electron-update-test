@@ -2,6 +2,7 @@ import { observer } from 'mobx-react';
 import React from 'react';
 
 import type { PathSourcesSettingsModel } from './PathSourcesSettingsModel';
+import { FileExtension } from './PathSourcesSettingsModel';
 
 import { PathSelectorComponent } from '../../../../../common/PathSelectorComponent';
 import { FormControl } from '../../../../../elements/FormControl';
@@ -10,23 +11,27 @@ import { TextField } from '../../../../../elements/TextField';
 import { Typography } from '../../../../../elements/Typography';
 import type { LanguageEnum } from '../../../../../src-front/models/LanguageEnum';
 import { SettingsLocalization } from '../../SettingsLocalization';
+import { InputLabel } from '../../../../../elements/InputLabel';
+import { Select, ISelectChangeEventProps } from '../../../../../elements/Select';
+import { MenuItem } from '../../../../../elements/MenuItem';
 
 
 /** */
-export interface PathSourcesSettingsTabProps {
+export interface PathSourcesSettingsTabProps extends PathSourcesSettingsModel {
 	language?: LanguageEnum;
 	testPath: 'file' | 'directory'
 
-	pathSource?: string;
-	pathDestination?: string;
-	fileNamePattern?: string;
-	pathTestSource?: string;
+	// pathSource?: string;
+	// pathDestination?: string;
+	// fileNamePattern?: string;
+	// pathTestSource?: string;
+	// fileExtension?: FileExtension;
 
 	/** */
 	// settings?: string[];
 
 	// onPathSourceAdd?: (event: React.MouseEvent<Element, MouseEvent>) => void;
-	onChange: (event: ITextFieldChangeEventProps, settings: PathSourcesSettingsModel) => void;
+	onChange: (event: ITextFieldChangeEventProps | ISelectChangeEventProps, settings: PathSourcesSettingsModel) => void;
 	// onPathSourceDelete?: (event: React.MouseEvent<Element, MouseEvent>, id: number) => void;
 	// onPathSourceUp?: (event: React.MouseEvent<Element, MouseEvent>, id: number) => void;
 	// onPathSourceDown?: (event: React.MouseEvent<Element, MouseEvent>, id: number) => void;
@@ -105,6 +110,23 @@ export class PathSourcesSettingsTab extends React.PureComponent<PathSourcesSetti
 						}}
 					/>
 				</FormControl>
+				<FormControl
+					fullWidth={true}
+					margin='dense'
+				>
+					<InputLabel id='fileExtension-select-label'>
+						{SettingsLocalization.pathSourcesTab.fileExtension(language)}
+					</InputLabel>
+					<Select
+						// label={SettingsLocalization.videoTab.renderOn(language)}
+						labelId='fileExtension-select-label'
+						value={this.props.fileExtension}
+						onChange={this.onFileExtensionOnChange}
+					>
+						<MenuItem value={FileExtension.mp4}>{SettingsLocalization.pathSourcesTab.fileExtensionItem(language, FileExtension.mp4)}</MenuItem>
+						<MenuItem value={FileExtension.mov}>{SettingsLocalization.pathSourcesTab.fileExtensionItem(language, FileExtension.mov)}</MenuItem>
+					</Select>
+				</FormControl>
 			</div>
 		);
 	}
@@ -165,6 +187,15 @@ export class PathSourcesSettingsTab extends React.PureComponent<PathSourcesSetti
 			// backgroundGroupName: this.props.backgroundGroupName,
 			// backgroundFileCard: this.props.backgroundFileCard,
 			// iconColor: this.props.iconColor,
+		} as PathSourcesSettingsModel;
+		this.props.onChange(event, settings);
+	};
+	
+	/** */
+	private readonly onFileExtensionOnChange = (event: ISelectChangeEventProps, _child: React.ReactNode): void => {
+		const settings = {
+			...this.props,
+			fileExtension: event.target.value as FileExtension
 		} as PathSourcesSettingsModel;
 		this.props.onChange(event, settings);
 	};

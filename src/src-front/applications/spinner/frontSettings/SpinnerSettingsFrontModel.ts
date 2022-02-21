@@ -49,6 +49,8 @@ export class SpinnerSettingsFrontModel {
 	/** */
 	public autoMode?: boolean;
 	/** */
+	public processGoProVideo?: boolean;
+	/** */
 	public processVideo?: boolean;
 	/** */
 	public goProDuration?: number;
@@ -84,7 +86,12 @@ export class SpinnerSettingsFrontViewModel extends SpinnerSettingsFrontModel {
 	public autoMode?: boolean = false;
 	/** */
 	@observable
+	public processGoProVideo?: boolean = false;
+	/** */
+	@observable
 	public processVideo?: boolean = false;
+	/** */
+	public processVideoAutoMode?: boolean = false;
 	/** */
 	@observable
 	public goProDuration?: number = 3;

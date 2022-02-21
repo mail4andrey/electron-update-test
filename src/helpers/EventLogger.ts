@@ -1,3 +1,5 @@
+// import { ErrorHelper } from './ErrorHelper';
+// import { ErrorTypeEnum } from './ErrorTypeEnum';
 
 export enum LogMessageTypeEnum {
 	info,
@@ -24,8 +26,12 @@ export class EventLogger {
 		this.log(message, LogMessageTypeEnum.success, title);
 	}
 	/** */
-	public error(message?: string, title?: string): void {
-		this.log(message, LogMessageTypeEnum.error, title);
+	public error(error?: any, title?: string): void {
+		// const errorType = ErrorHelper.getErrorType(message);
+		const errorMessage = error.constructor === String
+			? error.toString()
+			: JSON.stringify(error);
+		this.log(errorMessage, LogMessageTypeEnum.error, title);
 	}
 	/** */
 	public warn(message?: string, title?: string): void {

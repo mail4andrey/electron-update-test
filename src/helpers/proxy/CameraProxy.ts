@@ -37,8 +37,8 @@ export class CameraProxy {
 	}
 
 	/** */
-	public async downloadFile(fileType: DownloadLastFileType, filename: string): Promise<void> {
-		const url = UrlHelper.getUrl(UrlConsts.camera.downloadFile + '/' + fileType + '/' + filename);
+	public async downloadFile(fileType: DownloadLastFileType, filename: string, processGoProVideo: boolean): Promise<void> {
+		const url = UrlHelper.getUrl(UrlConsts.camera.downloadFile + '/' + fileType + '/' + filename + '?processVideo='+processGoProVideo);
 		// const request = { duration };
 		await this.request(url, 'GET', undefined, 600000);
 	}

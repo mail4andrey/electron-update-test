@@ -21,6 +21,7 @@ import { OverlaySettingsModel } from '../../base/settings/tabs/overlay/OverlaySe
 import { AudioSettingsModel } from '../../base/settings/tabs/audio/AudioSettingsModel';
 import { LocalStorageConsts } from '../../../src-front/const/LocalStorageConsts';
 import { ZoomSettingsModel } from '../../base/settings/tabs/zoom/ZoomSettingsModel';
+import { SettingsProxy } from '../../../helpers/proxy/SettingsProxy';
 
 
 /** */
@@ -28,14 +29,17 @@ export class SpinnerSettingsController {
 	@inject
 	private readonly store!: SpinnerSettingsStore;
 
-	private readonly settingsСontroller = new ApplicationSettingsController();
+	// private readonly settingsController = new ApplicationSettingsController();
+
+	private readonly settingsProxy = new SettingsProxy();
 
 	/** */
-	public loadSettings = (): void => {
+	public loadSettings = async (): Promise<void> => {
 		const languageSettings = LocalStorage.get<LanguageSettingsLocalStorage>(LocalStorageConsts.languageSettings) as LanguageSettingsLocalStorage | undefined;
 		this.store.language = languageSettings?.language;
 
-		const settings = this.settingsСontroller.loadDefaultSettings<SpinnerSettingsModel>();
+		// const settings = this.settingsController.loadDefaultSettings<SpinnerSettingsModel>();
+		const settings = await this.settingsProxy.getApplicationSettings();
 		const settingsView = this.store.settings;
 		// const settingsView = new SpinnerSettingsViewModel();
 
@@ -55,7 +59,7 @@ export class SpinnerSettingsController {
 	};
 
 	/** */
-	public onPathSourceChange = (_event: ITextFieldChangeEventProps, settings: PathSourcesSettingsModel): void => {
+	public onPathSourceChange = (_event: ITextFieldChangeEventProps | ISelectChangeEventProps, settings: PathSourcesSettingsModel): void => {
 		MapperHelper.mapValues(settings, this.store.settings.pathSources);
 	};
 
@@ -100,21 +104,23 @@ export class SpinnerSettingsController {
 	};
 
 	/** */
-	public readonly onSaveClick = (): void => {
-		const settings = this.settingsСontroller.loadDefaultSettings<SpinnerSettingsModel>();
+	public readonly onSaveClick = async (): Promise<void> => {
+		const settings = await this.settingsProxy.getApplicationSettings();
+		// const settings = this.settingsController.loadDefaultSettings<SpinnerSettingsModel>();
 		const settingsView = this.store.settings;
 
-		MapperHelper.mapValues(settingsView.audioSettings, settings.audioSettings);
-		MapperHelper.mapValues(settingsView.designSettings, settings.designSettings);
-		MapperHelper.mapValues(settingsView.goProSettings, settings.goProSettings);
-		MapperHelper.mapValues(settingsView.introOutroSettings, settings.introOutroSettings);
-		MapperHelper.mapValues(settingsView.overlaySettings, settings.overlaySettings);
-		MapperHelper.mapValues(settingsView.pathSources, settings.pathSources);
-		MapperHelper.mapValues(settingsView.serverSettings, settings.serverSettings);
-		MapperHelper.mapValues(settingsView.videoSettings, settings.videoSettings);
-		MapperHelper.mapValues(settingsView.zoomSettings, settings.zoomSettings);
+		MapperHelper.mapProperties(settingsView.audioSettings, settings.audioSettings);
+		MapperHelper.mapProperties(settingsView.designSettings, settings.designSettings);
+		MapperHelper.mapProperties(settingsView.goProSettings, settings.goProSettings);
+		MapperHelper.mapProperties(settingsView.introOutroSettings, settings.introOutroSettings);
+		MapperHelper.mapProperties(settingsView.overlaySettings, settings.overlaySettings);
+		MapperHelper.mapProperties(settingsView.pathSources, settings.pathSources);
+		MapperHelper.mapProperties(settingsView.serverSettings, settings.serverSettings);
+		MapperHelper.mapProperties(settingsView.videoSettings, settings.videoSettings);
+		MapperHelper.mapProperties(settingsView.zoomSettings, settings.zoomSettings);
 		// const settings = MapperHelper.map(this.store.settings, SpinnerSettingsModel);
-		this.settingsСontroller.saveDefaultSettings(settings);
+		// this.settingsController.saveDefaultSettings(settings);
+		await this.settingsProxy.saveApplicationSettings(settings);
 	};
 
 	/** */

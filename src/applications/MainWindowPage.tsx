@@ -21,6 +21,7 @@ import { KioskLocalization } from '../src-front/localization/KioskLocalization';
 import { LanguageSettingsLocalStorage } from "../src-front/models/LanguageSettingsLocalStorage";
 import { LanguageEnum } from '../src-front/models/LanguageEnum';
 import { LocalStorageConsts } from '../src-front/const/LocalStorageConsts';
+import { SettingsProxy } from '../helpers/proxy/SettingsProxy';
 
 /** Основное окно приложения */
 @observer
@@ -37,9 +38,12 @@ export class MainWindowPage extends BaseRoutedComponent<IMainRoutedProps> {
 	@observable
 	private language?: LanguageEnum;
 
+	// private readonly settingsProxy = new SettingsProxy();
+	
 	/** */
-	public componentDidMount(): void {
+	public async componentDidMount(): Promise<void> {
 		const applicationController = new ApplicationSettingsController();
+		// const settings = await this.settingsProxy.getApplicationSettings();
 		const settings = applicationController.loadDefaultSettings<BaseApplicationSettingsModel>();
 		const port = settings.serverSettings?.port ?? Number(process.env.DEFAULTPORT);
 

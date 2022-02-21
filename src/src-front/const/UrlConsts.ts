@@ -1,5 +1,6 @@
 /** */
 export class UrlConsts {
+	public static settingsApplicationUrl = 'settingsApplication';
 	public static settingsUrl = 'settings';
 	public static filesUrl = 'files';
 	public static fileUrl = 'file';

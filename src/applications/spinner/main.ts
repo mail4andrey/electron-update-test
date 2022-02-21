@@ -36,9 +36,10 @@ import { FileHelper } from '../../src-front/helpers/FileHelper';
 import { FilesHelper } from '../../helpers/FilesHelper';
 import { EventLogger } from '../../helpers/EventLogger';
 import { ProcessFileEnum } from '../../src-front/applications/spinner/views/SpinnerViewStore';
-import { FfmpegHelper } from '../../helpers/FfmpegHelper';
+import FfmpegHelper from '../../helpers/FfmpegHelper';
 import { IdGenerator } from '../../helpers/IdGenerator';
 import { SpinnerSettingsFrontModel } from '../../src-front/applications/spinner/frontSettings/SpinnerSettingsFrontModel';
+import { MapperHelper } from '../../helpers/MapperHelper';
 
 /**
  *
@@ -52,6 +53,7 @@ export class Spinner {
 	// }
 
 	private static eventLogger = new EventLogger();
+	private static settingsApplication?: SpinnerSettingsModel;
 
 	/**
 	 *
@@ -106,14 +108,64 @@ export class Spinner {
 		expressApp.use(bodyParser.json({ limit: '10mb' }));
 		expressApp.use(express.static(path.join(__dirname, 'front')));
 
-		const settingsСontroller = new ApplicationSettingsController();
+		const settingsController = new ApplicationSettingsController();
 		/**  */
-		const getSettings = (app?: Electron.App) => settingsСontroller.loadDefaultSettings<SpinnerSettingsModel>(app);
-		const setSettings = (settings?: SpinnerSettingsModel, app?: Electron.App) => settingsСontroller.saveDefaultSettings(settings, app);
+		const getSettings = (app?: Electron.App): SpinnerSettingsModel => {
+			if (!this.settingsApplication) {
+				this.eventLogger.info('load config');
+				this.settingsApplication = settingsController.loadDefaultSettings<SpinnerSettingsModel>(app);
+				if (this.settingsApplication.frontSettings) {
+					this.settingsApplication.frontSettings.processVideo = false;
+				}
+			}
+
+			return this.settingsApplication;
+		}
+
+		const setSettings = (settings?: SpinnerSettingsModel, app?: Electron.App) => {
+			this.eventLogger.info('save config');
+			settingsController.saveDefaultSettings(settings, app);
+			this.settingsApplication = undefined;
+		}
 
 		const goProClient = new GoProBackendProxy();
 		// const timer = new Timer(10000, getGoProStatus);
 		// timer.execute();
+		
+		router.get(`/${UrlConsts.settingsApplicationUrl}`, (req, res) => {
+			try {
+				this.logReqquest(req);
+				const settings = getSettings(app);
+				res.type('application/json');
+				res.send(settings);
+			} catch (error) {
+				Spinner.parseError(error, res);
+			}
+		});
+
+		router.post(`/${UrlConsts.settingsApplicationUrl}`, (req, res) => {
+			try {
+				this.logReqquest(req);
+				const newSettings = req.body.setting as SpinnerSettingsModel;
+				const settings = getSettings(app);
+				// newSettings.frontSettings = settings.frontSettings;
+				// MapperHelper.mapValues(newSettings, settings);
+				MapperHelper.mapProperties(newSettings.audioSettings, settings.audioSettings);
+				MapperHelper.mapProperties(newSettings.designSettings, settings.designSettings);
+				MapperHelper.mapProperties(newSettings.goProSettings, settings.goProSettings);
+				MapperHelper.mapProperties(newSettings.introOutroSettings, settings.introOutroSettings);
+				MapperHelper.mapProperties(newSettings.overlaySettings, settings.overlaySettings);
+				MapperHelper.mapProperties(newSettings.pathSources, settings.pathSources);
+				MapperHelper.mapProperties(newSettings.serverSettings, settings.serverSettings);
+				MapperHelper.mapProperties(newSettings.videoSettings, settings.videoSettings);
+				MapperHelper.mapProperties(newSettings.zoomSettings, settings.zoomSettings);
+				setSettings(settings, app);
+				res.send();
+			} catch (error) {
+				Spinner.parseError(error, res);
+			}
+		});
+
 		router.get(`/${UrlConsts.settingsUrl}`, (req, res) => {
 			try {
 				this.logReqquest(req);
@@ -239,6 +291,7 @@ export class Spinner {
 				const fileType = req.params.fileType as DownloadLastFileType;
 				const directory = req.params.directory;
 				const filename = req.params.filename;
+				const processVideo = req.query.processVideo;
 				const file = await goProClient.downloadFile(directory, filename);
 				const settings = getSettings(app);
 				const downloadPath = fileType === DownloadLastFileType.Video
@@ -247,6 +300,13 @@ export class Spinner {
 				if (file && downloadPath) {
 					FileHelper.writeFile(file, downloadPath, filename);
 					console.log(file?.size);
+				}
+				if (file
+					&& fileType === DownloadLastFileType.Video
+					&& processVideo
+					&& settings.pathSources?.pathSource) {
+					const processPath = settings.pathSources.pathSource;
+					FileHelper.writeFile(file,  processPath, filename);
 				}
 				
 				// save file to gopro path
@@ -283,8 +343,8 @@ export class Spinner {
 						break;
 					case GetFilesFolderType.Common:
 						sourcePaths = [
-							settings.pathSources?.pathSource ?? '',
 							settings.pathSources?.pathDestination ?? '',
+							settings.pathSources?.pathSource ?? '',
 							// settings.pathSources?.pathTestSource ?? '',
 						];
 						break;
@@ -334,33 +394,47 @@ export class Spinner {
 			}
 		});
 
-		
 		router.post('/' + UrlConsts.process.processVideo, async (req, res) => {
+			const settings = getSettings(app);
+			if (settings.frontSettings) {
+				settings.frontSettings.processVideo = true;
+			}
+
 			try {
 				const traceId = IdGenerator.getNewGenericId();
 				this.logReqquest(req);
-				const file = req.body.file as string;
-				const step = req.body.step as ProcessFileEnum;
-				const settings = getSettings(app);
+				// const file = req.body.file as string;
+				// const step = req.body.step as ProcessFileEnum;
+
 				FfmpegHelper.setup();
-				await FfmpegHelper.processvideo(file, settings, traceId);
+				await FfmpegHelper.processvideos(settings.pathSources?.pathSource, settings, traceId, false);
+				// await FfmpegHelper.processvideos(settings.goProSettings?.goProVideoPath, settings, traceId, false);
 				res.send();
 			} catch (error) {
 				Spinner.parseError(error, res);
 			}
+			if (settings.frontSettings) {
+				settings.frontSettings.processVideo = false;
+			}
 		});
 
 		router.post('/' + UrlConsts.process.processTestVideo, async (req, res) => {
+			const settings = getSettings(app);
+			if (settings.frontSettings) {
+				settings.frontSettings.processVideo = true;
+			}
 			try {
 				const traceId = IdGenerator.getNewGenericId();
 				this.logReqquest(req);
-				const settings = getSettings(app);
 				const file = settings.pathSources?.pathTestSource;
 				FfmpegHelper.setup();
-				await FfmpegHelper.processvideo(file, settings, traceId);
+				await FfmpegHelper.processvideo(file, settings, traceId, true);
 				res.send();
 			} catch (error) {
 				Spinner.parseError(error, res);
+			}
+			if (settings.frontSettings) {
+				settings.frontSettings.processVideo = false;
 			}
 		});
 
@@ -396,8 +470,9 @@ export class Spinner {
 
 		expressApp.use('/', router);
 
-		const applicationController = new ApplicationSettingsController();
-		const settingsDefault = applicationController.loadDefaultSettings<BaseApplicationSettingsModel>(app);
+		const settingsDefault = getSettings(app);
+		// const applicationController = new ApplicationSettingsController();
+		// const settingsDefault = applicationController.loadDefaultSettings<BaseApplicationSettingsModel>(app);
 		const port = settingsDefault.serverSettings?.port ?? Number(process.env.DEFAULTPORT);
 		UrlHelper.setport(port);
 		try {

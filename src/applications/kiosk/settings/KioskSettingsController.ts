@@ -24,14 +24,14 @@ export class KioskSettingsController {
 	@inject
 	private readonly store!: KioskSettingsStore;
 
-	private readonly settingsСontroller = new ApplicationSettingsController();
+	private readonly settingsController = new ApplicationSettingsController();
 
 	/** */
 	public loadSettings = (): void => {
 		const languageSettings = LocalStorage.get<LanguageSettingsLocalStorage>(LocalStorageConsts.languageSettings) as LanguageSettingsLocalStorage|undefined;
 		this.store.language = languageSettings?.language;
 
-		const settings = this.settingsСontroller.loadDefaultSettings<KioskSettingsModel>();
+		const settings = this.settingsController.loadDefaultSettings<KioskSettingsModel>();
 		this.store.settings = MapperHelper.map(settings, KioskSettingsViewModel);
 	};
 
@@ -108,6 +108,6 @@ export class KioskSettingsController {
 		this.store.settings.pathSources = pathSources
 			.filter((value: string, index: number, array: string[]) => array.indexOf(value) === index);
 		const settings = MapperHelper.map(this.store.settings, KioskSettingsModel);
-		this.settingsСontroller.saveDefaultSettings(settings);
+		this.settingsController.saveDefaultSettings(settings);
 	};
 }

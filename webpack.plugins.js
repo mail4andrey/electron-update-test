@@ -1,7 +1,8 @@
 const path = require('path');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-// const webpack = require('webpack');
+const webpack = require('webpack');
+// require('dotenv').config();
 
 module.exports = [
   new ForkTsCheckerWebpackPlugin(),
@@ -29,4 +30,14 @@ module.exports = [
 	// 		DEFAULTPORT: process.env.DEFAULTPORT,
 	// 	}
 	// }),
+	// new webpack.EnvironmentPlugin({
+	// 	// NODE_ENV: 'production',
+	// 	FLUENTFFMPEG_COV: '',
+	// }),
+    new webpack.DefinePlugin({
+        'process.env.FLUENTFFMPEG_COV': false
+    }),
+	new webpack.EnvironmentPlugin({
+		FLUENTFFMPEG_COV: false,
+	})
 ];

@@ -2,6 +2,7 @@ import { networkInterfaces, hostname } from 'os';
 
 import fs from 'fs';
 import path from 'path';
+import mv from 'mv';
 
 /** */
 export class FileHelper {
@@ -26,6 +27,22 @@ export class FileHelper {
 		return new Promise((resolve, reject) => {
 			fs.writeFile(fullname, buffer, () => resolve() );
 			// fs.writeFile(fullname, buffer, () => console.log('video saved!') );
+		});
+	}
+	/** */
+	public static async moveFile(sourceFile: string | undefined, pathDestination: string | undefined) {
+		if (!sourceFile || !pathDestination) {
+			return;
+		}
+
+		return new Promise((resolve, reject) => {
+			mv(sourceFile, pathDestination, function(error) {
+				if (error) {
+					reject(error);
+				} else {
+					resolve();
+				}
+			});
 		});
 	}
 }

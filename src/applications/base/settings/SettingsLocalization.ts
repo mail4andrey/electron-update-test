@@ -8,6 +8,7 @@ import { FitWithinEnum, RenderOnEnum } from './tabs/video/VideoSettingsModel';
 import { LanguageEnum } from '../../../src-front/models/LanguageEnum';
 import { AlignSettingEnum } from './tabs/overlay/OverlaySettingsItemModel';
 import { AudioStartFromEnum, AudioStopToEnum } from './tabs/audio/AudioSettingsItemModel';
+import { FileExtension } from './tabs/pathSources/PathSourcesSettingsModel';
 
 /** */
 export class SettingsLocalization {
@@ -47,8 +48,23 @@ export class SettingsLocalization {
 
 		/** */
 		public static fileNamePatternExtension = (language?: LanguageEnum): string =>
-			language !== LanguageEnum.rus ? '_####.mp4' : '_####.mp4';
+			language !== LanguageEnum.rus ? '_####' : '_####';
 
+		/** */
+		public static fileExtension = (language?: LanguageEnum): string =>
+			language !== LanguageEnum.rus ? 'File extension' : 'Рвсширение файла';
+			// language !== LanguageEnum.rus ? '_####.mp4' : '_####.mp4';
+
+		/** */
+		public static fileExtensionItem = (language?: LanguageEnum, value?: FileExtension): string => {
+			switch (value) {
+				case FileExtension.mov:
+					return 'MOV';
+				case FileExtension.mp4:
+				default:
+					return 'MP4';
+			}
+		};
 		// /** */
 		// public static pathRemoveButtonTitle = (language?: LanguageEnum): string =>
 		// 	language !== LanguageEnum.rus ? 'Remove source' : 'Удалить папку';
@@ -227,7 +243,7 @@ export class SettingsLocalization {
 
 		/** */
 		public static durationForImageWarning = (language?: LanguageEnum): string =>
-			language !== LanguageEnum.rus ? 'Apply only for image file' : 'Применяется только для файлов с изображением';
+			language !== LanguageEnum.rus ? 'Apply for image file and first frame in video' : 'Применяется для изображениий и первого кадра видео';
 
 		/** */
 		public static imageOrVideo = (language?: LanguageEnum): string =>

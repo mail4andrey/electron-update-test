@@ -53,6 +53,7 @@ import { MapperHelper } from '../../../../helpers/MapperHelper';
 import { ZoomItemRow } from './ZoomItemRow';
 import { Switch } from '../../../../elements/Switch';
 import { FormGroup } from '../../../../elements/FormGroup';
+import { Timer } from '../../../../helpers/Timer';
 
 
 /** */
@@ -83,7 +84,6 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 
 	@inject
 	private readonly store!: SpinnerViewStore;
-
 
 	/** */
 	public async componentDidMount(): Promise<void> {
@@ -371,6 +371,21 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 										}}
 									/>
 								</FormControl>
+								<FormControl
+									fullWidth={true}
+									margin='dense'
+								>
+									<FormControlLabel
+										control={
+											<Checkbox
+												checked={this.store.localSettings.processGoProVideo}
+												onChange={this.onProcessGoProVideoChange}
+												color='primary'
+											/>
+										}
+										label={SpinnerLocalization.processGoProVideo(language)}
+									/>
+								</FormControl>
 
 								<div className='padding-top-6px'>
 									<Accordion>
@@ -474,6 +489,7 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 			this.store.settings.frontSettings.autoMode = checked;
 			this.controller.saveFrontSettings(this.store.settings?.frontSettings);
 		}
+
 		// event.stopPropagation();
 		// await this.controller.testVideo();
 	};
@@ -1881,65 +1897,70 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 		);
 
 		return (
-			<div className='padding-top-6px'>
-				<div className='padding-top-6px padding-left-16px'>
-					<Typography
-						variant='h6'
-					>
-						{/* {SpinnerLocalization.frontSettings.preset(selectedPreset?.title, language)} */}
-						
-						<FormControl
-							fullWidth={true}
-							margin='dense'
+			<div className=''>
+				<div className='padding-top-6px kiosk-item-group-sticky background-whitesmoke'>
+					<div className='padding-top-6px padding-left-16px'>
+						<Typography
+							variant='h6'
 						>
-							<InputLabel id='preset-select-label'>
-								{SpinnerLocalization.frontSettings.presets(language)}
-							</InputLabel>
-							<Select
-								// label={SpinnerLocalization.frontSettings.presets(language)}
-								labelId='preset-select-label'
-								value={this.store.settings?.frontSettings?.selectedPresetGuid}
-								onChange={this.onPresetChange}
+							{/* {SpinnerLocalization.frontSettings.preset(selectedPreset?.title, language)} */}
+							
+							<FormControl
+								fullWidth={true}
+								margin='dense'
 							>
-								{presets}
-							</Select>
-						</FormControl>
-					</Typography>
-					{debug}
-				</div>
-				<OneLine className='padding-top-6px padding-left-16px'>
-					<ButtonGroup>
-						<Button
-							className='width100px'
-							color='secondary'
-							onClick={this.TestButtonClick}
-						>
-							{SpinnerLocalization.buttonTest(language)}
-						</Button>
-						<Button
-							className='width100px'
-							color='primary'
-							onClick={this.onManualStartClick}
-						>
-							{SpinnerLocalization.buttonManualStart(language)}
-						</Button>
-					</ButtonGroup>
-					<div className='padding-left-12px'>
-						<FormControlLabel
-							control={
-								<Switch
-									checked={this.store.settings?.frontSettings?.autoMode}
-									onChange={this.onAutoModeChange}
-								/>
-							}
-							label={SpinnerLocalization.buttonAutoMode(language)}
-						/>
+								<InputLabel id='preset-select-label'>
+									{SpinnerLocalization.frontSettings.presets(language)}
+								</InputLabel>
+								<Select
+									// label={SpinnerLocalization.frontSettings.presets(language)}
+									labelId='preset-select-label'
+									value={this.store.settings?.frontSettings?.selectedPresetGuid}
+									onChange={this.onPresetChange}
+								>
+									{presets}
+								</Select>
+							</FormControl>
+						</Typography>
+						{debug}
 					</div>
-				</OneLine>
+					<OneLine className='padding-top-6px padding-left-16px'>
+						<ButtonGroup>
+							<Button
+								className='width100px'
+								color='secondary'
+								onClick={this.TestButtonClick}
+								disabled={this.store.settings.frontSettings?.processVideo || this.store.localSettings.processVideo}
+							>
+								{SpinnerLocalization.buttonTest(language)}
+							</Button>
+							<Button
+								className='width100px'
+								color='primary'
+								onClick={this.onManualStartClick}
+								disabled={this.store.settings.frontSettings?.processVideo || this.store.localSettings.processVideo}
+							>
+								{SpinnerLocalization.buttonManualStart(language)}
+							</Button>
+						</ButtonGroup>
+						<div className='padding-left-12px'>
+							<FormControlLabel
+								control={
+									<Switch
+										checked={this.store.settings?.frontSettings?.autoMode}
+										onChange={this.onAutoModeChange}
+									/>
+								}
+								label={SpinnerLocalization.buttonAutoMode(language)}
+							/>
+						</div>
+					</OneLine>
+				</div>
 				<div className='padding-top-6px'>
 					<Accordion>
 						<AccordionSummary
 							expandIcon={<ExpandMore />}
+							className='background-color-gray-opacity'
 						>
 							<div className='width-100-percent'>
 								<div className='padding-top-6px'>
@@ -2394,6 +2415,12 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 			selectedPreset.multipliers?.push(MultiplierEnum.slow5Times);
 			this.controller.saveFrontSettings(this.store.settings?.frontSettings);
 		}
+	};
+
+	/** */
+	private readonly onProcessGoProVideoChange = async (event: React.ChangeEvent<HTMLInputElement>, checked: boolean): Promise<void> => {
+		this.store.localSettings.processGoProVideo = checked;
+		this.controller.saveSettingsToLocalStorage();
 	};
 
 	/** */
