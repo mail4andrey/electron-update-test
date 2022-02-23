@@ -45,10 +45,6 @@ export class SpinnerSettingsComponent extends BaseRoutedComponent<IMainRoutedPro
 		this.controller.loadSettings();
 	}
 
-	/** */
-	// public componentWillUnmount(): void {
-	// }
-
 	/** Отображение */
 	public render(): React.ReactNode {
 		const { settings, tabSelected, language } = this.store;
@@ -83,18 +79,13 @@ export class SpinnerSettingsComponent extends BaseRoutedComponent<IMainRoutedPro
 				<AppBar
 					position='static'
 					color='transparent'
-					// color="default"
 				>
 					<Tabs
-						// orientation='vertical'
 						variant='scrollable'
 						scrollButtons="on"
-						// variant="fullWidth"
 						indicatorColor="primary"
 						textColor="primary"
 						value={tabSelected}
-						// className={classes.tabs}
-						// className='tabs'
 						onChange={this.onTabChange}
 					>
 						<Tab

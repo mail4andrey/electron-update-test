@@ -18,7 +18,6 @@ export class GoProSettingsModel {
  *
  */
 export class GoProSettingsViewModel implements GoProSettingsModel {
-	// @observable
 	/** */
 
 	@observable

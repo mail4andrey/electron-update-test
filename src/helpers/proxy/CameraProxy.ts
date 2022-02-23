@@ -39,7 +39,6 @@ export class CameraProxy {
 	/** */
 	public async downloadFile(fileType: DownloadLastFileType, filename: string, processGoProVideo: boolean): Promise<void> {
 		const url = UrlHelper.getUrl(UrlConsts.camera.downloadFile + '/' + fileType + '/' + filename + '?processVideo='+processGoProVideo);
-		// const request = { duration };
 		await this.request(url, 'GET', undefined, 600000);
 	}
 
@@ -54,25 +53,6 @@ export class CameraProxy {
 	public async getStatus(): Promise<CameraStateModel> {
 		const url = UrlHelper.getUrl(UrlConsts.camera.getStatus);
 		const settings = await this.request(url, 'GET');
-		// const response = await fetch(
-		// 	url, {
-		// 	method: 'GET',
-		// 	cache: 'no-cache',
-		// 	headers: {
-		// 		'Content-Type': 'application/json'
-		// 	},
-		// });
-
-		// if (!response.ok) {
-		// 	if (response.status === 404) {
-		// 		throw new CameraNotFound();
-		// 	}
-
-		// 	const error = `Ошибка HTTP: ${response.status}`;
-		// 	throw new Error(error);
-		// }
-
-		// const settings = await response.json();
 		return settings as CameraStateModel;
 	}
 

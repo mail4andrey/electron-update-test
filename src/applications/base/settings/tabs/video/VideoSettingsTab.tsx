@@ -4,14 +4,11 @@ import React from 'react';
 
 import { FitWithinEnum, RenderOnEnum, VideoSettingsModel } from './VideoSettingsModel';
 
-import { isNumber } from 'util';
-
 import { Checkbox } from '../../../../../elements/Checkbox';
 import { FormControl } from '../../../../../elements/FormControl';
 import { FormControlLabel } from '../../../../../elements/FormControlLabel';
 import { FormGroup } from '../../../../../elements/FormGroup';
 import { FormLabel } from '../../../../../elements/FormLabel';
-import { Grid } from '../../../../../elements/Grid';
 import { InputAdornment } from '../../../../../elements/InputAdornment';
 import { InputLabel } from '../../../../../elements/InputLabel';
 import { MenuItem } from '../../../../../elements/MenuItem';
@@ -113,17 +110,6 @@ export class VideoSettingsTab extends React.PureComponent<VideoSettingsTabProps>
 					{SettingsLocalization.videoTab.title(language)}
 				</Typography>
 
-				{/* <Grid
-					container={true}
-					spacing={1}
-					alignItems='center'
-					justify='space-evenly'
-					direction='row'
-				>
-					<Grid
-						item={true}
-					> */}
-
 				<FormControl
 					component='fieldset'
 					fullWidth={true}
@@ -148,21 +134,15 @@ export class VideoSettingsTab extends React.PureComponent<VideoSettingsTabProps>
 							</Select>
 						</FormControl>
 						<FormControl
-							// className='padding-right-12px-important'
 							fullWidth={true}
 							margin='dense'
 						>
 							<TextField
-								// label={fadeIn}
-								// label={SettingsLocalization.videoTab.duration(language)}
 								value={this.props.fadeInDuration}
 								placeholder='0.0'
 								disabled={!this.props.fadeIn}
-								// defaultValue={0}
-								// variant='outlined'
 								onChange={this.onFadeInDurationChange}
 								error={!fadeInDurationValid}
-								// fullWidth={true}
 								InputProps={{
 									startAdornment: fadeIn,
 									endAdornment: seconds
@@ -170,21 +150,15 @@ export class VideoSettingsTab extends React.PureComponent<VideoSettingsTabProps>
 							/>
 						</FormControl>
 						<FormControl
-							// className='padding-right-12px-important'
 							fullWidth={true}
 							margin='dense'
 						>
 							<TextField
-								// label={fadeOut}
-								// label={SettingsLocalization.videoTab.duration(language)}
 								value={this.props.fadeOutDuration}
 								placeholder='0.0'
 								disabled={!this.props.fadeOut}
-								// defaultValue={0}
-								// variant='outlined'
 								error={!fadeOutDurationValid}
 								onChange={this.onFadeOutDurationChange}
-								// fullWidth={true}
 								InputProps={{
 									startAdornment: fadeOut,
 									endAdornment: seconds
@@ -192,7 +166,6 @@ export class VideoSettingsTab extends React.PureComponent<VideoSettingsTabProps>
 							/>
 						</FormControl>
 						<FormControl
-							// className='padding-right-12px-important'
 							fullWidth={true}
 							margin='dense'
 						>
@@ -209,15 +182,10 @@ export class VideoSettingsTab extends React.PureComponent<VideoSettingsTabProps>
 						</FormControl>
 					</FormGroup>
 				</FormControl>
-				{/* </Grid>
-					<Grid
-						item={true}
-					> */}
 				<FormControl
 					fullWidth={true}
 					component='fieldset'
 					margin='dense'
-					// variant='filled'
 				>
 					<FormLabel
 						component='legend'
@@ -229,11 +197,8 @@ export class VideoSettingsTab extends React.PureComponent<VideoSettingsTabProps>
 						</Typography>
 					</FormLabel>
 					<FormGroup
-						// row={true}
-						// className='align-items-baseline'
 					>
 						<FormControl
-							// className='padding-right-12px-important'
 							fullWidth={true}
 							margin='dense'
 						>
@@ -245,7 +210,6 @@ export class VideoSettingsTab extends React.PureComponent<VideoSettingsTabProps>
 							/>
 						</FormControl>
 						<FormControl
-							// className='padding-right-12px-important'
 							fullWidth={true}
 							margin='dense'
 						>
@@ -257,7 +221,6 @@ export class VideoSettingsTab extends React.PureComponent<VideoSettingsTabProps>
 							/>
 						</FormControl>
 						<FormControl
-							// className='padding-right-12px-important'
 							fullWidth={true}
 							margin='dense'
 						>
@@ -269,7 +232,6 @@ export class VideoSettingsTab extends React.PureComponent<VideoSettingsTabProps>
 							/>
 						</FormControl>
 						<FormControl
-							// className='padding-right-12px-important'
 							fullWidth={true}
 							margin='dense'
 						>
@@ -279,13 +241,11 @@ export class VideoSettingsTab extends React.PureComponent<VideoSettingsTabProps>
 								error={!maxBitrateValid}
 								onChange={this.onMaxBitrateChange}
 								InputProps={{
-									// startAdornment: fadeOut,
 									endAdornment: kbitPerSeconds
 								}}
 							/>
 						</FormControl>
 						<FormControl
-							// className='padding-right-12px-important'
 							fullWidth={true}
 							margin='dense'
 						>
@@ -293,7 +253,6 @@ export class VideoSettingsTab extends React.PureComponent<VideoSettingsTabProps>
 								{SettingsLocalization.videoTab.renderOn(language)}
 							</InputLabel>
 							<Select
-								// label={SettingsLocalization.videoTab.renderOn(language)}
 								labelId='renderOn-select-label'
 								value={this.props.renderOn}
 								onChange={this.onRenderOnChange}
@@ -306,8 +265,6 @@ export class VideoSettingsTab extends React.PureComponent<VideoSettingsTabProps>
 						</FormControl>
 					</FormGroup>
 				</FormControl>
-				{/* </Grid>
-				</Grid> */}
 			</div>
 		);
 	}

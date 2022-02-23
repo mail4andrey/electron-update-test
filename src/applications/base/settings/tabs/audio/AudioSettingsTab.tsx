@@ -30,7 +30,6 @@ export interface AudioSettingsTabProps extends AudioSettingsModel {
 	onDownClick?: (event: React.MouseEvent<Element, MouseEvent>, id?: number) => void;
 }
 
-// @provider(SettingsController, SettingsStore)
 @observer
 /** */
 export class AudioSettingsTab extends React.PureComponent<AudioSettingsTabProps> {

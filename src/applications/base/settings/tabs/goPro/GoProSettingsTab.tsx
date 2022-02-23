@@ -18,10 +18,6 @@ import { MapperHelper } from '../../../../../helpers/MapperHelper';
 export interface GoProSettingsTabProps extends GoProSettingsModel {
 	language?: LanguageEnum;
 
-	// removeFromGoPro?: boolean;
-
-	// showColorStateGoPro?: boolean;
-
 	onChange: (event: ITextFieldChangeEventProps, settings: GoProSettingsModel) => void;
 }
 
@@ -115,12 +111,6 @@ export class GoProSettingsTab extends React.PureComponent<GoProSettingsTabProps>
 	/** */
 	private readonly onRemoveFromGoProChange = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean): void => {
 		this.onChange(event, { removeFromGoPro: checked });
-		// const value = checked;
-		// const settings = {
-		// 	...this.props,
-		// 	removeFromGoPro: value
-		// } as GoProSettingsModel;
-		// this.props.onChange(event, settings);
 	};
 
 	/** */

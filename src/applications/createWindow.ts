@@ -7,12 +7,9 @@ import { ApplicationSettingsController } from '../application/ApplicationSetting
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: any;
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
 
-// let mainWindow: BrowserWindow | null = null;
-
 /**
  *
  */
-// @provider(ApplicationSettingsStore)
 export function createWindow(app: App): BrowserWindow {
 	const application = app;
 	// Create the browser window.
@@ -123,9 +120,6 @@ export function createWindow(app: App): BrowserWindow {
 				{
 					label: 'Exit',
 					role: 'close',
-					// click() {
-					//     app.quit()
-					// },
 					accelerator: 'Alt+F4'
 				}
 			]
@@ -142,7 +136,6 @@ export function createWindow(app: App): BrowserWindow {
 				{ type: 'separator' },
 				{
 					label: 'About',
-					// accelerator: 'CmdOrCtrl+Shift+C'
 					role: 'about',
 					accelerator: 'F2'
 				}

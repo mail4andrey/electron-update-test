@@ -1,9 +1,7 @@
 import { remote, shell } from 'electron';
-// import { BrowserWindow, dialog } from 'electron';
 import { observer } from 'mobx-react';
 import React from 'react';
 import fs from 'fs';
-// import path from 'path';
 
 import { OneLine } from '../elements/commons/OneLine';
 import { IconButton } from '../elements/IconButton';
@@ -36,7 +34,6 @@ export interface PathSelectorComponentProps {
 	onPathChange?: (event: ITextFieldChangeEventProps, id?: number) => void;
 }
 
-// @provider(SettingsController, SettingsStore)
 /** */
 @observer
 export class PathSelectorComponent extends React.PureComponent<PathSelectorComponentProps> {
@@ -172,14 +169,10 @@ export class PathSelectorComponent extends React.PureComponent<PathSelectorCompo
 	private readonly onSelectFolderClick = async (_event: React.MouseEvent<Element, MouseEvent>): Promise<void> => {
 		const { selectButtonTitle, path } = this.props;
 		const mainWindow = remote.getCurrentWindow();
-		// const mainWindow = BrowserWindow.getFocusedWindow();
-		// const { dialog } = require('electron').remote;
-		// const result = await dialog.showOpenDialog(mainWindow!, {
 		const result = await remote.dialog.showOpenDialog(mainWindow, {
 			title: selectButtonTitle,
 			properties: this.props.properties,
 			defaultPath: path
-			// properties: ['openDirectory']
 		});
 		if (!result.canceled) {
 			const path = result.filePaths.length > 0 ? result.filePaths[0] : '';
@@ -195,31 +188,9 @@ export class PathSelectorComponent extends React.PureComponent<PathSelectorCompo
 	private readonly onOpenFolderClick = async (_event: React.MouseEvent<Element, MouseEvent>): Promise<void> => {
 		const pathSource = this.props.path;
 		
-		// shell.showItemInFolder('filepath') // Show the given file in a file manager. If possible, select the file.
-		// shell.openPath('folderpath') // Open the given file in the desktop's default manner.
 		if (pathSource
 			&& fs.existsSync(pathSource)) {
-			// const settingsPath = path.dirname(pathSource);
-			// fs.mkdirSync(pathSource);
 			shell.openPath(pathSource);
 		}
-
-		// const mainWindow = remote.getCurrentWindow();
-		// // const mainWindow = BrowserWindow.getFocusedWindow();
-		// // const { dialog } = require('electron').remote;
-		// // const result = await dialog.showOpenDialog(mainWindow!, {
-		// const result = await remote.dialog.showOpenDialog(mainWindow, {
-		// 	title: selectButtonTitle,
-		// 	properties: this.props.properties
-		// 	// properties: ['openDirectory']
-		// });
-		// if (!result.canceled) {
-		// 	const path = result.filePaths.length > 0 ? result.filePaths[0] : '';
-		// 	const { onPathChange, id } = this.props;
-		// 	if (onPathChange) {
-		// 		const onCahngeEvent = { target: { value: path } } as ITextFieldChangeEventProps;
-		// 		onPathChange(onCahngeEvent, id);
-		// 	}
-		// }
 	};
 }

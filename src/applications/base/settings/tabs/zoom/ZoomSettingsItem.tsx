@@ -19,7 +19,6 @@ export interface ZoomSettingsItemProps extends ZoomSettingsItemModel {
 	onChange: (event: any, value: ZoomSettingsItemModel) => void;
 }
 
-// @provider(SettingsController, SettingsStore)
 /** */
 @observer
 export class ZoomSettingsItem extends React.PureComponent<ZoomSettingsItemProps> {

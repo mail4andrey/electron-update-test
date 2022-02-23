@@ -8,9 +8,6 @@ export class PrintHelper {
 	/** */
 	public static async printData(
 		item?: PrintSendingItemModel,
-		// data: string,
-		// width?: number,
-		// height?: number,
 		settings?: PrintSettingsModel
 	): Promise<void> {
 		const silent = true;
@@ -19,22 +16,13 @@ export class PrintHelper {
 			width: item?.width,
 			height: item?.height,
 			show,
-			// frame: false
 		});
 		// Could be redundant, try if you need this.
 		if (!show) {
 			win.once('ready-to-show', () => win?.hide());
 		}
-		// create BrowserWindow with dynamic HTML content
-		// const html = ['<body><h1>Test</h1></body>'].join('');
 		const content = PrintHelper.getHtmlCoontent(item?.data, settings?.fitOnPage);
 		await win.loadURL(content);
-		// await win.loadURL(`data:text/html;charset=utf-8,${encodeURI(html)}`);
-		// load PDF.
-		// await win.loadURL('file://directory/to/pdf/document.pdf');
-		// if pdf is loaded start printing.
-		// win.webContents.on('did-finish-load', () => {
-		// console.log(4);/
 		win.webContents.print({
 			silent,
 			printBackground: true,
@@ -43,7 +31,6 @@ export class PrintHelper {
 		},
 		(success: boolean, errorType: string) => {
 			if (!success) {
-				// console.error('1');
 				console.error(errorType);
 			}
 			if (!show) {
@@ -51,9 +38,6 @@ export class PrintHelper {
 				win = undefined;
 			}
 		});
-		// close window after print order.
-		// win = undefined;
-		// });
 	}
 
 	/**

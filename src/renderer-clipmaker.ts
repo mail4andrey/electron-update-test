@@ -1,3 +1,3 @@
-import { Сlipmaker } from './applications/clipmaker/renderer';
+import { Clipmaker } from './applications/clipmaker/renderer';
 
-Сlipmaker.render();
+Clipmaker.render();

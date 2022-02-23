@@ -1,4 +1,4 @@
-// нормализация под наше приложение/дизайн
+/* нормализация */
 html {
 	font: 13px/18px haas,
 		pragmatica,
@@ -16,7 +16,7 @@ ul {
 	margin-block-end: 1px;
 }
 
-// Отключаем нормализацию для кнопок
+/* Отключаем нормализацию для кнопок */
 /** из normalize-scss
 * 1. Prevent a WebKit bug where (2) destroys native `audio` and `video`
 *    controls in Android 4.
@@ -29,7 +29,7 @@ html [type="button"],
 	-webkit-appearance: inherit;
 }
 
-// Убираем рамку у объектов для Chrome, так как она проставляется через user agent stylesheet
+/* Убираем рамку у объектов для Chrome, так как она проставляется через user agent stylesheet */
 html,
 body,
 div,

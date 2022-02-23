@@ -11,9 +11,6 @@ export class EmailSendingModel {
 	public password?: string;
 
 	/** */
-	// public from?: string;
-
-	/** */
 	public to?: string;
 
 	/** */

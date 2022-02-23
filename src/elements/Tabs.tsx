@@ -1,19 +1,8 @@
 import { Tabs as UiTabs } from '@material-ui/core';
 import React from 'react';
 
-// export inte
-
 /** Свойства кнопки */
 export interface ITabsProps {
-	/**
-	 * Callback fired when the component mounts.
-	 * This is useful when you want to trigger an action programmatically.
-	 * It supports two actions: `updateIndicator()` and `updateScrollButtons()`
-	 *
-	 * @param {object} actions This object contains all possible actions
-	 * that can be triggered programmatically.
-	 */
-	// action?: React.Ref<TabsActions>;
 	/**
 	 * The label for the Tabs as a string.
 	 */
@@ -47,10 +36,6 @@ export interface ITabsProps {
 	 */
 	orientation?: 'horizontal' | 'vertical';
 	/**
-	 * The component used to render the scroll buttons.
-	 */
-	// ScrollButtonComponent?: React.ElementType;
-	/**
 	 * Determine behavior of scroll buttons when tabs are set to scroll:
 	 *
 	 * - `auto` will only present them when not all the items are visible.
@@ -64,14 +49,6 @@ export interface ITabsProps {
 	 * changes on activation.
 	 */
 	selectionFollowsFocus?: boolean;
-	/**
-	 * Props applied to the tab indicator element.
-	 */
-	// TabIndicatorProps?: Partial<React.HTMLAttributes<HTMLDivElement>>;
-	/**
-	 * Props applied to the [`TabScrollButton`](/api/tab-scroll-button/) element.
-	 */
-	// TabScrollButtonProps?: Partial<TabScrollButtonProps>;
 	/**
 	 * Determines the color of the `Tab`.
 	 */

@@ -1,13 +1,5 @@
-/* :focus {
-	outline: -webkit-focus-ring-color auto 1px;
-} */
-
 body {
-	/* background: darkgrey; */
-	/* background: linear-gradient(to top, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 70%, rgba(0,0,0,0) 100%); */
-	/* background: linear-gradient(to bottom, rgba(180,180,180,0.3) 0%, rgba(180,180,180,0.1) 70%, rgba(180,180,180,0) 100%); */
 	min-width: 830px;
-	/* background: linear-gradient(to bottom right, blue, pink); */
 	overflow-x: hidden;
 	box-sizing: border-box;
 	font-family: "Roboto", "Helvetica", "Arial", sans-serif;
@@ -15,13 +7,6 @@ body {
 body, div, video {
 	outline: none;
 }
-/* body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  margin: auto;
-  max-width: 38rem;
-  padding: 2rem;
-  background-color: whitesmoke;
-} */
 .box-sizing-border-box {
 	box-sizing: border-box;
 }
@@ -29,16 +14,13 @@ body, div, video {
 .oneline {
 	display: flex;
 	align-items: center;
-	/* align-items: baseline; */
 	width: 100%;
 }
 
 .left-container {
-	/* float: left; */
 	display: inline-block;
 }
 .right-container {
-	/* float: right; */
 	margin: 0 0 0 auto;
 }
 
@@ -282,9 +264,6 @@ body, div, video {
 
 
 .vertical-center {
-	/* position: absolute; */
-	/* left: calc(50% - 20px);
-	top: calc(50% - 20px); */
 	margin: 0;
 	position: absolute;
 	top: 50%;

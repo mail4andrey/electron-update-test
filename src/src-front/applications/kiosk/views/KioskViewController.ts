@@ -74,7 +74,6 @@ export class KioskViewController {
 		const selectedFile = this.store.groupsFiles
 			.flatMap((file: KioskViewFilesViewModel) => file.files)
 			.find((file: KioskViewFileViewModel) => file.fullpath === value.id);
-		// const selectedFile = pathSource?.files.find((file: KioskViewFileViewModel) => file.filename === value.id);
 		if (selectedFile) {
 			selectedFile.isSelected = value.checked ?? false;
 		}
@@ -83,12 +82,10 @@ export class KioskViewController {
 	/** */
 	public readonly onSendByEmail = async (email: string, files: KioskViewFileViewModel[]): Promise<void> => {
 		const sendFiles = files.map((file: KioskViewFileViewModel) => file.fullpath!);
-		// this.store.sending = true;
 		try {
 			await this.clientEmail.sendMail(email, sendFiles);
 		} catch (error) {
 		}
-		// this.store.sending = false;
 	};
 
 	/** */
@@ -147,7 +144,6 @@ export class KioskViewController {
 		const url = UrlHelper.getUrl(UrlConsts.filesUrl);
 		const response = await fetch(url);
 		if (response.ok) {
-			// console.dir(response);
 			const serverFiles = await response.json() as PathSourceFilesModel[];
 			this.updatePathSources(serverFiles, this.store.groupsFiles);
 		} else {

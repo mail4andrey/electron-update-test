@@ -27,10 +27,6 @@ export class KioskLocalization {
 		language !== LanguageEnum.rus ? 'Where to send email' : 'Куда отправить письмо';
 
 	/** */
-	// public static labelEmailTo = (language?: LanguageEnum): string =>
-	// 	language !== LanguageEnum.rus ? 'Email' : 'Email';
-
-	/** */
 	public static print = (language?: LanguageEnum): string =>
 		language !== LanguageEnum.rus ? 'Print' : 'Распечатать';
 
@@ -41,10 +37,6 @@ export class KioskLocalization {
 	/** */
 	public static printCurrentFrame = (language?: LanguageEnum): string =>
 		language !== LanguageEnum.rus ? 'Print current frame' : 'Распечатать текущий кадр';
-
-	/** */
-	// public static languageTitle = (language?: LanguageEnum): string =>
-	// 	language !== LanguageEnum.rus ? 'Change language' : 'Изменить язык';
 
 	/** */
 	public static languageDescription = (language?: LanguageEnum): string => {

@@ -14,11 +14,7 @@ import { MapperHelper } from '../../../../helpers/MapperHelper';
 /** */
 export interface OverlayItemRowProps extends SpinnerSettingsFrontOverlayItemModel {
 	title?: string;
-	// value?: SpinnerSettingsFrontOverlayItemModel;
-	// language?: LanguageEnum;
-	// disabled?: boolean;
 	onChange: (event: any, value: SpinnerSettingsFrontOverlayItemModel) => void;
-	// onChangeCommitted: (event: any, value: {value: MultiplierEnum, position: number}) => void;
 }
 
 /** */
@@ -35,17 +31,14 @@ export class OverlayItemRow extends React.PureComponent<OverlayItemRowProps> {
 		return (
 			<TableRow
 				key={this.props.guid}
-				// sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
 			>
 				<TableCell>
-				{/* <TableCell component="th" scope="row"> */}
 					{this.props.title}
 				</TableCell>
 				<TableCell align='right'>
 					<Checkbox
 						checked={this.props.disable}
 						onChange={this.onDisableChange}
-						// color='primary'
 					/>
 				</TableCell>
 				<TableCell align='right'>
@@ -53,7 +46,6 @@ export class OverlayItemRow extends React.PureComponent<OverlayItemRowProps> {
 						disabled={this.props.disable}
 						checked={this.props.beforeSlow}
 						onChange={this.onBeforeSlowChange}
-						// color='primary'
 					/>
 				</TableCell>
 				<TableCell align='right'>
@@ -61,7 +53,6 @@ export class OverlayItemRow extends React.PureComponent<OverlayItemRowProps> {
 						disabled={this.props.disable}
 						checked={this.props.afterSlow}
 						onChange={this.onAfterSlowChange}
-						// color='primary'
 					/>
 				</TableCell>
 				<TableCell align='right'>
@@ -69,7 +60,6 @@ export class OverlayItemRow extends React.PureComponent<OverlayItemRowProps> {
 						disabled={this.props.disable}
 						checked={this.props.afterPingPong}
 						onChange={this.onAfterPingPongChange}
-						// color='primary'
 					/>
 				</TableCell>
 				<TableCell align='right'>
@@ -77,7 +67,6 @@ export class OverlayItemRow extends React.PureComponent<OverlayItemRowProps> {
 						disabled={this.props.disable}
 						checked={this.props.forPhoto}
 						onChange={this.onForPhotoChange}
-						// color='primary'
 					/>
 				</TableCell>
 			</TableRow>

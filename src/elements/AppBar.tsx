@@ -16,7 +16,6 @@ export interface IAppBarProps {
 	 */
 	position?: 'fixed' | 'absolute' | 'sticky' | 'static' | 'relative';
 
-	// className?: string;
 }
 /** Кнопка */
 export class AppBar extends React.PureComponent<IAppBarProps> {

@@ -1,8 +1,6 @@
 import { lookup } from 'dns';
 import { networkInterfaces, hostname } from 'os';
 
-// import { ApplicationSettingsController } from '../application/ApplicationSettingsController';
-
 /** */
 export class StringHelper {
 	/** */

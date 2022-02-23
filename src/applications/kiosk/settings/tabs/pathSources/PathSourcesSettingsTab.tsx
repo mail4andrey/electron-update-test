@@ -25,7 +25,6 @@ export interface PathSourcesSettingsTabProps {
 	onPathSourceDown?: (event: React.MouseEvent<Element, MouseEvent>, id?: number) => void;
 }
 
-// @provider(SettingsController, SettingsStore)
 @observer
 /** */
 export class PathSourceSettingsTab extends React.PureComponent<PathSourcesSettingsTabProps> {

@@ -24,13 +24,8 @@ export class DesignSettingsViewModel implements DesignSettingsModel {
 	/** */
 	public iconColor = 'gray';
 
-	// @observable
-	// /** */
-	// public size?: DesignSizeEnum;
-
 	@observable
-	// Редактирование тесктового поля
-	/** */
+	/** Редактирование тесктового поля */
 	public titleFrontPage = '';
 }
 

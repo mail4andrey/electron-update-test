@@ -24,29 +24,9 @@ import { ISelectChangeEventProps } from '../../../../../elements/Select';
 export interface OverlaySettingsItemProps extends OverlaySettingsItemModel {
 	language?: LanguageEnum;
 	disabled?: boolean;
-
-	// settings?: OverlaySettingsItemModel;
-
-	// removeButtonTitle?: string;
-	// selectButtonTitle: string;
-	// label?: string;
-	// path?: string;
-	// canDelete?: boolean;
-	// id?: number;
-	// disableUpButton?: boolean;
-	// disableDownButton?: boolean;
-	// disableDeleteButton?: boolean;
-	// showUpButton?: boolean;
-	// showDownButton?: boolean;
-	// showDeleteButton?: boolean;
-	// onUpClick?: (event: React.MouseEvent<Element, MouseEvent>, id?: number) => void;
-	// onDownClick?: (event: React.MouseEvent<Element, MouseEvent>, id?: number) => void;
-	// onDeleteClick?: (event: React.MouseEvent<Element, MouseEvent>, id?: number) => void;
 	onChange: (event: any, value: OverlaySettingsItemModel) => void;
-	// onNameChange?: (event: ITextFieldChangeEventProps, id?: number) => void;
 }
 
-// @provider(SettingsController, SettingsStore)
 /** */
 @observer
 export class OverlaySettingsItem extends React.PureComponent<OverlaySettingsItemProps> {
@@ -161,20 +141,14 @@ export class OverlaySettingsItem extends React.PureComponent<OverlaySettingsItem
 
 	/** */
 	private readonly onImageOrVideoFileClick = async (_event: React.MouseEvent<Element, MouseEvent>): Promise<void> => {
-		// const { selectButtonTitle } = this.props;
 		const mainWindow = remote.getCurrentWindow();
-		// const mainWindow = BrowserWindow.getFocusedWindow();
-		// const { dialog } = require('electron').remote;
-		// const result = await dialog.showOpenDialog(mainWindow!, {
 		const result = await remote.dialog.showOpenDialog(mainWindow, {
 			title: SettingsLocalization.common.selectFile(this.props.language)
-			// properties: ['openDirectory']
 		});
 		if (!result.canceled) {
 			const path = result.filePaths.length > 0 ? result.filePaths[0] : '';
 			const onChangeEvent = { target: { value: path } } as ITextFieldChangeEventProps;
 			this.onImageOrVideoFileChange(onChangeEvent);
-			// this.onImageOrVideoFileChange(onCahngeEvent, id);
 		}
 	};
 

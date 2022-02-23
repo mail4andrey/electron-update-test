@@ -7,7 +7,6 @@ import { ITextFieldProps } from '../TextField';
 export interface IColorPickerProps {
 	defaultValue?: string;
 	onChange: (color: string) => void;
-	// convert?: keyof converters;
 	hintText?: string;
 	floatingLabelText?: string;
 	showPicker?: boolean;

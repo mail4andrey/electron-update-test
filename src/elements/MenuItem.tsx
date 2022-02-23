@@ -5,7 +5,6 @@ import React from 'react';
 export interface IMenuItemProps {
 	className?: string;
 	value?: string | ReadonlyArray<string> | number;
-		// value?: string;
 }
 /** Кнопка */
 export class MenuItem extends React.PureComponent<IMenuItemProps> {

@@ -41,40 +41,16 @@ export interface ILoaderProps {
 
 /** */
 export class LoaderCopy extends React.PureComponent<ILoaderProps> {
-	/** Ссылка на элемент контейнера */
-	// private readonly containerRef = React.createRef<HTMLDivElement>();
-
-	/** componentDidMount */
-	// public componentDidMount(): void {
-	// 	if (this.props.verticalCentered) {
-	// 		this.onResize();
-	// 	}
-	// }
 
 	/** Отображение */
 	public render(): React.ReactNode {
 		const { verticalCentered, ...otherProps } = this.props;
-		// if (verticalCentered) {
-		// 	return (
-		// 		<div
-		// 			// ref={this.containerRef}
-		// 			className='loader-default-height width40px centered-container'>
-		// 			{/* <EventListener
-		// 				target='window'
-		// 				onResize={this.onResize} /> */}
-		// 			<div className='loader-vertical-center'>
-		// 				<CircularProgress {...otherProps} />
-		// 			</div>
-		// 		</div>
-		// 	);
-		// }
 		const classPosition = verticalCentered ? 'vertical-center' : 'centered-container';
 		return (
 			<div
 				className='position-relative'
 			>
 				<div
-					// ref={this.containerRef}
 					className={`width40px ${classPosition}`}
 				>
 					<CircularProgress {...otherProps} />
@@ -82,19 +58,4 @@ export class LoaderCopy extends React.PureComponent<ILoaderProps> {
 			</div>
 		);
 	}
-
-	/** Обновляет размеры контейнера */
-	// private readonly onResize = (): void => {
-	// 	const element = this.containerRef.current;
-	// 	if (!element) {
-	// 		return;
-	// 	}
-	// 	const rect = element.getBoundingClientRect();
-	// 	const targetHeight = window.innerHeight - rect.top;
-	// 	if (targetHeight < 0) {
-	// 		return;
-	// 	}
-
-	// 	element.setAttribute('style', `height:${targetHeight}px;`);
-	// };
 }

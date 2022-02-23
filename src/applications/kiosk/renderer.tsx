@@ -48,7 +48,6 @@ export class Kiosk {
 	 *
 	 */
 	public static render(): void {
-		// console.log('👋 This message is being logged by "renderer.js", included via webpack');
 		/** */
 		const getLayout = (props: RouteComponentProps): JSX.Element => (
 			<MainWindowPage {...props}>
@@ -64,7 +63,6 @@ export class Kiosk {
 							path='/'
 							exact={true}
 							render={getLayout}
-							// component={App}
 						/>
 						<Route
 							path="/settings"

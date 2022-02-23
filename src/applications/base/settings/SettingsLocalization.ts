@@ -53,7 +53,6 @@ export class SettingsLocalization {
 		/** */
 		public static fileExtension = (language?: LanguageEnum): string =>
 			language !== LanguageEnum.rus ? 'File extension' : 'Рвсширение файла';
-			// language !== LanguageEnum.rus ? '_####.mp4' : '_####.mp4';
 
 		/** */
 		public static fileExtensionItem = (language?: LanguageEnum, value?: FileExtension): string => {
@@ -65,13 +64,6 @@ export class SettingsLocalization {
 					return 'MP4';
 			}
 		};
-		// /** */
-		// public static pathRemoveButtonTitle = (language?: LanguageEnum): string =>
-		// 	language !== LanguageEnum.rus ? 'Remove source' : 'Удалить папку';
-
-		// /** */
-		// public static pathAddButtonTitle = (language?: LanguageEnum): string =>
-		// 	language !== LanguageEnum.rus ? 'Add source' : 'Добавить папку';
 	};
 
 	/** Вкладка GoPro */
@@ -383,101 +375,6 @@ export class SettingsLocalization {
 			language !== LanguageEnum.rus ? 'Transitions' : 'Переходы';
 	};
 
-	// /** Вкладка email */
-	// public static emailTab = class {
-	// 	/** */
-	// 	public static title = (language?: LanguageEnum): string =>
-	// 		language !== LanguageEnum.rus ? 'Email' : 'Электронная почта';
-
-	// 	/** */
-	// 	public static server = (language?: LanguageEnum): string =>
-	// 		language !== LanguageEnum.rus ? 'Smtp server' : 'Smtp сервер';
-
-	// 	/** */
-	// 	public static login = (language?: LanguageEnum): string =>
-	// 		language !== LanguageEnum.rus ? 'Login' : 'Логин';
-
-	// 	/** */
-	// 	public static password = (language?: LanguageEnum): string =>
-	// 		language !== LanguageEnum.rus ? 'Password' : 'Пароль';
-
-	// 	/** */
-	// 	public static subject = (language?: LanguageEnum): string =>
-	// 		language !== LanguageEnum.rus ? 'Email theme' : 'Тема письма';
-
-	// 	/** */
-	// 	public static content = (language?: LanguageEnum): string =>
-	// 		language !== LanguageEnum.rus ? 'Email text' : 'Текст письма';
-
-	// 	/** */
-	// 	public static testSendButton = (language?: LanguageEnum): string =>
-	// 		language !== LanguageEnum.rus ? 'Send email to yourself' : 'Отправить пробное письмо';
-	// };
-
-	// /** Вкладка Печать */
-	// public static printerTab = class {
-
-	// 	/** */
-	// 	public static title = (language?: LanguageEnum): string =>
-	// 		language !== LanguageEnum.rus ? 'Print' : 'Печать';
-
-	// 	/** */
-	// 	public static printerName = (language?: LanguageEnum): string =>
-	// 		language !== LanguageEnum.rus ? 'Printer' : 'Принтер';
-
-	// 	/** */
-	// 	public static layoutName = (language?: LanguageEnum): string =>
-	// 		language !== LanguageEnum.rus ? 'Orientation' : 'Ориентация';
-
-	// 	/** */
-	// 	public static fitOnPageName = (language?: LanguageEnum): string =>
-	// 		language !== LanguageEnum.rus ? 'Fit on page' : 'Заполнение';
-
-	// 	/** */
-	// 	public static testPrintButton = (language?: LanguageEnum): string =>
-	// 		language !== LanguageEnum.rus ? 'Print empty page' : 'Распечатать пустую страницу';
-
-	// 	/** Ориентация */
-	// 	public static layoutEnum = (language?: LanguageEnum, value?: PrintLayoutEnum): string => {
-	// 		if (language !== LanguageEnum.rus) {
-	// 			switch (value) {
-	// 				case PrintLayoutEnum.portrait:
-	// 					return 'Portrait';
-	// 				default:
-	// 				case PrintLayoutEnum.landscape:
-	// 					return 'Landscape';
-	// 			}
-	// 		}
-	// 		switch (value) {
-	// 			case PrintLayoutEnum.portrait:
-	// 				return 'Портретная';
-	// 			default:
-	// 			case PrintLayoutEnum.landscape:
-	// 				return 'Горизонтальная';
-	// 		}
-	// 	};
-
-	// 	/** Заполнение */
-	// 	public static fitOnPageEnum = (language?: LanguageEnum, value?: PrintFitOnPageEnum): string => {
-	// 		if (language !== LanguageEnum.rus) {
-	// 			switch (value) {
-	// 				case PrintFitOnPageEnum.contain:
-	// 					return 'Contain';
-	// 				default:
-	// 				case PrintFitOnPageEnum.cover:
-	// 					return 'Cover';
-	// 			}
-	// 		}
-	// 		switch (value) {
-	// 			case PrintFitOnPageEnum.contain:
-	// 				return 'Все изображение';
-	// 			default:
-	// 			case PrintFitOnPageEnum.cover:
-	// 				return 'На всю страницу';
-	// 		}
-	// 	};
-	// };
-
 	/** Вкладка Дизайн */
 	public static designTab = class {
 
@@ -508,23 +405,6 @@ export class SettingsLocalization {
 		/** */
 		public static iconColorName = (language?: LanguageEnum): string =>
 			language !== LanguageEnum.rus ? 'Icons color' : 'Цвет иконок';
-
-		/** */
-		// public static sizeName = (language?: LanguageEnum): string =>
-		// 	language !== LanguageEnum.rus ? 'Size' : 'Размер';
-
-		/** Размер */
-		// public static sizeEnum = (value?: DesignSizeEnum): string => {
-		// 	switch (value) {
-		// 		case DesignSizeEnum.large:
-		// 			return 'Большой';
-		// 		case DesignSizeEnum.small:
-		// 			return 'Малый';
-		// 		default:
-		// 		case DesignSizeEnum.medium:
-		// 			return 'Средний';
-		// 	}
-		// };
 	};
 
 	/** Вкладка Web */
@@ -553,8 +433,6 @@ export class SettingsLocalization {
 		/** */
 		public static nameLabel = (language?: LanguageEnum): string =>
 			language !== LanguageEnum.rus ? 'Name' : 'Название';
-
-		// public static cancel = 'Отмена';
 
 		/** */
 		public static addButton = (language?: LanguageEnum): string =>

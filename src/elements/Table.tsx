@@ -75,33 +75,6 @@ export interface ITableCellProps {
 	 * The table cell contents.
 	 */
 	children?: React.ReactNode;
-	/**
-	 * The component used for the root node.
-	 * Either a string to use a HTML element or a component.
-	 */
-	// component?: React.ElementType<TableCellBaseProps>;
-	// /**
-	//  * Sets the padding applied to the cell.
-	//  * By default, the Table parent component set the value (`default`).
-	//  */
-	// padding?: Padding;
-	// /**
-	//  * Set scope attribute.
-	//  */
-	// scope?: TableCellBaseProps['scope'];
-	// /**
-	//  * Specify the size of the cell.
-	//  * By default, the Table parent component set the value (`medium`).
-	//  */
-	// size?: Size;
-	// /**
-	//  * Set aria-sort direction.
-	//  */
-	// sortDirection?: SortDirection;
-	/**
-	 * Specify the cell type.
-	 * By default, the TableHead, TableBody or TableFooter parent component set the value.
-	 */
 	variant?: 'head' | 'body' | 'footer';
 }
 /** Кнопка */

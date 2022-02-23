@@ -45,12 +45,6 @@ import { MapperHelper } from '../../helpers/MapperHelper';
  *
  */
 export class Spinner {
-	// /**
-	//  *
-	//  */
-	// private static getGoProStatus = async (): Promise<void> => {
-	// 	;
-	// }
 
 	private static eventLogger = new EventLogger();
 	private static settingsApplication?: SpinnerSettingsModel;
@@ -129,8 +123,6 @@ export class Spinner {
 		}
 
 		const goProClient = new GoProBackendProxy();
-		// const timer = new Timer(10000, getGoProStatus);
-		// timer.execute();
 		
 		router.get(`/${UrlConsts.settingsApplicationUrl}`, (req, res) => {
 			try {
@@ -148,8 +140,6 @@ export class Spinner {
 				this.logReqquest(req);
 				const newSettings = req.body.setting as SpinnerSettingsModel;
 				const settings = getSettings(app);
-				// newSettings.frontSettings = settings.frontSettings;
-				// MapperHelper.mapValues(newSettings, settings);
 				MapperHelper.mapProperties(newSettings.audioSettings, settings.audioSettings);
 				MapperHelper.mapProperties(newSettings.designSettings, settings.designSettings);
 				MapperHelper.mapProperties(newSettings.goProSettings, settings.goProSettings);
@@ -193,7 +183,6 @@ export class Spinner {
 				}
 
 				result.frontSettings = settings.frontSettings;
-				// const designSettings = settings.designSettings ?? {} as DesignSettingsModel;
 				res.type('application/json');
 				res.send(result);
 			} catch (error) {
@@ -270,14 +259,10 @@ export class Spinner {
 				Spinner.parseError(error, res);
 			}
 		});
-		// app.get('/user/:uid/photos/:file', function(req, res){
-		// 	var uid = req.params.uid
-		// 	  , file = req.params.file;
 		router.get('/' + UrlConsts.camera.getLastFile + '/:fileType', async (req, res) => {
 			try {
 				this.logReqquest(req);
 				const fileType = req.params.fileType as DownloadLastFileType;
-				// const fileType = req.body.fileType as DownloadLastFileType;
 				const filename = await goProClient.getLastFile(fileType);
 				const response = {filename};
 				res.send(response);
@@ -317,7 +302,6 @@ export class Spinner {
 		});
 		router.delete('/' + UrlConsts.camera.deleteFile, async (req, res) => {
 			try {
-				// const directory = req.body.directory;
 				this.logReqquest(req);
 				const filename = req.body.filename;
 				await goProClient.deleteFile(filename);
@@ -345,22 +329,13 @@ export class Spinner {
 						sourcePaths = [
 							settings.pathSources?.pathDestination ?? '',
 							settings.pathSources?.pathSource ?? '',
-							// settings.pathSources?.pathTestSource ?? '',
 						];
 						break;
-
-					// case GetFilesFolderType.GoProPhotoOverlayed:
-					// 	sourcePath = settings.goProSettings?.goProPhotoOverlayedPath ?? '';
-					// 	break;
 
 					default:
 						break;
 				}
-				// const sourcePath = settings.goProSettings?.goProVideoPath ?? '';
-				// const pathDestination = settings.pathSources?.pathDestination ?? '';
 				const files = FilesHelper.getFiles(sourcePaths);
-				// const t = new PathSourceFilesModel();
-				// files.push();
 				res.type('application/json');
 				res.send(files);
 			} catch (error) {
@@ -376,14 +351,12 @@ export class Spinner {
 				const goProPhotoOverlayedPath = settings.goProSettings?.goProPhotoOverlayedPath ?? '';
 				const pathDestination = settings.pathSources?.pathDestination ?? '';
 				const pathSource = settings.pathSources?.pathSource ?? '';
-				// const { pathSources } = settings;
 				const filename = req.query.name as string;
 				const allow = filename.startsWith(pathSource)
 					|| filename.startsWith(goProVideoPath)
 					|| filename.startsWith(goProPhotoPath)
 					|| filename.startsWith(goProPhotoOverlayedPath)
 					|| filename.startsWith(pathDestination);
-				// const allow = pathSources?.some((pathSource: string) => filename.startsWith(pathSource));
 				if (allow) {
 					res.sendFile(filename);
 				} else {
@@ -403,12 +376,8 @@ export class Spinner {
 			try {
 				const traceId = IdGenerator.getNewGenericId();
 				this.logReqquest(req);
-				// const file = req.body.file as string;
-				// const step = req.body.step as ProcessFileEnum;
 
-				FfmpegHelper.setup();
 				await FfmpegHelper.processvideos(settings.pathSources?.pathSource, settings, traceId, false);
-				// await FfmpegHelper.processvideos(settings.goProSettings?.goProVideoPath, settings, traceId, false);
 				res.send();
 			} catch (error) {
 				Spinner.parseError(error, res);
@@ -427,7 +396,6 @@ export class Spinner {
 				const traceId = IdGenerator.getNewGenericId();
 				this.logReqquest(req);
 				const file = settings.pathSources?.pathTestSource;
-				FfmpegHelper.setup();
 				await FfmpegHelper.processvideo(file, settings, traceId, true);
 				res.send();
 			} catch (error) {
@@ -441,11 +409,6 @@ export class Spinner {
 		router.get('/data', (req, res) => {
 			try {
 				this.logReqquest(req);
-				// const settings = getSettings(app);
-				// const { pathSources } = settings;
-				// const files = FilesHelper.getFiles(pathSources);
-				// res.type('application/json');
-				// res.send(files);
 			} catch (error) {
 				Spinner.parseError(error, res);
 			}
@@ -471,8 +434,6 @@ export class Spinner {
 		expressApp.use('/', router);
 
 		const settingsDefault = getSettings(app);
-		// const applicationController = new ApplicationSettingsController();
-		// const settingsDefault = applicationController.loadDefaultSettings<BaseApplicationSettingsModel>(app);
 		const port = settingsDefault.serverSettings?.port ?? Number(process.env.DEFAULTPORT);
 		UrlHelper.setport(port);
 		try {

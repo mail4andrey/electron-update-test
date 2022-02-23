@@ -2,23 +2,20 @@
 import * as LocalStorage from 'local-storage';
 import { inject } from 'react-ioc';
 
-import type { ITextFieldChangeEventProps } from '../../../../elements/TextField';
-import { EmailProxy } from '../../../../helpers/proxy/EmailProxy';
-import { PrintProxy } from '../../../../helpers/proxy/PrintProxy';
 import type { ITimer } from '../../../../helpers/Timer';
 import { Timer } from '../../../../helpers/Timer';
 import { UrlHelper } from '../../../helpers/UrlHelper';
 import type { PathSourceFileModel } from '../../../models/PathSourceFileModel';
 import type { PathSourceFilesModel } from '../../../models/PathSourceFilesModel';
 import { LocalStorageConsts } from '../../../const/LocalStorageConsts';
-import { SpinnerViewStore, StatusEnum, ProcessFileEnum } from './SpinnerViewStore';
+import { SpinnerViewStore, StatusEnum } from './SpinnerViewStore';
 import { LanguageSettingsLocalStorage } from "../../../models/LanguageSettingsLocalStorage";
 import { SpinnerSettingsLocalStorage } from './SpinnerSettingsLocalStorage';
 import { LanguageEnum } from '../../../../src-front/models/LanguageEnum';
 import { UrlConsts } from '../../../../src-front/const/UrlConsts';
 import { SpinnerSettingsFromServerModel, SpinnerSettingsFromServerViewModel } from './SpinnerSettingsFromServerViewModel';
 import { MapperHelper } from '../../../../helpers/MapperHelper';
-import { CameraProxy, CameraNotFound } from '../../../../helpers/proxy/CameraProxy';
+import { CameraProxy } from '../../../../helpers/proxy/CameraProxy';
 import { CameraSettingEnum, CameraMode, CameraSubMode, GoProVersion, CameraModeGoPro8 } from '../../../../src-front/models/CameraStateModel';
 import { TimerHelper } from '../../../../helpers/TimerHelper';
 import { ErrorHelper } from '../../../../helpers/ErrorHelper';
@@ -47,12 +44,6 @@ export class SpinnerViewController {
 	/** */
 	private readonly settingsProxy = new SettingsProxy();
 
-	// /** */
-	// private readonly clientPrint = new PrintProxy();
-
-	// /** */
-	// private readonly clientEmail = new EmailProxy();
-
 	private timerApplicationSettings?: ITimer;
 	private timerCameraSettings?: ITimer;
 	private timerGoProFiles?: ITimer;
@@ -65,17 +56,12 @@ export class SpinnerViewController {
 		this.store.loaded = false;
 		const localSettings = LocalStorage.get<SpinnerSettingsLocalStorage | undefined>(LocalStorageConsts.localSettings);
 		this.store.localSettings.recordVideoDuration = localSettings?.recordVideoDuration ?? '3.0';
-		// this.store.groupBy = localSettings?.groupBy;
-		// this.store.currentItemSize = localSettings?.size;
-		// this.store.sortOrder = localSettings?.sortOrder;
-		// this.store.iconSize = localSettings?.iconSize;
 
 		const languageSettings = LocalStorage.get<LanguageSettingsLocalStorage | undefined>(LocalStorageConsts.languageSettings);
 		this.store.language = languageSettings?.language;
 
 		await this.loadApplicationSettings();
 		this.timerApplicationSettings = new Timer(30000, this.loadApplicationSettings);
-		//this.timerApplicationSettings.execute();
 
 		await this.loadCameraSettings();
 		this.timerCameraSettings = new Timer(30000, this.loadCameraSettings);
@@ -146,7 +132,6 @@ export class SpinnerViewController {
 			}
 			this.store.status = StatusEnum.FileCreated;
 			await this.loadFiles();
-			// this.store.statusFilename = undefined;
 		} catch (error) {
 			this.store.statusFilename = undefined;
 			this.store.status = undefined;
@@ -205,7 +190,6 @@ export class SpinnerViewController {
 		await this.cameraClient.setSetting(setting, value);
 		await TimerHelper.delay(500);
 		await this.loadCameraSettings();
-		// this.store.cameraSettings.videoSettingsIsoLimit = newSettings.videoSettingsIsoLimit;
 	};
 
 	/** */
@@ -213,63 +197,10 @@ export class SpinnerViewController {
 		await this.settingsProxy.saveFrontSettings(setting);
 	};
 
-	// /** zz */
-	// public readonly onChangeEmail = (event: ITextFieldChangeEventProps): void => {
-	// 	this.store.email = event.target.value;
-	// };
-
-	// /** */
-	// public readonly onSelectItem = (_event: React.ChangeEvent<HTMLInputElement>, value: SpinnerViewItemEventProps): void => {
-	// 	const selectedFile = this.store.groupsFiles
-	// 		.flatMap((file: SpinnerViewFilesViewModel) => file.files)
-	// 		.find((file: SpinnerViewFileViewModel) => file.fullpath === value.id);
-	// 	// const selectedFile = pathSource?.files.find((file: SpinnerViewFileViewModel) => file.filename === value.id);
-	// 	if (selectedFile) {
-	// 		selectedFile.isSelected = value.checked ?? false;
-	// 	}
-	// };
-
-	// /** */
-	// public readonly onSendByEmail = async (email: string, files: SpinnerViewFileViewModel[]): Promise<void> => {
-	// 	const sendFiles = files.map((file: SpinnerViewFileViewModel) => file.fullpath!);
-	// 	// this.store.sending = true;
-	// 	try {
-	// 		await this.clientEmail.sendMail(email, sendFiles);
-	// 	} catch (error) {
-	// 	}
-	// 	// this.store.sending = false;
-	// };
-
-	// /** */
-	// public readonly sendFilesToPrint = async (filesImageBase64Data: PrintSendingItemModel[]): Promise<void> => {
-	// 	try {
-	// 		await this.clientPrint.print(filesImageBase64Data);
-	// 	} catch (error) {
-	// 	}
-	// };
-
-	// /** */
-	// public readonly onItemSizeChange = (_event: React.MouseEvent<Element, MouseEvent>, value: VideoItemSizeEnum): void => {
-	// 	this.store.currentItemSize = value;
-	// 	this.saveSettingsToLocalStorage();
-	// };
-
-	// /** */
-	// public readonly onGroupByChange = (_event: React.MouseEvent<Element, MouseEvent>, value: GroupByEnum): void => {
-	// 	this.store.groupBy = value;
-	// 	this.saveSettingsToLocalStorage();
-	// };
-
-	// /** */
-	// public readonly onSortOrderChange = (_event: React.MouseEvent<Element, MouseEvent>, value: SortOrderEnum): void => {
-	// 	this.store.sortOrder = value;
-	// 	this.saveSettingsToLocalStorage();
-	// };
 
 	/** */
 	public readonly onLanguageChange = (_event: React.MouseEvent<Element, MouseEvent>, value: LanguageEnum): void => {
 		this.store.language = value;
-		// this.saveSettingsToLocalStorage();
 		const data = {
 			language: this.store.language,
 		} as LanguageSettingsLocalStorage;
@@ -310,25 +241,6 @@ export class SpinnerViewController {
 		this.store.localSettings.processVideo = false;
 	}
 
-	// /** */
-	// public readonly onSizeChange = (_event: React.MouseEvent<Element, MouseEvent>, value: DesignSizeEnum): void => {
-	// 	this.store.iconSize = value;
-	// 	this.saveSettingsToLocalStorage();
-	// };
-
-	/** Сохраняем в local storage */
-	// private saveSettingsToLocalStorage(): void {
-	// 	const data = {
-	// 		// sizgroupBye: this.store.groupBy,
-	// 		// size: this.store.currentItemSize,
-	// 		// sortOrder: this.store.sortOrder,
-	// 		// language: this.store.language,
-	// 		// groupBy: this.store.groupBy,
-	// 		// iconSize: this.store.iconSize
-	// 	} as SpinnerSettingsLocalStorage;
-	// 	LocalStorage.set(LocalStorageConsts.localSettings, data);
-	// }
-
 	/** */
 	private readonly loadApplicationSettings = async (): Promise<void> => {
 		const url = UrlHelper.getUrl(UrlConsts.settingsUrl);
@@ -353,7 +265,6 @@ export class SpinnerViewController {
 			if (!this.store.settings.frontSettings.selectedPresetGuid) {
 				this.store.settings.frontSettings.selectedPresetGuid = this.store.settings.frontSettings.presets[0].guid;
 			}
-			// this.updatePathSources(serverFiles, this.store.groupsFiles);
 		} else {
 			this.eventLogger.error(`Ошибка HTTP: ${response.status}`);
 		}
@@ -363,7 +274,6 @@ export class SpinnerViewController {
 		try {
 			const newSettings = await this.cameraClient.getStatus();
 			MapperHelper.mapValues(newSettings, this.store.cameraSettings);
-			// this.store.cameraNotFound = false;
 
 			await this.cameraClient.pairing();
 			this.store.cameraNotFound = false;
@@ -377,68 +287,13 @@ export class SpinnerViewController {
 			const message = errorType + ': ' + JSON.stringify(error);
 			this.eventLogger.error(message);
 		}
-		// const url = UrlHelper.getUrl(UrlConsts.settingsUrl);
-		// const response = await fetch(url);
-		// if (response.ok) {
-		// 	const settings = await response.json() as SpinnerSettingsFromServerModel;
-		// 	MapperHelper.mapValues(settings, this.store.settings);
-		// 	// this.updatePathSources(serverFiles, this.store.groupsFiles);
-		// } else {
-		// 	console.error(`Ошибка HTTP: ${response.status}`);
-		// }
 	};
 
-	// /** */
-	// private updatePathSources(serverItems: PathSourceFilesModel[], viewItems: SpinnerViewFilesViewModel[]): void {
-	// 	for (const existItem of viewItems) {
-	// 		const existServerFile = serverItems.findIndex((file: PathSourceFilesModel) => file.dirname === existItem.dirname);
-	// 		if (existServerFile < 0) {
-	// 			const existFileIndex = viewItems.findIndex((file: SpinnerViewFilesViewModel) => file.dirname === existItem.dirname);
-	// 			viewItems.splice(existFileIndex, 1);
-	// 		}
-	// 	}
-	// 	for (const serverItem of serverItems) {
-	// 		const existItem = viewItems.find((file: SpinnerViewFilesViewModel) => file.dirname === serverItem.dirname);
-	// 		if (!existItem) {
-	// 			const newItem = new SpinnerViewFilesViewModel();
-	// 			newItem.dirname = serverItem.dirname;
-	// 			viewItems.push(newItem);
-	// 			this.updatePathSource(serverItem.files ?? [], newItem.files);
-	// 		} else {
-	// 			this.updatePathSource(serverItem.files ?? [], existItem.files);
-	// 		}
-	// 	}
-	// }
-
-	// /** */
-	// private updatePathSource(serverFiles: PathSourceFileModel[], viewFiles: SpinnerViewFileViewModel[]): void {
-	// 	for (const existFile of viewFiles) {
-	// 		const existServerFile = serverFiles.findIndex((file: PathSourceFileModel) => file.fullpath === existFile.fullpath);
-	// 		if (existServerFile < 0) {
-	// 			const existFileIndex = viewFiles.findIndex((file: SpinnerViewFileViewModel) => file.fullpath === existFile.fullpath);
-	// 			viewFiles.splice(existFileIndex, 1);
-	// 		}
-	// 	}
-	// 	for (const serverFile of serverFiles) {
-	// 		const existFile = viewFiles.find((file: SpinnerViewFileViewModel) => file.fullpath === serverFile.fullpath);
-	// 		if (!existFile) {
-	// 			const newFile = new SpinnerViewFileViewModel();
-	// 			newFile.dirname = serverFile.dirname;
-	// 			newFile.extension = serverFile.extension;
-	// 			newFile.filename = serverFile.filename;
-	// 			newFile.fullpath = serverFile.fullpath;
-	// 			newFile.fileSize = serverFile.fileSize;
-	// 			viewFiles.push(newFile);
-	// 		}
-	// 	}
-	// }
 
 	/** */
 	private readonly loadFiles = async (): Promise<void> => {
 		await this.loadGoProPaths();
 		await this.loadCommonPaths();
-		// await this.loadGoProPhotosOverlayed();
-		// await this.loadGoProVideos();
 	};
 
 	/** */
@@ -446,7 +301,6 @@ export class SpinnerViewController {
 		const url = UrlHelper.getUrl(UrlConsts.camera.getFiles + '/' + GetFilesFolderType.GoProPaths);
 		const response = await fetch(url);
 		if (response.ok) {
-			// console.dir(response);
 			const serverFiles = await response.json() as PathSourceFilesModel[];
 			this.updatePathSources(serverFiles, this.store.goProGroupsFiles);
 		} else {
@@ -459,7 +313,6 @@ export class SpinnerViewController {
 		const url = UrlHelper.getUrl(UrlConsts.camera.getFiles + '/' + GetFilesFolderType.Common);
 		const response = await fetch(url);
 		if (response.ok) {
-			// console.dir(response);
 			const serverFiles = await response.json() as PathSourceFilesModel[];
 			this.updatePathSources(serverFiles, this.store.commonGroupsFiles);
 		} else {

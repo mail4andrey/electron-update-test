@@ -56,7 +56,6 @@ export class SpinnerSettingsFromServerViewModel extends SpinnerSettingsFromServe
 	@observable
 	public goProVideoPath?: string = '';
 
-	// @observable
 	public removeFromGoPro?: boolean = false;
 
 	@observable

@@ -27,7 +27,6 @@ export interface PrinterSettingsTabProps {
 	onChange?: (event: ISelectChangeEventProps, settings: PrintSettingsModel) => void;
 }
 
-// @provider(SettingsController, SettingsStore)
 @observer
 /** */
 export class PrintSettingsTab extends React.PureComponent<PrinterSettingsTabProps> {
@@ -135,7 +134,6 @@ export class PrintSettingsTab extends React.PureComponent<PrinterSettingsTabProp
 					<Select
 						value={layout}
 						onChange={this.onLayoutChange}
-						// className='min-width-200px'
 					>
 						{layoutValues}
 					</Select>
@@ -150,7 +148,6 @@ export class PrintSettingsTab extends React.PureComponent<PrinterSettingsTabProp
 					<Select
 						value={fitOnPage}
 						onChange={this.onFitOnPageChange}
-						// className='min-width-200px'
 					>
 						{fitOnPageValues}
 					</Select>
@@ -206,9 +203,6 @@ export class PrintSettingsTab extends React.PureComponent<PrinterSettingsTabProp
 				<Select
 					value={printer}
 					onChange={this.onPrinterChange}
-					// className='min-width-200px'
-					// displayEmpty={true}
-					// renderValue={this.getLoader}
 				>
 					{printers}
 				</Select>

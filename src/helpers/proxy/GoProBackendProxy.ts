@@ -12,11 +12,9 @@ export class GoProBackendProxy {
 	public async getStatus(): Promise<CameraStateModel> {
 		const status = await this.getRequest(UrlConsts.goPro.getStatus);
 		const result = new CameraStateModel();
-		// result.battery = status.status['1'];
 		result.cameraOnline = true;
 
 		result.batteryLevel = status.status['2'];
-		// result.recordingStatus = status.status['8'];
 		result.currentMode = status.status['43'];
 		result.currentSubMode = status.status['44'];
 
@@ -44,15 +42,6 @@ export class GoProBackendProxy {
 			result.videoSettingsEvCompGoPro8 = status.settings['118'];
 			result.photoSettingsProTuneGoPro8 = status.settings['114'];
 			result.photoSettingsEvCompGoPro8 = status.settings['118'];
-
-			// result.photoSettingsIsoLimit = status.settings['24'];
-			// result.photoSettingsEvComp = status.settings['26'];
-			// result.photoSettingsProTune = status.settings['21'];
-
-			// result.timeLapseSettingsResolution = status.settings['28'];
-			// result.timeLapseSettingsIsoLimit = status.settings['37'];
-			// result.timeLapseSettingsEvComp = status.settings['39'];
-			// result.timeLapseSettingsProTune = status.settings['34'];
 		}
 
 		return result;
@@ -141,20 +130,6 @@ export class GoProBackendProxy {
 
 	/** */
 	public async recordVideo(durationMilliseconds: number, delayMillisecondsAfterCommand: number = 1000): Promise<void> {
-		// const status = await this.getStatus();
-		// if (status.cameraVersion === GoProVersion.GoPro7
-		// 	&& (status.currentMode !== CameraMode.Video
-		// 	|| status.currentSubMode !== CameraSubMode.SubMode0)) {
-		// 	await this.getRequest(UrlConsts.goPro.setVideoSubMode);
-		// 	await TimerHelper.delay(delayMillisecondsAfterCommand);
-		// }
-		// if (status.cameraVersion === GoProVersion.GoPro8
-		// 	&& status.currentModeGoPro8 !== CameraModeGoPro8.Video
-		// 	&& status.currentModeGoPro8 !== CameraModeGoPro8.SloMo
-		// 	&& status.currentModeGoPro8 !== CameraModeGoPro8.Looping) {
-		// 	await this.getRequest(UrlConsts.goPro.setMode(CameraMode.Video.toString()));
-		// 	await TimerHelper.delay(delayMillisecondsAfterCommand);
-		// }
 
 		await this.getRequest(UrlConsts.goPro.shuttler);
 		await TimerHelper.delay(durationMilliseconds);
@@ -164,23 +139,6 @@ export class GoProBackendProxy {
 
 	/** */
 	public async takePhoto(delayMillisecondsAfterCommand: number = 1000): Promise<void> {
-		// const status = await this.getStatus();
-		// if (status.cameraVersion === GoProVersion.GoPro7
-		// 	&& (status.currentMode !== CameraMode.Photo
-		// 	|| status.currentSubMode !== CameraSubMode.SubMode1)) {
-		// 	await this.getRequest(UrlConsts.goPro.setPhotoSingleSubMode);
-		// 	await TimerHelper.delay(delayMillisecondsAfterCommand);
-		// }
-
-		// if (status.cameraVersion === GoProVersion.GoPro8
-		// 	&& status.currentModeGoPro8 !== CameraModeGoPro8.Photo
-		// 	&& status.currentModeGoPro8 !== CameraModeGoPro8.BurstPhoto
-		// 	&& status.currentModeGoPro8 !== CameraModeGoPro8.LiveBurst
-		// 	&& status.currentModeGoPro8 !== CameraModeGoPro8.NightPhoto) {
-		// 	await this.getRequest(UrlConsts.goPro.setMode(CameraMode.Photo.toString()));
-		// 	await TimerHelper.delay(delayMillisecondsAfterCommand);
-		// }
-
 		await this.getRequest(UrlConsts.goPro.shuttler);
 		await TimerHelper.delay(delayMillisecondsAfterCommand*2);
 	}
@@ -192,11 +150,8 @@ export class GoProBackendProxy {
 			: '.JPG';
 
 		const mediaList = await this.getRequest(UrlConsts.goPro.getMediaList) as GoProMediaList;
-		// console.log(mediaList);
 		const directories = mediaList?.media?.filter(dir => dir.fs && dir.fs.filter(file => file.n?.endsWith(extension)).length > 0);
-		// console.log(directories);
 		const lastDirectory = directories?.sort(SortHelper.dynamicSort('d')).pop();
-		// console.log(lastDirectory);
 		const lastFile = lastDirectory?.fs?.filter(file => file.n?.endsWith(extension))
 			.sort(SortHelper.dynamicSort('cre')).pop();
 		console.log(lastFile);
@@ -217,16 +172,6 @@ export class GoProBackendProxy {
 
 		const fileData = await this.getRequest(UrlConsts.goPro.getFileData(directory, filename), ResponseType.blob, 300000) as Blob;
 		return fileData;
-
-		// const status = await this.getStatus();
-		// if (status.currentMode !== CameraMode.Photo
-		// 	|| status.currentSubMode !== CameraSubMode.SubMode1) {
-		// 	await this.getRequest(UrlConsts.goPro.setPhotoSingleMode);
-		// 	await TimerHelper.delay(delayMillisecondsAfterCommand);
-		// }
-
-		// await this.getRequest(UrlConsts.goPro.shuttler);
-		// await TimerHelper.delay(delayMillisecondsAfterCommand);
 	}
 
 	/** */
@@ -239,32 +184,12 @@ export class GoProBackendProxy {
 	}
 
 	/** */
-	// private async sendRequest(url: string): Promise<void> {
-	// 	await NodeFetchHelper.fetch(url);
-	// 	// const response = await nodeFetch(
-	// 	// 	url, {
-	// 	// 	method: 'GET',
-	// 	// 	headers: {
-	// 	// 		'Content-Type': 'application/json'
-	// 	// 	},
-	// 	// });
-
-	// 	// if (!response.ok) {
-	// 	// 	const error = `Ошибка HTTP: ${response.status}`;
-	// 	// 	throw new Error(error);
-	// 	// }
-	// }
-
-	/** */
 	private async getRequest(
 		url: string,
-		// method?: string,
-		// body?: any,
 		resposeType?: ResponseType,
 		timeout?: number
 	): Promise<any> {
 		const settings = await NodeFetchHelper.fetch(url, undefined, undefined, timeout, resposeType);
-		// const settings = await NodeFetchHelper.fetch(url, method, body, timeout, resposeType);
 		return settings;
 	}
 }

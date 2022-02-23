@@ -26,7 +26,6 @@ export interface KioskViewGroupItemsProps {
 
 	size?: DesignSizeEnum;
 
-	// groupFiles?: KioskViewFilesViewModel;
 	files: KioskViewFileViewModel[];
 
 	groupname?: string;
@@ -58,8 +57,6 @@ export class KioskViewGroupItems extends React.PureComponent<KioskViewGroupItems
 		const showGroup = uniqueFiles
 			.some((file: KioskViewFileViewModel) => file.state === KioskItemStateEnum.Show || file.state === KioskItemStateEnum.Loading);
 		const classShowGroup = showGroup ? '' : 'display-none';
-		// const filesGrouped = ArrayHelper.groupBy(files, (file: KioskViewFileViewModel) => file.dirname!);
-		// const filesView: JSX.Element[] = [];
 		const direction = currentItemSize === VideoItemSizeEnum.column
 			? 'column'
 			: 'row';

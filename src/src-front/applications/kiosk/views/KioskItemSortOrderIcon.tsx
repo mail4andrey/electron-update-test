@@ -23,7 +23,6 @@ export class KioskItemSortOrderIcon extends React.PureComponent<IKioskItemSortOr
 		const icon = this.getIcon(this.props.sortOrder);
 		return (
 			<IconButton
-				// size='small'
 				onClick={this.onClick}
 			>
 				{icon}

@@ -23,11 +23,6 @@ export class KioskSettingsModel extends BaseApplicationSettingsModel {
 	/** */
 	public designSettings?: DesignSettingsModel;
 
-	/** */
-	// public serverSettings?: ServerSettingsModel;
-
-	/** */
-	// public language?: LanguageEnum;
 
 	/** */
 	public viewSetting?: string;

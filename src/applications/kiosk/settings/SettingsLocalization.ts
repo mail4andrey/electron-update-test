@@ -162,22 +162,6 @@ export class SettingsLocalization {
 		public static iconColorName = (language?: LanguageEnum): string =>
 			language !== LanguageEnum.rus ? 'Icons color' : 'Цвет иконок';
 
-		/** */
-		// public static sizeName = (language?: LanguageEnum): string =>
-		// 	language !== LanguageEnum.rus ? 'Size' : 'Размер';
-
-		/** Размер */
-		// public static sizeEnum = (value?: DesignSizeEnum): string => {
-		// 	switch (value) {
-		// 		case DesignSizeEnum.large:
-		// 			return 'Большой';
-		// 		case DesignSizeEnum.small:
-		// 			return 'Малый';
-		// 		default:
-		// 		case DesignSizeEnum.medium:
-		// 			return 'Средний';
-		// 	}
-		// };
 	};
 
 	/** Вкладка Web */
@@ -200,7 +184,6 @@ export class SettingsLocalization {
 	public static title = (language?: LanguageEnum): string =>
 		language !== LanguageEnum.rus ? 'Settings' : 'Настройки';
 
-	// public static cancel = 'Отмена';
 
 	/** */
 	public static saveButton = (language?: LanguageEnum): string =>

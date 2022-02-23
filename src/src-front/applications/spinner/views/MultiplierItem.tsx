@@ -44,42 +44,18 @@ export class MultiplierItem extends React.PureComponent<MultiplierItemProps> {
 				value: MultiplierEnum.fast10Times,
 				label: SpinnerLocalization.frontSettings.multiplierValueShort(MultiplierEnum.fast10Times, this.props.language)
 			},
-			// {
-			// 	value: this.props.value ?? MultiplierEnum.normal,
-			// 	label: SpinnerLocalization.frontSettings.multiplierValueShort(this.props.value ?? MultiplierEnum.normal, this.props.language)
-			// }
 		];
 
 		return (
-			// <FormControl
-			// 	fullWidth={true}
-			// 	margin='dense'
-			// >
-			// 	<FormControl
-			// 		fullWidth={true}
-			// 		margin='dense'
-			// 	>
-					// <div
-					// 	className='slider-container'
-					// >
 			<Slider
 				track={false}
 				marks={true}
-				// marks={marks}
 				max={MultiplierEnum.slow10Times}
 				min={MultiplierEnum.fast10Times}
-				// disabled={this.props.disabled}
-				// label={SettingsLocalization.common.nameLabel(language)}
 				value={this.props.value}
 				onChangeCommitted={this.onMultiplierChangeCommitted}
 				onChange={this.onMultiplierChange}
-				// valueLabelFormat={this.getValueText}
-				// getAriaValueText={this.getValueText}
-				// valueLabelDisplay='on'
 			/>
-					// </div>
-			// 	{/* </FormControl> */}
-			// {/* </FormControl> */}
 		);
 	}
 

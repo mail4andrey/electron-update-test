@@ -30,7 +30,6 @@ export interface ZoomSettingsTabProps extends ZoomSettingsModel {
 	onDownClick?: (event: React.MouseEvent<Element, MouseEvent>, id?: number) => void;
 }
 
-// @provider(SettingsController, SettingsStore)
 @observer
 /** */
 export class ZoomSettingsTab extends React.PureComponent<ZoomSettingsTabProps> {

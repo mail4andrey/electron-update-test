@@ -38,7 +38,6 @@ import { KioskLocalization } from '../../../localization/KioskLocalization';
 
 /** */
 export interface KioskViewProps extends ProviderContext {
-	// email?: EmailSettingsModel;
 	title?: string;
 
 	backgroundToolbar?: string;
@@ -48,8 +47,6 @@ export interface KioskViewProps extends ProviderContext {
 	backgroundFileCard?: string;
 
 	iconColor?: string;
-
-	// size?: DesignSizeEnum;
 }
 
 /**
@@ -88,12 +85,6 @@ class KioskView extends React.PureComponent<KioskViewProps> {
 
 		const allFiles = this.store.groupsFiles
 			.flatMap((file: KioskViewFilesViewModel) => file.files);
-
-		// const anyFileVisible = allFiles
-		// 	.some((file: KioskViewFileViewModel) => file.state === KioskItemStateEnum.Show || file.state === KioskItemStateEnum.Loading);
-
-		// const allFileHidden = allFiles
-		// 	.every((file: KioskViewFileViewModel) => file.state === KioskItemStateEnum.Hide);
 
 		const filesSelected = allFiles
 			.filter((file: KioskViewFileViewModel) => file.isSelected).length;
@@ -179,7 +170,6 @@ class KioskView extends React.PureComponent<KioskViewProps> {
 						>
 							<OneLine>
 								<TextField
-								// label={KioskLocalization.labelEmailTo}
 									value={email}
 									onChange={this.controller.onChangeEmail}
 									fullWidth={true}
@@ -237,25 +227,7 @@ class KioskView extends React.PureComponent<KioskViewProps> {
 						</Toolbar>
 					</div>
 				</AppBar>
-				{/* <Grid
-					// container={true}
-					// spacing={1}
-				// alignItems='center'
-				// direction="column"
-				// justify="center"
-				// alignItems="center"
-				// >
-					{/* <GridList
-					// cellHeight='auto'
-					cols={5}
-					spacing={5}
-				> */}
-				{/* <div
-					className='padding-12px'
-				> */}
 				{items}
-				{/* </div> */}
-				{/* </Grid> */}
 			</div>
 		);
 	}
@@ -334,7 +306,6 @@ class KioskView extends React.PureComponent<KioskViewProps> {
 			console.error(error);
 			const message = KioskLocalization.notificationPrintedError(filesImageBase64Data.length, language);
 			this.props.enqueueSnackbar(message, { variant: 'error' });
-			// TransitionComponent: Slide,
 		}
 	};
 
@@ -354,7 +325,6 @@ class KioskView extends React.PureComponent<KioskViewProps> {
 					groupBy={groupBy}
 					buttonSize={iconSize}
 					groups={groupsFiles}
-					// currentItemSize={currentItemSize}
 					sortOrder={sortOrder}
 					onPrintItemClick={this.onPrintItemClick}
 					onSendByEmailItemClick={this.onSendByEmailItemClick}

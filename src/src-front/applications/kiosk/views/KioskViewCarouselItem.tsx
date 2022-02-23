@@ -41,9 +41,6 @@ export interface KioskViewCarouselItemProps {
 	sortOrder?: SortOrderEnum;
 
 	/** Размер видео */
-	// iconSize?: VideoItemSizeEnum;
-
-	/** Размер видео */
 	buttonSize?: DesignSizeEnum;
 	groupBy?: GroupByEnum;
 
@@ -54,7 +51,6 @@ export interface KioskViewCarouselItemProps {
 	onSendByEmailItemClick?: (event: React.MouseEvent<Element, MouseEvent>, value?: string) => Promise<void>;
 }
 
-// @provider(KioskViewController, KioskViewStore)
 @observer
 /** */
 export class KioskViewCarouselItem extends React.PureComponent<KioskViewCarouselItemProps> {
@@ -66,10 +62,6 @@ export class KioskViewCarouselItem extends React.PureComponent<KioskViewCarousel
 	@observable
 	/** */
 	private selectedFile?: string;
-
-	// @observable
-	// /** */
-	// private fileState = KioskItemStateEnum.Initializing;
 
 	/** Первое включение видео */
 	private firstPlay = true;
@@ -91,23 +83,6 @@ export class KioskViewCarouselItem extends React.PureComponent<KioskViewCarousel
 
 	/** */
 	private readonly imageRef = React.createRef<HTMLImageElement>();
-
-	// @inject
-	// private readonly controller!: KioskViewController;
-
-	// @inject
-	// private readonly store!: KioskViewStore;
-
-	/** */
-	// public async componentDidMount(): Promise<void> {
-	// 	// this.history = useHistory();
-	// 	// this.store.settings
-	// 	await this.controller.loadFiles();
-	// }
-
-
-	/** */
-	// public email = { ...this.props.email ?? new EmailSettingsModel() };
 
 	/** Отображение */
 	public render(): React.ReactNode {
@@ -132,7 +107,6 @@ export class KioskViewCarouselItem extends React.PureComponent<KioskViewCarousel
 			return null;
 		}
 
-		// const group = this.getGroup();
 		const groupName = group?.dirname ?? '';
 		const groupNextButton = (
 			<IconButton
@@ -161,14 +135,6 @@ export class KioskViewCarouselItem extends React.PureComponent<KioskViewCarousel
 				className='stepper background-image-bottom-gray height60px'
 				style={{ background }}
 			>
-				{/* <MobileStepper
-					steps={groupSteps}
-					position='static'
-					variant='text'
-					activeStep={currentStep}
-					nextButton={groupNextButton}
-					backButton={groupBackButton}
-				/> */}
 				{groupBackButton}
 				<Typography
 					align='center'
@@ -194,7 +160,6 @@ export class KioskViewCarouselItem extends React.PureComponent<KioskViewCarousel
 		if (!file) {
 			return null;
 		}
-		// const filenameShow = file.filename ?? '';
 
 		if (!file.state
 			|| file.state === KioskItemStateEnum.Hide) {
@@ -207,10 +172,8 @@ export class KioskViewCarouselItem extends React.PureComponent<KioskViewCarousel
 		const heightSizeNumber = 800;
 
 		const show = file.state === KioskItemStateEnum.Show;
-		// const show = file.state !== KioskItemStateEnum.ShowImage;
 		const showImage = file.state === KioskItemStateEnum.ShowImage;
 		const showSkeleton = file.state !== KioskItemStateEnum.ShowImage && file.state !== KioskItemStateEnum.Show;
-		// const showSkeleton = file.state === KioskItemStateEnum.Loading;
 		const skeleton = this.getSkeleton(showSkeleton, widthSizeNumber, heightSizeNumber);
 		const middleFrameImage = this.getMiddleFrameImage(show, widthSizeNumber, heightSizeNumber);
 		const video = this.getVideo(show, widthSizeNumber, heightSizeNumber, url);
@@ -222,33 +185,22 @@ export class KioskViewCarouselItem extends React.PureComponent<KioskViewCarousel
 		const fileStepper = this.getFileStepper();
 
 		return (
-			// <Grid
-			// 	item
-			// 	className={hideItemClass}
-			// >
 			<div
 				style={{ background }}
 				className='grid-tile background-image-top-gray'
 			>
-				{/* {file.state} */}
 				{fileStepper}
 				{skeleton}
 				{image}
-				{/* {topBlock} */}
 				<div className='0video 0padding-12px position-relative0'>
-					{/* {skeleton} */}
 					{middleFrameImage}
 					{video}
 					<canvas
 						className='display-none'
-						// style={{ display: 'none' }}
 						ref={this.canvasRef}
 					/>
-					{/* {insideBlock} */}
 				</div>
-				{/* {bottomBlock} */}
 			</div>
-			// </Grid>
 		);
 	}
 
@@ -256,9 +208,6 @@ export class KioskViewCarouselItem extends React.PureComponent<KioskViewCarousel
 	/** Отображение */
 	public getFileStepper(): React.ReactNode {
 		const { buttonSize, iconColor, language } = this.props;
-		// if (groupBy === GroupByEnum.none) {
-		// 	return null;
-		// }
 
 		const group = this.getGroup();
 		if (!group) {
@@ -316,11 +265,8 @@ export class KioskViewCarouselItem extends React.PureComponent<KioskViewCarousel
 				<Checkbox
 					checked={file.isSelected}
 					onChange={this.onSelect}
-					// size={buttonSize}
-					// style={{ color: iconColor }}
 					icon={checkBoxIcon}
 					checkedIcon={checkBoxCheckedIcon}
-					// color='secondary'
 				/>
 			)
 			: null;
@@ -373,15 +319,9 @@ export class KioskViewCarouselItem extends React.PureComponent<KioskViewCarousel
 			: null;
 		const infoBlock = (
 			<OneLine>
-				{/* {checkBox} */}
-				{/* <div
-					className='width-560px'
-				> */}
 				{description}
-				{/* </div> */}
 				<RightContainer className='padding-left-12px'>
 					<OneLine>
-						{/* {checkBox} */}
 						{emailIcon}
 						{printIcons}
 					</OneLine>
@@ -395,21 +335,8 @@ export class KioskViewCarouselItem extends React.PureComponent<KioskViewCarousel
 				className='stepper background-image-bottom-gray0 height60px'
 				style={{ background }}
 			>
-				{/* <MobileStepper
-					steps={fileSteps}
-					position='static'
-					variant='text'
-					activeStep={currentStep}
-					nextButton={fileNextButton}
-					backButton={fileBackButton}
-				/> */}
-				{/* {filename} */}
 				{fileBackButton}
 				{checkBox}
-				{/* <OneLine></OneLine> */}
-				{/* <div className='padding-right-12px'>
-					{`${currentStep + 1}/${fileSteps}`}
-				</div> */}
 				<Typography
 					align='left'
 					variant='h6'
@@ -516,7 +443,7 @@ export class KioskViewCarouselItem extends React.PureComponent<KioskViewCarousel
 			this.selectedFile = files[currentStep + 1].fullpath;
 		} else if (files.length > 0) {
 			/** Если 1ый элемент, то включается автообновление */
-			this.selectedFile = ''; // files[0].fullpath;
+			this.selectedFile = '';
 		} else {
 			this.selectedFile = '';
 		}
@@ -590,12 +517,9 @@ export class KioskViewCarouselItem extends React.PureComponent<KioskViewCarousel
 		const className = this.getItemHeightClass();
 		return (
 			<Skeleton
-				// className={`centered-container position-relative file-item-container-carousel-group-height ${className} ${hideClassName}`}
 				className={`file-item-container-carousel-group-height ${className}`}
 				animation='wave'
 				variant='rect'
-				// width={widthSizeNumber}
-				// height={heightSizeNumber}
 			/>
 		);
 	}
@@ -612,17 +536,13 @@ export class KioskViewCarouselItem extends React.PureComponent<KioskViewCarousel
 				ref={this.middleFrameImageRef}
 				crossOrigin='anonymous'
 				className={`display-none position-relative kiosk-item-image file-item-container-carousel-group-height ${className} ${hideClass}`}
-				// width={widthSizeNumber}
-				// height={heightSizeNumber}
 				onLoad={this.onMiddleFrameImageLoadedData}
-				// className={'position-absolute top-0 left-0 width100prc file-item-container-carousel-group-height'}
 			/>
 		);
 	}
 
 	/** */
 	private getVideo(show: boolean, widthSizeNumber: 'auto' | number, heightSizeNumber: 'auto' | number, url: string): React.ReactNode {
-		// const itemClass = '';
 		const hideClass = show
 			? ''
 			: 'display-none';
@@ -631,31 +551,15 @@ export class KioskViewCarouselItem extends React.PureComponent<KioskViewCarousel
 		return (
 			<video
 				controls={true}
-				// width={widthSizeNumber}
-				// height={heightSizeNumber}
-				// controlsList='nodownload'
 				preload='metadata'
-				// id={file.fullpath}
 				onLoadedMetadata={this.onVideoLoadedMetadata}
 				onTimeUpdate={this.onVideoTimeUpdate}
 				onPlay={this.onPlay}
 				ref={this.videoRef}
 				crossOrigin='anonymous'
 				className={`width100prc file-item-container-carousel-group-height ${hideClass} ${className}`}
-				// className={`position-absolute top-0 left-0 width100prc file-item-container-carousel-group-height ${itemClass}`}
 				src={url}
 			>
-				{/* <source
-				// type={`video/${file.extension}`}
-					src={url}
-				/> */}
-				{/* <source
-				// type={`video/${file.extension}`}
-				src={`file://${file.fullpath}`}
-			/> */}
-				{/* <source type='video/webm' src='http://media.w3.org/2010/05/sintel/trailer.webm' id='webm'></source>
-			<source type='video/ogg' src='http://media.w3.org/2010/05/sintel/trailer.ogv' id='ogv'></source> */}
-				{/* <p>Your user agent does not support the HTML5 Video element.</p> */}
 			</video>
 		);
 	}
@@ -670,41 +574,17 @@ export class KioskViewCarouselItem extends React.PureComponent<KioskViewCarousel
 				<img
 					ref={this.imageRef}
 					crossOrigin='anonymous'
-					// className={`display-none position-relative kiosk-item-image file-item-container-carousel-group-height ${className}`}
 					className={`centered-container position-relative file-item-container-carousel-group-height ${className} ${hideClassName}`}
-					// width={widthSizeNumber}
-					// height={heightSizeNumber}
 					onLoad={this.onImageLoadedData}
-					// className={'position-absolute top-0 left-0 width100prc file-item-container-carousel-group-height'}
 					src={url}
 				/>
 			</div>
 		);
 
-		// return (
-		// 	<img
-		// 		// width={widthSizeNumber}
-		// 		// height={heightSizeNumber}
-		// 		// controlsList='nodownload'
-		// 		preload='metadata'
-		// 		// id={file.fullpath}
-		// 		onLoadedMetadata={this.onVideoLoadedMetadata}
-		// 		onTimeUpdate={this.onVideoTimeUpdate}
-		// 		onPlay={this.onPlay}
-		// 		ref={this.videoRef}
-		// 		crossOrigin='anonymous'
-		// 		className={`width100prc file-item-container-carousel-group-height ${itemClass} ${className}`}
-		// 		// className={`position-absolute top-0 left-0 width100prc file-item-container-carousel-group-height ${itemClass}`}
-		// 		src={url}
-		// 	/>
-		// );
 	}
 
 	/** Событие после загрузки данных о видеофайле */
 	private readonly onVideoLoadedMetadata = (event: any): void => {
-	// private readonly onLoadedMetadata = (event: {target?: {duration?: number; currentTime?: number; };}): void => {
-		// console.dir(event);
-		// console.dir(event.target?.duration);
 		if (!event.target?.duration) {
 			return;
 		}
@@ -729,16 +609,10 @@ export class KioskViewCarouselItem extends React.PureComponent<KioskViewCarousel
 		if (!file) {
 			return;
 		}
-		// console.dir(event);
 		if (this.firstPlay && this.middleFrameImageRef.current && this.videoRef.current?.duration) {
 			const middleImage = this.getVideoFrame();
 			file.middleImage = middleImage;
-			// if (this.props.size !== SizeEnum.carousel
-			// 	&& this.props.size !== SizeEnum.column) {
 			this.middleFrameImageRef.current.src = middleImage.data ?? '';
-			// } else {
-			// 	this.props.file.state = KioskItemStateEnum.Show;
-			// }
 
 			file.state = KioskItemStateEnum.Show;
 		}
@@ -746,9 +620,6 @@ export class KioskViewCarouselItem extends React.PureComponent<KioskViewCarousel
 
 	/** Событие при воспроизведении */
 	private readonly onPlay = (event: any): void => {
-	// private readonly onPlay = (event: {type?: 'play'; target?: {duration?: number; currentTime?: number; };}): void => {
-		// console.dir(event);
-		// console.dir(event.target?.duration);
 		if (!event.target || !event.type || event.type !== 'play' || !this.firstPlay) {
 			return;
 		}
@@ -760,23 +631,11 @@ export class KioskViewCarouselItem extends React.PureComponent<KioskViewCarousel
 	/** Получаем кадр из видео */
 	private getVideoFrame(): PrintSendingItemModel {
 		const video = this.videoRef.current!;
-		// const video = event.target;
 		const canvas = this.canvasRef.current!;
 		canvas.height = video.videoHeight;
 		canvas.width = video.videoWidth;
 		const context = canvas.getContext('2d');
-		// context!.drawImage(video, 0, 0);
 		context!.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
-		// context!.canvas.toBlob(
-		// 	blob => {
-		// 		resolve(blob);
-		// 	},
-		// 	'image/jpeg',
-		// 	0.75 /* quality */
-		// );
-		// image.src = canvas.toBlob();
-		// console.log(canvas);
-		// image.src = canvas.toDataURL('image/jpeg', 1);
 		const result = {
 			width: video.videoWidth,
 			height: video.videoHeight,

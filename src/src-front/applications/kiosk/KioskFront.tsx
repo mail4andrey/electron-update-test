@@ -18,19 +18,6 @@ import { SettingsProxy } from '../../../helpers/proxy/SettingsProxy';
 @observer
 export class KioskFront extends React.PureComponent {
 
-	/** ctor */
-	// public constructor(props) {
-	// 	super(props);
-	// 	// todo при включении, при вводе в китовом инпуте каретка перескакивает в конец
-	// 	/*setTimeout(() => {
-	// 		configure({
-	// 				reactionScheduler: f => {
-	// 				setTimeout(f, MobXConsts.batchOperationsTimeout);
-	// 			}
-	// 		});
-	// 	}, 0);*/
-	// }
-
 	@observable
 	private loaded = false;
 
@@ -76,7 +63,6 @@ export class KioskFront extends React.PureComponent {
 						backgroundGroupName={this.settings?.backgroundGroupName}
 						backgroundFileCard={this.settings?.backgroundFileCard}
 						iconColor={this.settings?.iconColor}
-						// size={this.settings?.size}
 					/>
 				</SnackbarProvider>
 			</div>
@@ -84,6 +70,3 @@ export class KioskFront extends React.PureComponent {
 	}
 }
 
-// export default process.env.NODE_ENV === 'development'
-// 	? hot(module)(Application)
-// 	: Application;

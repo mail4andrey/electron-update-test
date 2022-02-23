@@ -20,7 +20,6 @@ export interface ServerSettingsTabProps {
 	onChange: (event: ITextFieldChangeEventProps, settings: ServerSettingsModel) => void;
 }
 
-// @provider(SettingsController, SettingsStore)
 @observer
 /** */
 export class ServerSettingsTab extends React.PureComponent<ServerSettingsTabProps> {

@@ -1,8 +1,6 @@
 import { Tab as UiTab } from '@material-ui/core';
 import React from 'react';
 
-// export inte
-
 /** Свойства кнопки */
 export interface ITabProps {
 	disableFocusRipple?: boolean;
@@ -18,8 +16,6 @@ export interface ITabProps {
 	value?: any;
 	wrapped?: boolean;
 
-	// id?: string;
-	// 'aria-controls'?: string;
 	index?: number;
 }
 

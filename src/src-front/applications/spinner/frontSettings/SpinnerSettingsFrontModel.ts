@@ -24,7 +24,7 @@ export enum MultiplierEnum {
 	slow10Times = 9,
 }
 /** Модель настроек приложения */
-export class SpinnerSettingsFrontItemModel { //extends BaseApplicationFrontItemSettingsModel {
+export class SpinnerSettingsFrontItemModel {
 	/** */
 	public title?: string;
 	/** */
@@ -60,7 +60,6 @@ export class SpinnerSettingsFrontModel {
 	public presets?: SpinnerSettingsFrontItemModel[];
 }
 export class SpinnerSettingsFrontOverlayItemModel {
-	// public title?: string;
 	public guid?: string;
 	public disable?: boolean;
 	public beforeSlow?: boolean;
@@ -69,7 +68,6 @@ export class SpinnerSettingsFrontOverlayItemModel {
 	public forPhoto?: boolean;
 }
 export class SpinnerSettingsFrontZoomItemModel {
-	// public title?: string;
 	public guid?: string;
 	public disable?: boolean;
 	public beforeSlow?: boolean;
@@ -103,7 +101,7 @@ export class SpinnerSettingsFrontViewModel extends SpinnerSettingsFrontModel {
 	public presets?: SpinnerSettingsFrontItemViewModel[] = [];
 }
 /** Модель настроек приложения */
-export class SpinnerSettingsFrontItemViewModel extends SpinnerSettingsFrontItemModel { //extends BaseApplicationFrontItemSettingsModel {
+export class SpinnerSettingsFrontItemViewModel extends SpinnerSettingsFrontItemModel {
 	/** */
 	@observable
 	public title?: string = '';
@@ -133,7 +131,6 @@ export class SpinnerSettingsFrontItemViewModel extends SpinnerSettingsFrontItemM
 	public zooms?: SpinnerSettingsFrontZoomItemModel[] = [];
 }
 export class SpinnerSettingsFrontOverlayItemViewModel extends SpinnerSettingsFrontOverlayItemModel {
-	// public title?: string = '';
 	public guid?: string = '';
 	@observable
 	public disable?: boolean = false;
@@ -147,7 +144,6 @@ export class SpinnerSettingsFrontOverlayItemViewModel extends SpinnerSettingsFro
 	public forPhoto?: boolean = false;
 }
 export class SpinnerSettingsFrontZoomItemViewModel extends SpinnerSettingsFrontZoomItemModel {
-	// public title?: string = '';
 	public guid?: string = '';
 	@observable
 	public disable?: boolean = false;

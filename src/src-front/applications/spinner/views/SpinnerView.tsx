@@ -4,11 +4,9 @@ import React from 'react';
 import { inject, provider } from 'react-ioc';
 
 import { AppBar } from '../../../../elements/AppBar';
-import { Badge } from '../../../../elements/Badge';
 import { IconButton } from '../../../../elements/IconButton';
-import { Mail, Print, Send, ExpandMore, PhotoCamera, Videocam, PowerSettingsNew, BatteryChargingFull, BatteryFull, Battery50, Battery20, BatteryAlert, PlaylistAdd, Delete } from '../../../../elements/Icons';
+import { ExpandMore, PhotoCamera, Videocam, PowerSettingsNew, BatteryChargingFull, BatteryFull, Battery50, Battery20, BatteryAlert, PlaylistAdd, Delete } from '../../../../elements/Icons';
 import { InputAdornment } from '../../../../elements/InputAdornment';
-import { Loader } from '../../../../elements/Loader';
 import { OneLine } from '../../../../elements/commons/OneLine';
 import { RightContainer } from '../../../../elements/commons/RightContainer';
 import { TextField, ITextFieldChangeEventProps } from '../../../../elements/TextField';
@@ -28,37 +26,29 @@ import { Button } from '../../../../elements/Button';
 import { Select, ISelectChangeEventProps } from '../../../../elements/Select';
 import { InputLabel } from '../../../../elements/InputLabel';
 import { MenuItem } from '../../../../elements/MenuItem';
-import { VideoIsoLimit, CameraSettingEnum, EvComp, ProTune, FrameRate, CameraMode, CameraSubMode, PhotoIsoLimit, VideoResolution, PhotoResolution, CameraModeGoPro8, BatteryLevel } from '../../../../src-front/models/CameraStateModel';
+import { VideoIsoLimit, CameraSettingEnum, EvComp, ProTune, FrameRate, CameraMode, CameraSubMode, PhotoIsoLimit, VideoResolution, CameraModeGoPro8, BatteryLevel } from '../../../../src-front/models/CameraStateModel';
 import { ListSubheader } from '../../../../elements/ListSubheader';
-import { LocalStorageConsts } from '../../../../src-front/const/LocalStorageConsts';
 import { FormHelperText } from '../../../../elements/FormHelperText';
 import { KioskViewCarouselItem } from '../../../../src-front/applications/kiosk/views/KioskViewCarouselItem';
 import { GroupByEnum } from '../../../../src-front/applications/kiosk/views/GroupByEnum';
-import { DesignSizeEnum } from '../../../../src-front/applications/kiosk/views/DesignSizeEnum';
 import { SortOrderEnum } from '../../../../src-front/applications/kiosk/views/SortOrderEnum';
-import { KioskViewGroupItems } from '../../../../src-front/applications/kiosk/views/KioskViewGroupItems';
 import { ButtonGroup } from '../../../../elements/ButtonGroup';
 import { SortHelper } from '../../../../helpers/SortHelper';
 import { ItemComponent } from '../../../../elements/combine/ItemComponent';
 import { MultiplierEnum, SpinnerSettingsFrontItemViewModel, SpinnerSettingsFrontOverlayItemModel, SpinnerSettingsFrontOverlayItemViewModel, SpinnerSettingsFrontZoomItemViewModel, SpinnerSettingsFrontZoomItemModel } from '../frontSettings/SpinnerSettingsFrontModel';
-import { Slider } from '../../../../elements/Slider';
 import { MultiplierItem } from './MultiplierItem';
 import { FormControlLabel } from '../../../../elements/FormControlLabel';
 import { Checkbox } from '../../../../elements/Checkbox';
 import { Divider } from '../../../../elements/Divider';
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '../../../../elements/Table';
-import { CommonLocalization } from '../../../../src-front/localization/CommonLocalization';
 import { OverlayItemRow } from './OverlayItemRow';
 import { MapperHelper } from '../../../../helpers/MapperHelper';
 import { ZoomItemRow } from './ZoomItemRow';
 import { Switch } from '../../../../elements/Switch';
-import { FormGroup } from '../../../../elements/FormGroup';
-import { Timer } from '../../../../helpers/Timer';
 
 
 /** */
 export interface SpinnerViewProps extends ProviderContext {
-	// email?: EmailSettingsModel;
 	title?: string;
 
 	backgroundToolbar?: string;
@@ -69,7 +59,6 @@ export interface SpinnerViewProps extends ProviderContext {
 
 	iconColor?: string;
 
-	// size?: DesignSizeEnum;
 }
 
 /**
@@ -97,82 +86,9 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 
 	/** Отображение */
 	public render(): React.ReactNode {
-		const { loaded, language } = this.store;
-		// const { groupsFiles, loaded, email, currentItemSize, sortOrder, language, groupBy, iconSize } = this.store;
-		// const { iconColor } = this.props;
-
-
-		// const items = this.getItems(groupsFiles, iconSize, currentItemSize, sortOrder, groupBy, language);
-
-		// const fileSizes = this.getFilesSize(groupsFiles);
-
-		// const allFiles = this.store.groupsFiles
-		// 	.flatMap((file: SpinnerViewFilesViewModel) => file.files);
-
-		// // const anyFileVisible = allFiles
-		// // 	.some((file: SpinnerViewFileViewModel) => file.state === SpinnerItemStateEnum.Show || file.state === SpinnerItemStateEnum.Loading);
-
-		// // const allFileHidden = allFiles
-		// // 	.every((file: SpinnerViewFileViewModel) => file.state === SpinnerItemStateEnum.Hide);
-
-		// const filesSelected = allFiles
-		// 	.filter((file: SpinnerViewFileViewModel) => file.isSelected).length;
-		// const emailIcon = (
-		// 	<InputAdornment position='start'>
-		// 		<Mail
-		// 			htmlColor={iconColor}
-		// 			fontSize={iconSize}
-		// 		/>
-		// 	</InputAdornment>
-		// );
-		// const sendButton = (
-		// 	<InputAdornment position='end'>
-		// 		<Typography
-		// 		>
-		// 			{fileSizes}
-		// 		</Typography>
-		// 		<Tooltip
-		// 			title={SpinnerLocalization.sendEmail(language)}
-		// 		>
-		// 			<Badge
-		// 				badgeContent={filesSelected}
-		// 				color='secondary'
-		// 			>
-		// 				<IconButton
-		// 					onClick={this.onSendByEmailClick}
-		// 				>
-		// 					<Send
-		// 						htmlColor={iconColor}
-		// 						fontSize={iconSize}
-		// 					/>
-		// 				</IconButton>
-		// 			</Badge>
-		// 		</Tooltip>
-		// 	</InputAdornment>
-		// );
-
-		// const printButton = (
-		// 	<Tooltip
-		// 		title={SpinnerLocalization.print(language)}
-		// 	>
-		// 		<Badge
-		// 			badgeContent={filesSelected}
-		// 			color='secondary'
-		// 		>
-		// 			<IconButton
-		// 				onClick={this.onPrintClick}
-		// 			>
-		// 				<Print
-		// 					htmlColor={iconColor}
-		// 					fontSize={iconSize}
-		// 				/>
-		// 			</IconButton>
-		// 		</Badge>
-		// 	</Tooltip>
-		// );
+		const { language } = this.store;
 		const powerOffButton = (
 			<IconButton
-				// size='small'
 				onClick={this.onPowerOffClick}
 			>
 				<Tooltip
@@ -191,7 +107,6 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 					className='padding-right-12px-important'
 				>
 					<IconButton
-						// size='small'
 						onClick={this.onTakePhotoClick}
 					>
 						<Tooltip
@@ -205,7 +120,6 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 					className='padding-right-12px-important'
 				>
 					<IconButton
-						// size='small'
 						onClick={this.onRecordVideoClick}
 					>
 						<Tooltip
@@ -244,7 +158,6 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 
 		return (
 			<div>
-				{/* <CssBaseline /> */}
 				<div
 					className='padding-top-6px background-image-bottom-gray'
 					style={{ background }}
@@ -268,66 +181,13 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 							variant='dense'
 						>
 							<OneLine>
-								{/* <TextField
-								// label={SpinnerLocalization.labelEmailTo}
-									value={email}
-									onChange={this.controller.onChangeEmail}
-									fullWidth={true}
-									placeholder={SpinnerLocalization.sendEmailTo(language)}
-									autoComplete='email'
-									InputProps={{
-										startAdornment: emailIcon,
-										endAdornment: sendButton
-									}}
-								/>
-								{printButton} */}
 								<RightContainer
 									className='padding-left-32px'
 								>
 									<LanguageButton
-										// buttonSize={iconSize}
-										// iconColor={iconColor}
 										language={language}
 										onClick={this.controller.onLanguageChange}
 									/>
-									{/* <OneLine>
-										<OneLine
-											className='padding-right-12px'
-										>
-											<SpinnerItemSortOrderIcon
-												buttonSize={iconSize}
-												iconColor={iconColor}
-												sortOrder={sortOrder}
-												onClick={this.controller.onSortOrderChange}
-											/>
-											<SpinnerItemGroupIcon
-												buttonSize={iconSize}
-												iconColor={iconColor}
-												value={groupBy}
-												onClick={this.controller.onGroupByChange}
-											/>
-											<SpinnerItemSizeIcon
-												buttonSize={iconSize}
-												iconColor={iconColor}
-												currentSize={currentItemSize}
-												onClick={this.controller.onItemSizeChange}
-											/>
-										</OneLine>
-										<OneLine>
-											<SpinnerItemLanguageIcon
-												buttonSize={iconSize}
-												iconColor={iconColor}
-												language={language}
-												onClick={this.controller.onLanguageChange}
-											/>
-											<SpinnerIconsSizeIcon
-												buttonSize={iconSize}
-												iconColor={iconColor}
-												value={iconSize}
-												onClick={this.controller.onSizeChange}
-											/>
-										</OneLine> */}
-									{/* </OneLine> */}
 								</RightContainer>
 							</OneLine>
 						</Toolbar>
@@ -361,10 +221,8 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 										value={this.store.localSettings?.recordVideoDuration}
 										label={SpinnerLocalization.takePhotoOrRecordVideo(language)}
 										placeholder='0.0'
-										// disabled={!this.props.file || this.props.disabled}
 										error={!recordVideoDurationValid}
 										onChange={this.onRecordVideoDurationChange}
-										// helperText={SettingsLocalization.introOutroTab.durationForImageWarning(language)}
 										InputProps={{
 											startAdornment: buttons,
 											endAdornment: seconds
@@ -422,16 +280,8 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 												<KioskViewCarouselItem
 													language={language}
 													groupBy={GroupByEnum.groupByDir}
-													// buttonSize={DesignSizeEnum.}
 													groups={this.store.goProGroupsFiles}
-													// currentItemSize={currentItemSize}
 													sortOrder={SortOrderEnum.desc}
-													// onPrintItemClick={this.onPrintItemClick}
-													// onSendByEmailItemClick={this.onSendByEmailItemClick}
-													// onSelectItemClick={this.controller.onSelectItem}
-													// backgroundGroupName={this.props.backgroundGroupName}
-													// backgroundFileCard={this.props.backgroundFileCard}
-													// iconColor={this.props.iconColor}
 												/>
 											</FormControl>
 										</AccordionDetails>
@@ -442,25 +292,6 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 					</Accordion>
 				</div>
 				{frontSettings}
-				{/* <Grid
-					// container={true}
-					// spacing={1}
-				// alignItems='center'
-				// direction="column"
-				// justify="center"
-				// alignItems="center"
-				// >
-					{/* <GridList
-					// cellHeight='auto'
-					cols={5}
-					spacing={5}
-				> */}
-				{/* <div
-					className='padding-12px'
-				> */}
-				{/* {items} */}
-				{/* </div> */}
-				{/* </Grid> */}
 			</div>
 		);
 	}
@@ -472,14 +303,12 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 	};
 
 	/** */
-	private readonly TestButtonClick = async (event: React.MouseEvent<Element, MouseEvent>): Promise<void> => {
-		// event.stopPropagation();
+	private readonly TestButtonClick = async (): Promise<void> => {
 		await this.controller.testVideo();
 	};
 
 	/** */
-	private readonly onManualStartClick = async (event: React.MouseEvent<Element, MouseEvent>): Promise<void> => {
-		// event.stopPropagation();
+	private readonly onManualStartClick = async (): Promise<void> => {
 		await this.controller.processVideo();
 	};
 
@@ -489,29 +318,22 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 			this.store.settings.frontSettings.autoMode = checked;
 			this.controller.saveFrontSettings(this.store.settings?.frontSettings);
 		}
-
-		// event.stopPropagation();
-		// await this.controller.testVideo();
 	};
 
 	/** */
 	private readonly onTakePhotoClick = async (event: React.MouseEvent<Element, MouseEvent>): Promise<void> => {
 		event.stopPropagation();
 		await this.controller.takePhoto();
-		// const nextValue = this.getNextItem(this.props.value);
-		// this.props.onClick(event, nextValue);
 	};
 
 	/** */
 	private readonly onRecordVideoClick = async (event: React.MouseEvent<Element, MouseEvent>): Promise<void> => {
 		event.stopPropagation();
 		await this.controller.recordVideo();
-		// const nextValue = this.getNextItem(this.props.value);
-		// this.props.onClick(event, nextValue);
 	};
 	
 	/** */
-	private readonly onPowerOffClick = async (event: React.MouseEvent<Element, MouseEvent>): Promise<void> => {
+	private readonly onPowerOffClick = async (): Promise<void> => {
 		await this.controller.setCameraSetting(CameraSettingEnum.PowerOff, '');
 	};
 	
@@ -546,11 +368,6 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 	};
 
 	/** */
-	// private readonly onPhotoSettingsResolutionChange = async (event: ISelectChangeEventProps, _child: React.ReactNode): Promise<void> => {
-	// 	await this.controller.setCameraSetting(CameraSettingEnum.PhotoResolution, event.target.value as string);
-	// };
-
-	/** */
 	private readonly onPhotoSettingsIsoLimitChange = async (event: ISelectChangeEventProps, _child: React.ReactNode): Promise<void> => {
 		await this.controller.setCameraSetting(CameraSettingEnum.PhotoIsoLimit, event.target.value as string);
 	};
@@ -575,10 +392,6 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 		await this.controller.setCameraSetting(CameraSettingEnum.PhotoProTuneGoPro8, event.target.value as string);
 	};
 
-	/** */
-	private readonly onTimeLapseSettingsResolutionChange = async (event: ISelectChangeEventProps, _child: React.ReactNode): Promise<void> => {
-		await this.controller.setCameraSetting(CameraSettingEnum.TimeLapseResolution, event.target.value as string);
-	};
 
 	/** */
 	private readonly onTimeLapseSettingsIsoLimitChange = async (event: ISelectChangeEventProps, _child: React.ReactNode): Promise<void> => {
@@ -598,45 +411,7 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 	// GoPro8
 	/** */
 	private readonly onCameraModeGoPro8Change = async (event: ISelectChangeEventProps, _child: React.ReactNode): Promise<void> => {
-		// const newMode = event.target.value as CameraModeGoPro8;
-		// let newModeGoPro7 = '';
-		// switch (newMode) {
-		// 	case CameraModeGoPro8.Photo:
-		// 		newModeGoPro7 = CameraMode.Photo + '_' + CameraSubMode.SubMode1;
-		// 		break;
-		// 	case CameraModeGoPro8.NightPhoto:
-		// 		newModeGoPro7 = CameraMode.Photo + '_' + CameraSubMode.SubMode2;
-		// 		break;
-		// 	case CameraModeGoPro8.Video:
-		// 		newModeGoPro7 = CameraMode.Video + '_' + CameraSubMode.SubMode0;
-		// 		break;
-		// 	case CameraModeGoPro8.TimeLapseVideo:
-		// 		newModeGoPro7 = CameraMode.Video + '_' + CameraSubMode.SubMode1;
-		// 		break;
-		// 	case CameraModeGoPro8.Looping:
-		// 		newModeGoPro7 = CameraMode.Video + '_' + CameraSubMode.SubMode3;
-		// 		break;
-		// 	case CameraModeGoPro8.TimeWarpVideo:
-		// 		newModeGoPro7 = CameraMode.Video + '_' + CameraSubMode.SubMode4;
-		// 		break;
-		// 	case CameraModeGoPro8.BurstPhoto:
-		// 		newModeGoPro7 = CameraMode.MultiShot + '_' + CameraSubMode.SubMode0;
-		// 		break;
-		// 	case CameraModeGoPro8.TimeLapsePhoto:
-		// 		newModeGoPro7 = CameraMode.MultiShot + '_' + CameraSubMode.SubMode1;
-		// 		break;
-		// 	case CameraModeGoPro8.NightLapsePhoto:
-		// 		newModeGoPro7 = CameraMode.MultiShot + '_' + CameraSubMode.SubMode2;
-		// 		break;
-		
-		// 	default:
-		// 		break;
-		// }
-
 		await this.controller.setCameraSetting(CameraSettingEnum.Mode, event.target.value as string);
-		// await this.controller.setCameraSetting(CameraSettingEnum.Mode, newModeGoPro7);
-		// await this.controller.setCameraSetting(CameraSettingEnum.SubMode, newModeGoPro7);
-		// await this.controller.setCameraSetting(CameraSettingEnum.ModeGoPro8, event.target.value as string);
 	};
 	
 	/** */
@@ -649,12 +424,7 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 		await this.controller.setCameraSetting(CameraSettingEnum.VideoProTuneGoPro8, event.target.value as string);
 	};
 
-	private getBatteryLevel(language: LanguageEnum | undefined): React.ReactNode {
-		// if (this.store.cameraNotFound
-		// 	|| !this.store.cameraSettings.cameraOnline) {
-		// 	return null;
-		// }
-
+	private getBatteryLevel(): React.ReactNode {
 		switch (this.store.cameraSettings.batteryLevel) {
 			case BatteryLevel.Charging:
 				return <BatteryChargingFull />;
@@ -677,11 +447,8 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 			|| !this.store.cameraSettings.cameraOnline) {
 			return null;
 		}
-		// if (!this.store.cameraSettings.cameraOnline) {
-		// 	return null;
-		// }
 
-		const batteryLevel = this.getBatteryLevel(language);
+		const batteryLevel = this.getBatteryLevel();
 
 		var buttonsInline = (
 			<>
@@ -689,7 +456,6 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 					className='padding-right-12px-important'
 				>
 					<IconButton
-						// size='small'
 						onClick={this.onTakePhotoClick}
 					>
 						<Tooltip
@@ -703,7 +469,6 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 					className='padding-right-12px-important'
 				>
 					<IconButton
-						// size='small'
 						onClick={this.onRecordVideoClick}
 					>
 						<Tooltip
@@ -930,38 +695,8 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 		}
 
 		return null;
-		// return (
-		// 	<>
-		// 		<OneLine>
-		// 			{buttonsInline}
-		// 			{/* <div className='padding-right-12px-important'>
-		// 				{SpinnerLocalization.subModeItem(language, this.store.cameraSettings.currentMode, this.store.cameraSettings.currentSubMode)}
-		// 			</div> */}
-		// 			<div className='padding-right-12px-important'>
-		// 				{SpinnerLocalization.resolution(language)}:
-		// 				{SpinnerLocalization.videoResolutionItem(language, this.store.cameraSettings.videoSettingsResolution)}
-		// 			</div>
-		// 			<div className='padding-right-12px-important'>
-		// 				{SpinnerLocalization.frameRate(language)}:
-		// 				{SpinnerLocalization.frameRateItem(language, this.store.cameraSettings.videoSettingsFrameRate)}
-		// 			</div>
-		// 			<div className='padding-right-12px-important'>
-		// 				{SpinnerLocalization.isoLimit(language)}:
-		// 				{SpinnerLocalization.videoIsoLimitItem(language, this.store.cameraSettings.videoSettingsIsoLimit)}
-		// 			</div>
-		// 			<div className='padding-right-12px-important'>
-		// 				{SpinnerLocalization.evComp(language)}:
-		// 				{SpinnerLocalization.evCompItem(language, this.store.cameraSettings.videoSettingsEvComp)}
-		// 			</div>
-		// 			<div className='padding-right-12px-important'>
-		// 				{SpinnerLocalization.proTune(language)}:
-		// 				{SpinnerLocalization.proTuneItem(language, this.store.cameraSettings.videoSettingsProTune)}
-		// 			</div>
-		// 		</OneLine>
-		// 		{shuttleStatus}
-		// 	</>
-		// );
 	}
+
 	private getSettings(language: LanguageEnum | undefined) {
 		if (this.store.cameraNotFound
 			|| !this.store.cameraSettings.cameraOnline) {
@@ -1180,24 +915,6 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 		return (
 			<>
 				<h3>{SpinnerLocalization.photoSettings(language)}</h3>
-				{/* <FormControl
-					fullWidth={true}
-					margin='dense'
-				>
-					<InputLabel id='camera-settings-resolution-select-label'>
-						{SpinnerLocalization.resolution(language)}
-					</InputLabel>
-					<Select
-						labelId='camera-settings-resolution-select-label'
-						value={Number(this.store.cameraSettings.photoSettingsResolution)}
-						onChange={this.onPhotoSettingsResolutionChange}
-					>
-						<MenuItem value={PhotoResolution.Resolution12MPWide}>{SpinnerLocalization.photoResolutionItem(language, PhotoResolution.Resolution12MPWide)}</MenuItem>
-						<MenuItem value={PhotoResolution.Resolution5MPWide}>{SpinnerLocalization.photoResolutionItem(language, PhotoResolution.Resolution5MPWide)}</MenuItem>
-						<MenuItem value={PhotoResolution.Resolution7MPMedium}>{SpinnerLocalization.photoResolutionItem(language, PhotoResolution.Resolution7MPMedium)}</MenuItem>
-						<MenuItem value={PhotoResolution.Resolution7MPWide}>{SpinnerLocalization.photoResolutionItem(language, PhotoResolution.Resolution7MPWide)}</MenuItem>
-					</Select>
-				</FormControl> */}
 				<FormControl
 					fullWidth={true}
 					margin='dense'
@@ -1402,48 +1119,6 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 	}
 
 
-	private getModeSettingsGoPro9(language: LanguageEnum | undefined) {
-		if (this.store.cameraSettings.currentModeGoPro8 === undefined
-			|| this.store.cameraNotFound
-			|| !this.store.cameraSettings.cameraOnline) {
-			return null;
-		}
-
-		return (
-				<FormControl
-					fullWidth={true}
-					margin='dense'
-				>
-					<InputLabel id='camera-settings-mode-gopro9-select-label'>
-						{SpinnerLocalization.mode(language)}
-					</InputLabel>
-					<Select
-						labelId='camera-settings-mode-gopro9-select-label'
-						value={this.store.cameraSettings.currentModeGoPro8}
-						onChange={this.onCameraModeGoPro8Change}
-					>
-						<ListSubheader>{SpinnerLocalization.usefull(language)}</ListSubheader>
-						<MenuItem value={CameraModeGoPro8.Video}>{SpinnerLocalization.modeGoPro8Item(language, CameraModeGoPro8.Video)}</MenuItem>
-						<MenuItem value={CameraModeGoPro8.Photo}>{SpinnerLocalization.modeGoPro8Item(language, CameraModeGoPro8.Photo)}</MenuItem>
-						<ListSubheader>{SpinnerLocalization.modeItem(language, CameraMode.Photo)}</ListSubheader>
-						<MenuItem value={CameraModeGoPro8.Photo}>{SpinnerLocalization.modeGoPro8Item(language, CameraModeGoPro8.Photo)}</MenuItem>
-						<MenuItem value={CameraModeGoPro8.BurstPhoto}>{SpinnerLocalization.modeGoPro8Item(language, CameraModeGoPro8.BurstPhoto)}</MenuItem>
-						<MenuItem value={CameraModeGoPro8.NightPhoto}>{SpinnerLocalization.modeGoPro8Item(language, CameraModeGoPro8.NightPhoto)}</MenuItem>
-						<MenuItem value={CameraModeGoPro8.LiveBurst}>{SpinnerLocalization.modeGoPro8Item(language, CameraModeGoPro8.LiveBurst)}</MenuItem>
-						<ListSubheader>{SpinnerLocalization.modeItem(language, CameraMode.Video)}</ListSubheader>
-						<MenuItem value={CameraModeGoPro8.Video}>{SpinnerLocalization.modeGoPro8Item(language, CameraModeGoPro8.Video)}</MenuItem>
-						<MenuItem value={CameraModeGoPro8.SloMo}>{SpinnerLocalization.modeGoPro8Item(language, CameraModeGoPro8.SloMo)}</MenuItem>
-						<MenuItem value={CameraModeGoPro8.Looping}>{SpinnerLocalization.modeGoPro8Item(language, CameraModeGoPro8.Looping)}</MenuItem>
-						<ListSubheader>{SpinnerLocalization.modeItem(language, CameraMode.MultiShot)}</ListSubheader>
-						<MenuItem value={CameraModeGoPro8.TimeWarpVideo}>{SpinnerLocalization.modeGoPro8Item(language, CameraModeGoPro8.TimeWarpVideo)}</MenuItem>
-						<MenuItem value={CameraModeGoPro8.TimeLapseVideo}>{SpinnerLocalization.modeGoPro8Item(language, CameraModeGoPro8.TimeLapseVideo)}</MenuItem>
-						<MenuItem value={CameraModeGoPro8.TimeLapsePhoto}>{SpinnerLocalization.modeGoPro8Item(language, CameraModeGoPro8.TimeLapsePhoto)}</MenuItem>
-						<MenuItem value={CameraModeGoPro8.NightLapseVideo}>{SpinnerLocalization.modeGoPro8Item(language, CameraModeGoPro8.NightLapseVideo)}</MenuItem>
-						<MenuItem value={CameraModeGoPro8.NightLapsePhoto}>{SpinnerLocalization.modeGoPro8Item(language, CameraModeGoPro8.NightLapsePhoto)}</MenuItem>
-					</Select>
-				</FormControl>
-		);
-	}
 
 	private getVideoSettingsGoPro8(language: LanguageEnum | undefined) {
 		if (this.store.cameraNotFound
@@ -1471,16 +1146,10 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 					>
 						<MenuItem value={VideoResolution.Resolution4K43}>{SpinnerLocalization.videoResolutionItem(language, VideoResolution.Resolution4K43)}</MenuItem>
 						<MenuItem value={VideoResolution.Resolution4K}>{SpinnerLocalization.videoResolutionItem(language, VideoResolution.Resolution4K)}</MenuItem>
-						{/* <MenuItem value={VideoResolution.Resolution4KSV}>{SpinnerLocalization.videoResolutionItem(language, VideoResolution.Resolution4KSV)}</MenuItem> */}
 						<MenuItem value={VideoResolution.Resolution27K43}>{SpinnerLocalization.videoResolutionItem(language, VideoResolution.Resolution27K43)}</MenuItem>
 						<MenuItem value={VideoResolution.Resolution27K}>{SpinnerLocalization.videoResolutionItem(language, VideoResolution.Resolution27K)}</MenuItem>
-						{/* <MenuItem value={VideoResolution.Resolution27KSV}>{SpinnerLocalization.videoResolutionItem(language, VideoResolution.Resolution27KSV)}</MenuItem> */}
 						<MenuItem value={VideoResolution.Resolution1440}>{SpinnerLocalization.videoResolutionItem(language, VideoResolution.Resolution1440)}</MenuItem>
 						<MenuItem value={VideoResolution.Resolution1080}>{SpinnerLocalization.videoResolutionItem(language, VideoResolution.Resolution1080)}</MenuItem>
-						{/* <MenuItem value={VideoResolution.Resolution1080SV}>{SpinnerLocalization.videoResolutionItem(language, VideoResolution.Resolution1080SV)}</MenuItem> */}
-						{/* <MenuItem value={VideoResolution.Resolution960}>{SpinnerLocalization.videoResolutionItem(language, VideoResolution.Resolution960)}</MenuItem> */}
-						{/* <MenuItem value={VideoResolution.Resolution720}>{SpinnerLocalization.videoResolutionItem(language, VideoResolution.Resolution720)}</MenuItem> */}
-						{/* <MenuItem value={VideoResolution.Resolution720SV}>{SpinnerLocalization.videoResolutionItem(language, VideoResolution.Resolution720SV)}</MenuItem> */}
 					</Select>
 				</FormControl>
 				<FormControl
@@ -1495,20 +1164,11 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 						value={Number(this.store.cameraSettings.videoSettingsFrameRate)}
 						onChange={this.onVideoSettingsFrameRateChange}
 					>
-						{/* <MenuItem value={FrameRate.Fps240}>{SpinnerLocalization.frameRateItem(language, FrameRate.Fps240)}</MenuItem> */}
 						<MenuItem value={FrameRate.Fps200}>{SpinnerLocalization.frameRateItem(language, FrameRate.Fps200)}</MenuItem>
-						{/* <MenuItem value={FrameRate.Fps120}>{SpinnerLocalization.frameRateItem(language, FrameRate.Fps120)}</MenuItem> */}
 						<MenuItem value={FrameRate.Fps100}>{SpinnerLocalization.frameRateItem(language, FrameRate.Fps100)}</MenuItem>
-						{/* <MenuItem value={FrameRate.Fps90}>{SpinnerLocalization.frameRateItem(language, FrameRate.Fps90)}</MenuItem> */}
-						{/* <MenuItem value={FrameRate.Fps80}>{SpinnerLocalization.frameRateItem(language, FrameRate.Fps80)}</MenuItem> */}
-						{/* <MenuItem value={FrameRate.Fps60}>{SpinnerLocalization.frameRateItem(language, FrameRate.Fps60)}</MenuItem> */}
 						<MenuItem value={FrameRate.Fps50}>{SpinnerLocalization.frameRateItem(language, FrameRate.Fps50)}</MenuItem>
-						{/* <MenuItem value={FrameRate.Fps48}>{SpinnerLocalization.frameRateItem(language, FrameRate.Fps48)}</MenuItem> */}
-						{/* <MenuItem value={FrameRate.Fps30}>{SpinnerLocalization.frameRateItem(language, FrameRate.Fps30)}</MenuItem> */}
 						<MenuItem value={FrameRate.Fps25}>{SpinnerLocalization.frameRateItem(language, FrameRate.Fps25)}</MenuItem>
 						<MenuItem value={FrameRate.Fps24}>{SpinnerLocalization.frameRateItem(language, FrameRate.Fps24)}</MenuItem>
-						{/* <MenuItem value={FrameRate.Fps15}>{SpinnerLocalization.frameRateItem(language, FrameRate.Fps15)}</MenuItem> */}
-						{/* <MenuItem value={FrameRate.Fps12_5}>{SpinnerLocalization.frameRateItem(language, FrameRate.Fps12_5)}</MenuItem> */}
 					</Select>
 				</FormControl>
 				<FormControl
@@ -1675,18 +1335,10 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 						value={Number(this.store.cameraSettings.videoSettingsResolution)}
 						onChange={this.onVideoSettingsResolutionChange}
 					>
-						{/* <MenuItem value={VideoResolution.Resolution4K43}>{SpinnerLocalization.videoResolutionItem(language, VideoResolution.Resolution4K43)}</MenuItem> */}
 						<MenuItem value={VideoResolution.Resolution4K}>{SpinnerLocalization.videoResolutionItem(language, VideoResolution.Resolution4K)}</MenuItem>
-						{/* <MenuItem value={VideoResolution.Resolution4KSV}>{SpinnerLocalization.videoResolutionItem(language, VideoResolution.Resolution4KSV)}</MenuItem> */}
 						<MenuItem value={VideoResolution.Resolution27K43}>{SpinnerLocalization.videoResolutionItem(language, VideoResolution.Resolution27K43)}</MenuItem>
-						{/* <MenuItem value={VideoResolution.Resolution27K}>{SpinnerLocalization.videoResolutionItem(language, VideoResolution.Resolution27K)}</MenuItem> */}
-						{/* <MenuItem value={VideoResolution.Resolution27KSV}>{SpinnerLocalization.videoResolutionItem(language, VideoResolution.Resolution27KSV)}</MenuItem> */}
 						<MenuItem value={VideoResolution.Resolution1440}>{SpinnerLocalization.videoResolutionItem(language, VideoResolution.Resolution1440)}</MenuItem>
 						<MenuItem value={VideoResolution.Resolution1080}>{SpinnerLocalization.videoResolutionItem(language, VideoResolution.Resolution1080)}</MenuItem>
-						{/* <MenuItem value={VideoResolution.Resolution1080SV}>{SpinnerLocalization.videoResolutionItem(language, VideoResolution.Resolution1080SV)}</MenuItem> */}
-						{/* <MenuItem value={VideoResolution.Resolution960}>{SpinnerLocalization.videoResolutionItem(language, VideoResolution.Resolution960)}</MenuItem> */}
-						{/* <MenuItem value={VideoResolution.Resolution720}>{SpinnerLocalization.videoResolutionItem(language, VideoResolution.Resolution720)}</MenuItem> */}
-						{/* <MenuItem value={VideoResolution.Resolution720SV}>{SpinnerLocalization.videoResolutionItem(language, VideoResolution.Resolution720SV)}</MenuItem> */}
 					</Select>
 				</FormControl>
 				<FormControl
@@ -1859,7 +1511,6 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 							{SpinnerLocalization.frontSettings.audio(language)}
 						</InputLabel>
 						<Select
-							// displayEmpty={true}
 							labelId='audio-select-label'
 							value={selectedPreset?.selectedAudioGuid}
 							onChange={this.onAudioChange}
@@ -1903,8 +1554,6 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 						<Typography
 							variant='h6'
 						>
-							{/* {SpinnerLocalization.frontSettings.preset(selectedPreset?.title, language)} */}
-							
 							<FormControl
 								fullWidth={true}
 								margin='dense'
@@ -1913,7 +1562,6 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 									{SpinnerLocalization.frontSettings.presets(language)}
 								</InputLabel>
 								<Select
-									// label={SpinnerLocalization.frontSettings.presets(language)}
 									labelId='preset-select-label'
 									value={this.store.settings?.frontSettings?.selectedPresetGuid}
 									onChange={this.onPresetChange}
@@ -1977,22 +1625,6 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 								fullWidth={true}
 								margin='dense'
 							>
-								{/* <FormControl
-									fullWidth={true}
-									margin='dense'
-								>
-									<InputLabel id='preset-select-label'>
-										{SpinnerLocalization.frontSettings.presets(language)}
-									</InputLabel>
-									<Select
-										// label={SpinnerLocalization.frontSettings.presets(language)}
-										labelId='preset-select-label'
-										value={this.store.settings?.frontSettings?.selectedPresetGuid}
-										onChange={this.onPresetChange}
-									>
-										{presets}
-									</Select>
-								</FormControl> */}
 								<FormControl
 									fullWidth={true}
 									margin='dense'
@@ -2000,19 +1632,13 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 									<TextField
 										value={selectedPreset?.title}
 										label={SpinnerLocalization.frontSettings.presetName(language)}
-										// placeholder='0.0'
-										// disabled={!this.props.file || this.props.disabled}
-										// error={!recordVideoDurationValid}
 										onChange={this.onPresetTitleChange}
-										// helperText={SettingsLocalization.introOutroTab.durationForImageWarning(language)}
 										InputProps={{
-											// startAdornment: buttons,
 											endAdornment: deletePresetButton
 										}}
 									/>
 								</FormControl>
 								<FormControl
-									// className='padding-right-12px-important'
 									fullWidth={true}
 									margin='dense'
 								>
@@ -2044,9 +1670,7 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 								{SpinnerLocalization.frontSettings.preview(language)}
 							</div>
 						</AccordionSummary>
-						<AccordionDetails
-							// className={goProSettingsBackground}
-						>
+						<AccordionDetails>
 							<FormControl
 								fullWidth={true}
 								margin='dense'
@@ -2054,16 +1678,8 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 								<KioskViewCarouselItem
 									language={language}
 									groupBy={GroupByEnum.groupByDir}
-									// buttonSize={DesignSizeEnum.}
 									groups={this.store.commonGroupsFiles}
-									// currentItemSize={currentItemSize}
 									sortOrder={SortOrderEnum.desc}
-									// onPrintItemClick={this.onPrintItemClick}
-									// onSendByEmailItemClick={this.onSendByEmailItemClick}
-									// onSelectItemClick={this.controller.onSelectItem}
-									// backgroundGroupName={this.props.backgroundGroupName}
-									// backgroundFileCard={this.props.backgroundFileCard}
-									// iconColor={this.props.iconColor}
 								/>
 							</FormControl>
 						</AccordionDetails>
@@ -2098,17 +1714,11 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 		});
 		return (
 			<div className='padding-top-12px padding-bottom-6px'>
-				{/* <Typography
-					variant='h6'
-				>
-					{SpinnerLocalization.frontSettings.overlay(language)}
-				</Typography> */}
 				<TableContainer>
 					<Table>
 						<TableHead>
 							<TableRow>
 								<TableCell>{SpinnerLocalization.frontSettings.overlay(language)}</TableCell>
-								{/* <TableCell>{CommonLocalization.title(language)}</TableCell> */}
 								<TableCell align='right'>{SpinnerLocalization.frontSettings.disable(language)}</TableCell>
 								<TableCell align='right'>{SpinnerLocalization.frontSettings.beforeSlow(language)}</TableCell>
 								<TableCell align='right'>{SpinnerLocalization.frontSettings.afterSlow(language)}</TableCell>
@@ -2150,22 +1760,13 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 		});
 		return (
 			<div className='padding-top-12px padding-bottom-6px'>
-				{/* <Typography
-					variant='h6'
-				>
-					{SpinnerLocalization.frontSettings.zoom(language)}
-				</Typography> */}
 				<TableContainer>
 					<Table>
 						<TableHead>
 							<TableRow>
 								<TableCell>{SpinnerLocalization.frontSettings.zoom(language)}</TableCell>
-								{/* <TableCell>{CommonLocalization.title(language)}</TableCell> */}
 								<TableCell align='right'>{SpinnerLocalization.frontSettings.disable(language)}</TableCell>
 								<TableCell align='right'>{SpinnerLocalization.frontSettings.beforeSlow(language)}</TableCell>
-								{/* <TableCell align='right'>{SpinnerLocalization.frontSettings.afterSlow(language)}</TableCell>
-								<TableCell align='right'>{SpinnerLocalization.frontSettings.afterPingPong(language)}</TableCell>
-								<TableCell align='right'>{SpinnerLocalization.frontSettings.forPhoto(language)}</TableCell> */}
 							</TableRow>
 						</TableHead>
 						<TableBody>
@@ -2201,14 +1802,11 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 								value={setting}
 								position={index}
 								language={language}
-								// disabled={!this.props.enable}
 								onChange={this.onMultiplierItemChange}
 								onChangeCommitted={this.onMultiplierItemChangeCommitted}
 							/>
 						</FormControl>
 					</OneLine>
-					{/* <RightContainer> */}
-					{/* </RightContainer> */}
 				</div>
 			);
 			return (
@@ -2218,7 +1816,6 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 				>
 					<ItemComponent
 						language={language}
-						// disabled={!this.props.enable}
 						removeButtonTitle={SpinnerLocalization.frontSettings.deleteButton(language)}
 						disableUpButton={disableUpButton}
 						disableDownButton={disableDownButton}
@@ -2251,22 +1848,6 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 				>
 					{SpinnerLocalization.frontSettings.speedMultipliers(language)}
 				</Typography>
-				{/* <FormControl
-					// className='padding-right-12px-important'
-					fullWidth={true}
-					margin='dense'
-				>
-					<FormControlLabel
-						control={
-							<Checkbox
-								checked={this.props.enable}
-								onChange={this.onEnableChange}
-								color='primary'
-							/>
-						}
-						label={SettingsLocalization.common.enable(language)}
-					/>
-				</FormControl> */}
 				<FormControl
 					fullWidth={true}
 					margin='dense'
@@ -2276,7 +1857,6 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 						color='primary'
 						variant='contained'
 						startIcon={<PlaylistAdd />}
-						// disabled={!this.props.enable}
 					>
 						{SpinnerLocalization.frontSettings.addButton(language)}
 					</Button>
@@ -2292,7 +1872,7 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 	}
 
 	/** */
-	private readonly onDeletePresetClick = (event: React.MouseEvent<Element, MouseEvent>): void => {
+	private readonly onDeletePresetClick = (): void => {
 		const selectedGuid = this.store.settings?.frontSettings?.selectedPresetGuid;
 		if (this.store.settings?.frontSettings?.presets) {
 			this.store.settings.frontSettings.presets = this.store.settings?.frontSettings?.presets?.filter(preset => preset.guid !== selectedGuid);
@@ -2351,7 +1931,6 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 		if (items && id >= 0 && id < items.length) {
 			items[id] = value.value;
 			selectedPreset!.multipliers = items;
-			// this.controller.saveFrontSettings(this.store.settings?.frontSettings);
 		}
 	};
 
@@ -2407,7 +1986,7 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 	};
 
 	/** */
-	private readonly onAddMultiplierClick = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): Promise<void> => {
+	private readonly onAddMultiplierClick = async (): Promise<void> => {
 		const selectedGuid = this.store.settings?.frontSettings?.selectedPresetGuid;
 		const selectedPreset = this.store.settings?.frontSettings?.presets?.find(preset => preset.guid === selectedGuid);
 
@@ -2446,7 +2025,7 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 	};
 
 	/** */
-	private readonly onIntroChange = async (event: ISelectChangeEventProps, child: React.ReactNode): Promise<void> => {
+	private readonly onIntroChange = async (event: ISelectChangeEventProps): Promise<void> => {
 		const selectedGuid = this.store.settings?.frontSettings?.selectedPresetGuid;
 		const selectedPreset = this.store.settings?.frontSettings?.presets?.find(preset => preset.guid === selectedGuid);
 
@@ -2457,7 +2036,7 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 	};
 
 	/** */
-	private readonly onOutroChange = async (event: ISelectChangeEventProps, child: React.ReactNode): Promise<void> => {
+	private readonly onOutroChange = async (event: ISelectChangeEventProps): Promise<void> => {
 		const selectedGuid = this.store.settings?.frontSettings?.selectedPresetGuid;
 		const selectedPreset = this.store.settings?.frontSettings?.presets?.find(preset => preset.guid === selectedGuid);
 
@@ -2468,7 +2047,7 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 	};
 
 	/** */
-	private readonly onAudioChange = async (event: ISelectChangeEventProps, child: React.ReactNode): Promise<void> => {
+	private readonly onAudioChange = async (event: ISelectChangeEventProps): Promise<void> => {
 		const selectedGuid = this.store.settings?.frontSettings?.selectedPresetGuid;
 		const selectedPreset = this.store.settings?.frontSettings?.presets?.find(preset => preset.guid === selectedGuid);
 
@@ -2479,7 +2058,7 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 	};
 
 	/** */
-	private readonly onPresetChange = async (event: ISelectChangeEventProps, child: React.ReactNode): Promise<void> => {
+	private readonly onPresetChange = async (event: ISelectChangeEventProps): Promise<void> => {
 		const value = event.target.value as string;
 		if (value.startsWith('new')) {
 			const newPresetNumber = (this.store.settings?.frontSettings?.presets?.length ?? 0) + 1;
@@ -2493,193 +2072,6 @@ class SpinnerView extends React.PureComponent<SpinnerViewProps> {
 		this.controller.saveFrontSettings(this.store.settings?.frontSettings);
 	};
 
-// 	/** zz */
-// 	private readonly onSendByEmailItemClick = async (_event: React.MouseEvent<Element, MouseEvent>, value?: string): Promise<void> => {
-// 		const filesSelected = this.store.groupsFiles
-// 			.flatMap((file: SpinnerViewFilesViewModel) => file.files)
-// 			.filter((file: SpinnerViewFileViewModel) => file.fullpath === value);
-// 		await this.onSendByEmail(filesSelected);
-// 	};
-
-// 	/** zz */
-// 	private readonly onSendByEmailClick = async (_event: React.MouseEvent<Element, MouseEvent>): Promise<void> => {
-// 		const filesSelected = this.store.groupsFiles
-// 			.flatMap((file: SpinnerViewFilesViewModel) => file.files)
-// 			.filter((file: SpinnerViewFileViewModel) => file.isSelected);
-// 		await this.onSendByEmail(filesSelected);
-// 	};
-
-// 	/** zz */
-// 	private readonly onSendByEmail = async (filesSelected: SpinnerViewFileViewModel[]): Promise<void> => {
-// 		const { email, language } = this.store;
-// 		if (!email || email.length === 0) {
-// 			this.props.enqueueSnackbar(SpinnerLocalization.sendEmailToError(language), { variant: 'error' });
-// 			return;
-// 		}
-
-// 		if (filesSelected.length <= 0) {
-// 			this.props.enqueueSnackbar(SpinnerLocalization.selectedFilesError(language), { variant: 'error' });
-// 			return;
-// 		}
-
-// 		try {
-// 			this.props.enqueueSnackbar(SpinnerLocalization.notificationSendingByEmail(filesSelected.length, language), { variant: 'info' });
-// 			await this.controller.onSendByEmail(email, filesSelected);
-// 			this.props.enqueueSnackbar(SpinnerLocalization.notificationSendedByEmail(filesSelected.length, language), { variant: 'success' });
-// 		} catch (error) {
-// 			console.error(error);
-// 			const message = SpinnerLocalization.notificationSendedByEmailError(filesSelected.length, language);
-// 			this.props.enqueueSnackbar(message, { variant: 'error' });
-// 		}
-// 	};
-
-// 	/** zz */
-// 	private readonly onPrintClick = async (_event: React.MouseEvent<Element, MouseEvent>): Promise<void> => {
-// 		const filesImageBase64Data = this.store.groupsFiles
-// 			.flatMap((file: SpinnerViewFilesViewModel) => file.files)
-// 			.filter((file: SpinnerViewFileViewModel) => file.isSelected && file.middleImage)
-// 			.map((file: SpinnerViewFileViewModel) => file.middleImage!);
-// 		await this.onPrint(filesImageBase64Data);
-// 	};
-
-// 	/** zz */
-// 	private readonly onPrintItemClick = async (_event: React.MouseEvent<Element, MouseEvent>, value?: PrintSendingItemModel): Promise<void> => {
-// 		if (!value) {
-// 			return;
-// 		}
-// 		const filesImageBase64Data = [value];
-// 		await this.onPrint(filesImageBase64Data);
-// 	};
-
-// 	/** zz */
-// 	private readonly onPrint = async (filesImageBase64Data: PrintSendingItemModel[]): Promise<void> => {
-// 		const { language } = this.store;
-// 		if (filesImageBase64Data.length <= 0) {
-// 			this.props.enqueueSnackbar(SpinnerLocalization.selectedFilesError(language), { variant: 'error' });
-// 			return;
-// 		}
-
-// 		try {
-// 			this.props.enqueueSnackbar(SpinnerLocalization.notificationPrinting(filesImageBase64Data.length, language), { variant: 'info' });
-// 			await this.controller.sendFilesToPrint(filesImageBase64Data);
-// 			this.props.enqueueSnackbar(SpinnerLocalization.notificationPrinted(filesImageBase64Data.length, language), { variant: 'success' });
-// 		} catch (error) {
-// 			console.error(error);
-// 			const message = SpinnerLocalization.notificationPrintedError(filesImageBase64Data.length, language);
-// 			this.props.enqueueSnackbar(message, { variant: 'error' });
-// 			// TransitionComponent: Slide,
-// 		}
-// 	};
-
-// 	/** */
-// 	private getItems(
-// 		groupsFiles: SpinnerViewFilesViewModel[],
-// 		iconSize?: DesignSizeEnum,
-// 		currentItemSize?: VideoItemSizeEnum,
-// 		sortOrder?: SortOrderEnum,
-// 		groupBy?: GroupByEnum,
-// 		language?: LanguageEnum
-// 	): React.ReactNode {
-// 		if (currentItemSize === VideoItemSizeEnum.carousel) {
-// 			return (
-// 				<SpinnerViewCarouselItem
-// 					language={language}
-// 					groupBy={groupBy}
-// 					buttonSize={iconSize}
-// 					groups={groupsFiles}
-// 					// currentItemSize={currentItemSize}
-// 					sortOrder={sortOrder}
-// 					onPrintItemClick={this.onPrintItemClick}
-// 					onSendByEmailItemClick={this.onSendByEmailItemClick}
-// 					onSelectItemClick={this.controller.onSelectItem}
-// 					backgroundGroupName={this.props.backgroundGroupName}
-// 					backgroundFileCard={this.props.backgroundFileCard}
-// 					iconColor={this.props.iconColor}
-// 				/>
-// 			);
-// 		}
-
-// 		const allFiles = this.store.groupsFiles
-// 			.flatMap((file: SpinnerViewFilesViewModel) => file.files);
-
-// 		const anyFileVisible = allFiles
-// 			.some((file: SpinnerViewFileViewModel) => file.state === SpinnerItemStateEnum.Show || file.state === SpinnerItemStateEnum.Loading);
-
-// 		const allFileHidden = allFiles
-// 			.every((file: SpinnerViewFileViewModel) => file.state === SpinnerItemStateEnum.Hide);
-
-		// const loader = !this.store.loaded// || allFiles.length > 0 && !anyFileVisible && !allFileHidden
-		// 	? <Loader verticalCentered={true} />
-		// 	: null;
-
-// 		if (groupBy === GroupByEnum.none) {
-// 			const files = groupsFiles.flatMap((groupFiles: SpinnerViewFilesViewModel) => groupFiles.files);
-
-// 			return (
-// 				<>
-// 					{loader}
-// 					<SpinnerViewGroupItems
-// 						language={language}
-// 						size={iconSize}
-// 						files={files}
-// 						currentItemSize={currentItemSize}
-// 						sortOrder={sortOrder}
-// 						onPrintItemClick={this.onPrintItemClick}
-// 						onSendByEmailItemClick={this.onSendByEmailItemClick}
-// 						onSelectItemClick={this.controller.onSelectItem}
-// 						backgroundGroupName={this.props.backgroundGroupName}
-// 						backgroundFileCard={this.props.backgroundFileCard}
-// 						iconColor={this.props.iconColor}
-// 					/>
-// 				</>
-// 			);
-// 		}
-
-// 		const uniqueGroupsFiles = groupsFiles
-// 			.filter((value: SpinnerViewFilesViewModel|undefined, index: number, array: (SpinnerViewFilesViewModel| undefined)[]) => {
-// 				const findIndex = array.findIndex((item: SpinnerViewFilesViewModel|undefined) => item?.dirname === value?.dirname);
-// 				return findIndex === index;
-// 			});
-// 		const groupsElemnts = uniqueGroupsFiles.map((groupFiles: SpinnerViewFilesViewModel, index: number) => (
-// 			<SpinnerViewGroupItems
-// 				key={index}
-// 				language={language}
-// 				size={iconSize}
-// 				groupname={groupFiles.dirname}
-// 				files={groupFiles.files}
-// 				currentItemSize={currentItemSize}
-// 				sortOrder={sortOrder}
-// 				onPrintItemClick={this.onPrintItemClick}
-// 				onSendByEmailItemClick={this.onSendByEmailItemClick}
-// 				onSelectItemClick={this.controller.onSelectItem}
-// 				backgroundGroupName={this.props.backgroundGroupName}
-// 				backgroundFileCard={this.props.backgroundFileCard}
-// 				iconColor={this.props.iconColor}
-// 			/>
-// 		));
-
-// 		return (
-// 			<>
-// 				{loader}
-// 				{groupsElemnts}
-// 			</>
-// 		);
-// 	}
-
-// 	/** */
-// 	private getFilesSize(files: SpinnerViewFilesViewModel[]): string {
-// 		const selectedFiles = files
-// 			.flatMap((file: SpinnerViewFilesViewModel) => file.files)
-// 			.filter((file: SpinnerViewFileViewModel) => file.isSelected);
-// 		if (selectedFiles.length <= 0) {
-// 			return '';
-// 		}
-
-// 		const fileSizes = selectedFiles
-// 			.map((file: SpinnerViewFileViewModel) => file.fileSize ?? 0)
-// 			.reduce((a: number, b: number) => a + b);
-// 		return SpinnerLocalization.fileSizeInMb(fileSizes);
-// 	}
 }
 
 export default withSnackbar(SpinnerView);

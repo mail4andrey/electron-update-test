@@ -26,19 +26,14 @@ export class KioskViewFileViewModel {
 	/** Средний кадр видео в base64 */
 	public middleImage?: PrintSendingItemModel;
 
-	// @observable
 	public filename?: string;
 
-	// @observable
 	public dirname?: string;
 
-	// @observable
 	public fullpath?: string;
 
 	public fileSize?: number;
 
-	// @observable
 	public extension?: string;
 
-	// public featured?: boolean;
 }

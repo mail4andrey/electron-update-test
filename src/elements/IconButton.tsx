@@ -16,7 +16,6 @@ export interface IIconButtonProps {
 	disableFocusRipple?: boolean;
 
 	/** Событие при нажатии на кнопку */
-	// onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 	onClick?: (event: React.MouseEvent<Element, MouseEvent>) => void;
 }
 /** Кнопка */

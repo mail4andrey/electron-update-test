@@ -1,7 +1,7 @@
 {
 	"name": "selfiebox-spinner",
 	"productName": "Spinner (SelfieBox)",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "Spinner (SelfieBox)",
 	"repository": "github:mail4andrey/selfiebox-spinner",
 	"scripts": {

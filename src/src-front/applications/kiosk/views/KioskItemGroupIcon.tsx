@@ -24,7 +24,6 @@ export class KioskItemGroupIcon extends React.PureComponent<IKioskItemGroupIcon>
 		const icon = this.getIcon(this.props.value);
 		return (
 			<IconButton
-				// size='small'
 				onClick={this.onClick}
 			>
 				{icon}

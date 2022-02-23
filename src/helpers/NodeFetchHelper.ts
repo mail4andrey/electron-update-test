@@ -1,56 +1,8 @@
 import nodeFetch, { Response } from 'node-fetch';
-// import crossFetch, { Response } from 'cross-fetch';
-// import AbortController from 'abort-controller';
 import { AbortController } from 'node-abort-controller';
 import { throwException } from './CustomException';
 import { HttpCodes } from './HttpCodes';
 import { EventLogger } from './EventLogger';
-
-import EventEmitter from 'events'
-
-// export class AbortSignal extends EventEmitter {
-//     aborted: boolean;
-// 	constructor(signal) {
-// 		super();
-// 		this.signal = signal;
-// 		this.aborted = false;
-// 		signal.addEventListener('abort', (...e) => this.onabort(...e));
-// 		this.onabort = () => 0
-// 	}
-
-// 	static get name() {
-// 		return "AbortSignal";
-// 	}
-
-// 	addEventListener(...args) {
-// 		this.on(...args);
-// 	}
-
-// 	removeEventListener(...args) {
-// 		this.off(...args);
-// 	}
-
-// 	dispatchEvent(...args) {
-// 		return true;
-// 	}
-
-// 	// _onAbort(...e) {
-// 	// 	// noinspection JSConstantReassignment
-// 	// 	this.aborted = true;
-// 	// 	this.onabort();
-// 	// 	this.emit('abort', ...e)
-// 	// }
-// 	onabort(...e) {
-// 		// noinspection JSConstantReassignment
-// 		this.aborted = true;
-// 		this.onabort();
-// 		this.emit('abort', ...e)
-// 	}
-
-// 	get [Symbol.toStringTag]() {
-// 		return 'AbortSignal';
-// 	}
-// }
 
 export enum ResponseType {
 	default = 'default',
@@ -73,7 +25,6 @@ export class NodeFetchHelper {
 
 		let timer;
 		try {
-			// new AbortSignal(abortController.signal)
 			const controller = new AbortController();
 			timer = setTimeout(() => {
 				eventLogger.info(url + ' controller.abort');
@@ -87,7 +38,6 @@ export class NodeFetchHelper {
 				},
 				body: JSON.stringify(body),
 				signal: controller.signal
-				// signal: new AbortSignal(controller.signal)
 			});
 
 			const status = response.status;
@@ -107,22 +57,11 @@ export class NodeFetchHelper {
 			}
 
 			return null;
-			// if (!response.ok) {
-			// 	const error = `Ошибка HTTP: ${response.status}`;
-			// 	throw new Error(error);
-			// }
-
-			// const data = await response.json();
-			// return data;
 		} catch (error) {
-			// console.error(error?.constructor?.name);
-			// console.error(error);
-			// if (error instanceof nodeFetch.AbortError) {
 			if (error?.name === 'AbortError'
 				|| error?.constructor?.name === 'AbortError') {
 				const headers = { url, method, timeout };
 				throwException('TimeOut exception', HttpCodes.RequestTimeout, '', headers);
-				// console.log('request was aborted');
 			}
 
 			throw error;

@@ -12,10 +12,8 @@ export class EmailHelper {
 
 		const smtpConfig = {
 			logger: true,
-			// debug: true,
 			host: email.server,
 			secureConnection: false,
-			// secure: false,
 			port: 465,
 			secure: true, // use SSL
 			auth: {
@@ -26,10 +24,6 @@ export class EmailHelper {
 				// do not fail on invalid certs
 				rejectUnauthorized: false
 			}
-			// tls: {
-			// 	// rejectUnAuthorized: true
-			// 	rejectUnauthorized: false
-			// },
 		};
 
 		const attachments = email.attachments?.map((file: string) => ({ path: file }));
@@ -42,16 +36,12 @@ export class EmailHelper {
 		};
 
 		try {
-			// console.log('createTransport', smtpConfig);
 			const transporter = nodemailer.createTransport(smtpConfig);
-			// console.log('verify', options);
-			// await transporter.verify();
 			console.log('Message Sending', options);
-			const info = await transporter.sendMail(options);// as {response: string;};
-			console.log('Message Sent');// , info.response);
+			const info = await transporter.sendMail(options);
+			console.log('Message Sent');
 		} catch (error) {
 			console.error(`error: ${error}`);
-			// throw error;
 		}
 	}
 }

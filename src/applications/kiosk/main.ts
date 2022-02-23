@@ -33,12 +33,7 @@ import { UrlHelper } from '../../src-front/helpers/UrlHelper';
 export class Kiosk {
 	/** */
 	public static run(): void {
-
-		// import { createWindow } from './windows';
-		// declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
-
 		// import { autoUpdater } from 'electron-updater';
-		// eslint-disable-next-line @typescript-eslint/no-var-requires
 		// const { autoUpdater } = require('electron-updater');
 		require('update-electron-app')({
 			// repo: 'github-user/repo',
@@ -51,32 +46,6 @@ export class Kiosk {
 			app.quit();
 		}
 		let mainWindow: BrowserWindow | undefined;
-
-		// /** ss */
-		// function createWindow(): BrowserWindow {
-		// 	return createWindow();
-		// }
-
-		/**
-		 *
-		 */
-		// const createWindow0 = () => {
-		// 	// Create the browser window.
-		// 	mainWindow = new BrowserWindow({
-		// 		height: 600,
-		// 		width: 800,
-		// 	});
-
-		// 	// and load the index.html of the app.
-		// 	mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
-
-		// 	// Open the DevTools.
-		// 	mainWindow.webContents.openDevTools();
-
-		// 	// mainWindow.once('ready-to-show', () => {
-		// 	//   autoUpdater.checkForUpdatesAndNotify();
-		// 	// });
-		// };
 
 		// This method will be called when Electron has finished
 		// initialization and is ready to create browser windows.
@@ -174,7 +143,6 @@ export class Kiosk {
 				const settings = getSettings(app);
 				const { pathSources } = settings;
 				const filename = req.query.name as string;
-				// console.log(filename);
 				const allow = pathSources?.some((pathSource: string) => filename.startsWith(pathSource));
 				if (allow) {
 					res.sendFile(filename);
@@ -243,22 +211,17 @@ export class Kiosk {
 			} catch (error) {
 				console.error(error);
 			}
-			// res.send();
 		});
 		router.post('/printData', async (req, res) => {
 			try {
 				const settings = getSettings(app);
 				const { printSettings } = settings;
 				const printData = req.body.printModel as PrintSendingItemModel[];
-				// const printers = mainWindow?.webContents.getPrinters() ?? [];
-				// const printerSystemName = printers.find((printer: PrinterInfo) => printer.displayName === printerName);
 
 				for (const item of printData.filter((itemData: PrintSendingItemModel) => itemData.data)) {
 					try {
 						await PrintHelper.printData(item, printSettings);
 					} catch (error) {
-						// console.error('2');
-						// console.error(error);
 					}
 				}
 				res.send();
@@ -268,19 +231,12 @@ export class Kiosk {
 		});
 		router.post('/printTest', async (req, res) => {
 			try {
-				// const printModel = req.body.printModel as PrintSendingModel;
 				const printSettings = req.body.printModel as PrintSettingsModel;
-				// const printers = mainWindow?.webContents.getPrinters() ?? [];
-				// const printerSystemName = printers.find((printer: PrinterInfo) => printer.displayName === printModel.printer);
-
-				// const items = printModel.items ?? [];
-				// for (const item of items.filter((itemData: PrintSendingItemModel) => itemData.data)) {
 				try {
 					await PrintHelper.printData(undefined, printSettings);
 				} catch (error) {
 					console.error(error);
 				}
-				// }
 				res.send();
 			} catch (error) {
 				console.error(error);
@@ -300,12 +256,6 @@ export class Kiosk {
 				console.error(error);
 			}
 		});
-		// router.get('/front.js', (req, res) => {
-		// 	res.sendFile(path.join(__dirname, 'front', 'front.js'));
-		// });
-		// router.get('/favicon.ico', (req, res) => {
-		// 	res.sendFile(path.join(__dirname, 'front', 'favicon.ico'));
-		// });
 
 		expressApp.use('/', router);
 

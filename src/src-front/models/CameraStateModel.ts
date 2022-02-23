@@ -144,11 +144,9 @@ export class CameraStateModel {
 	/** */
 	public battery?: boolean;
 	public batteryLevel?: BatteryLevel;
-	// public recordingStatus?: BatteryLevel;
 	public currentMode?: CameraMode;
 	public currentSubMode?: CameraSubMode;
 	public currentModeGoPro8?: CameraModeGoPro8;
-	// public videoSettingsCurrentSubMode?: number;
 	public videoSettingsResolution?: VideoResolution;
 	public videoSettingsFrameRate?: FrameRate;
 	public videoSettingsFovVideo?: number;
@@ -158,8 +156,6 @@ export class CameraStateModel {
 	public videoSettingsIsoLimit?: VideoIsoLimit;
 	public videoSettingsEvComp?: EvComp;
 	public videoSettingsEvCompGoPro8?: EvComp;
-	// public photoSettingsResolution?: number;
-	// public photoSettingsFovVideo?: number;
 	public photoSettingsProTune?: ProTune;
 	public photoSettingsProTuneGoPro8?: ProTune;
 	public photoSettingsIsoMode?: number;
@@ -191,8 +187,6 @@ export class CameraStateViewModel extends CameraStateModel {
 	public currentSubMode?: CameraSubMode;
 	@observable
 	public currentModeGoPro8?: CameraModeGoPro8;
-	// @observable
-	// public videoSettingsCurrentSubMode?: number;
 	@observable
 	public videoSettingsResolution?: VideoResolution;
 	@observable
@@ -211,10 +205,6 @@ export class CameraStateViewModel extends CameraStateModel {
 	public videoSettingsEvComp?: EvComp;
 	@observable
 	public videoSettingsEvCompGoPro8?: EvComp;
-	// @observable
-	// public photoSettingsResolution?: number;
-	// @observable
-	// public photoSettingsFovVideo?: number;
 	@observable
 	public photoSettingsProTune?: ProTune;
 	@observable

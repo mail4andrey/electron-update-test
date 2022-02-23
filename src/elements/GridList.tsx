@@ -17,13 +17,6 @@ export class GridList extends React.PureComponent<IGridListProps> {
 			<UiGridList
 				{...this.props}
 			/>
-			// <UiGridList
-			// 	cellHeight={this.props.cellHeight}
-			// 	cols={this.props.cols}
-			// 	spacing={this.props.spacing}
-			// >
-			// 	{this.props.children}
-			// </UiGridList>
 		);
 	}
 }

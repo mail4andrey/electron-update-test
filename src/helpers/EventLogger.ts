@@ -1,6 +1,3 @@
-// import { ErrorHelper } from './ErrorHelper';
-// import { ErrorTypeEnum } from './ErrorTypeEnum';
-
 export enum LogMessageTypeEnum {
 	info,
 	error,
@@ -27,7 +24,6 @@ export class EventLogger {
 	}
 	/** */
 	public error(error?: any, title?: string): void {
-		// const errorType = ErrorHelper.getErrorType(message);
 		const errorMessage = error.constructor === String
 			? error.toString()
 			: JSON.stringify(error);
@@ -47,12 +43,7 @@ export class EventLogger {
 		this.messages.push({message: message, type: type });
 
 		if (process.versions.hasOwnProperty('electron')) {
-			// import log from 'electron-log';
 			const log = require('electron-log')
-			// var userAgent = navigator.userAgent.toLowerCase();
-			// if (userAgent.indexOf(' electron/') > -1) {
-			// // Electron-specific code
-			// }
 			switch (type) {
 				case LogMessageTypeEnum.info:
 					log.info(title, message);
@@ -72,34 +63,4 @@ export class EventLogger {
 		}
 	}
 
-	// log.transports.file.resolvePath = () => path.join(APP_DATA, 'logs/main.log');
-
-	// /** */
-	// public static enable(message?: string): void {
-	// 	log.catchErrors({
-	// 		showDialog: false,
-	// 		onError(error, versions, submitIssue) {
-	// 		  electron.dialog.showMessageBox({
-	// 			title: 'An error occurred',
-	// 			message: error.message,
-	// 			detail: error.stack,
-	// 			type: 'error',
-	// 			buttons: ['Ignore', 'Report', 'Exit'],
-	// 		  })
-	// 			.then((result) => {
-	// 			  if (result.response === 1) {
-	// 				submitIssue('https://github.com/my-acc/my-app/issues/new', {
-	// 				  title: `Error report for ${versions.app}`,
-	// 				  body: 'Error:\n```' + error.stack + '\n```\n' + `OS: ${versions.os}`
-	// 				});
-	// 				return;
-	// 			  }
-				
-	// 			  if (result.response === 2) {
-	// 				electron.app.quit();
-	// 			  }
-	// 			});
-	// 		}
-	// 	  });
-	// }
 }

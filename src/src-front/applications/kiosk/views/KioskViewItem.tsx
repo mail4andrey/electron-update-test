@@ -38,17 +38,11 @@ export interface KioskViewItemProps {
 	/** Размер видео */
 	buttonSize?: DesignSizeEnum;
 
-	// email?: EmailSettingsModel;
-
-	// onEmailTestSend?: (event: React.MouseEvent<Element, MouseEvent>) => void;
-
-	// onChange?: (event: ITextFieldChangeEventProps, email: EmailSettingsModel) => void;
 	onSelect?: (event: React.ChangeEvent<HTMLInputElement>, value: KioskViewItemEventProps) => void;
 	onSendClick?: (event: React.MouseEvent<Element, MouseEvent>, value?: string) => void;
 	onPrintClick?: (event: React.MouseEvent<Element, MouseEvent>, value?: PrintSendingItemModel) => void;
 }
 
-// @provider(KioskViewController, KioskViewStore)
 @observer
 /** */
 export class KioskViewItem extends React.PureComponent<KioskViewItemProps> {
@@ -69,23 +63,6 @@ export class KioskViewItem extends React.PureComponent<KioskViewItemProps> {
 
 	/** */
 	private readonly imageRef = React.createRef<HTMLImageElement>();
-
-	// @inject
-	// private readonly controller!: KioskViewController;
-
-	// @inject
-	// private readonly store!: KioskViewStore;
-
-	/** */
-	// public async componentDidMount(): Promise<void> {
-	// 	// this.history = useHistory();
-	// 	// this.store.settings
-	// 	await this.controller.loadFiles();
-	// }
-
-
-	/** */
-	// public email = { ...this.props.email ?? new EmailSettingsModel() };
 
 	/** Отображение */
 	public render(): React.ReactNode {
@@ -154,11 +131,8 @@ export class KioskViewItem extends React.PureComponent<KioskViewItemProps> {
 			<Checkbox
 				checked={file.isSelected}
 				onChange={this.onSelect}
-				// size={buttonSize}
-				// style={{ color: iconColor }}
 				icon={checkBoxIcon}
 				checkedIcon={checkBoxCheckedIcon}
-				// color='secondary'
 			/>
 		);
 
@@ -207,32 +181,6 @@ export class KioskViewItem extends React.PureComponent<KioskViewItemProps> {
 			)
 			: null;
 		const bottomBlock = gridView ? description : null;
-
-		// if (size === VideoItemSizeEnum.small
-		// 	|| size === VideoItemSizeEnum.medium) {
-		// 	return (
-		// 		<Grid
-		// 			item
-		// 			className={hideItemClass}
-		// 		>
-		// 			<div
-		// 				style={{ background }}
-		// 				className='grid-tile'
-		// 			>
-		// 				<div className='0video 0padding-12px position-relative'>
-		// 					{skeleton}
-		// 					{image}
-		// 					{video}
-		// 					<canvas
-		// 						style={{ display: 'none' }}
-		// 						ref={this.canvasRef}
-		// 					/>
-		// 				</div>
-		// 				{description}
-		// 			</div>
-		// 		</Grid>
-		// 	);
-		// }
 
 		return (
 			<Grid
@@ -334,9 +282,7 @@ export class KioskViewItem extends React.PureComponent<KioskViewItemProps> {
 				controls={true}
 				width={widthSizeNumber}
 				height={heightSizeNumber}
-				// controlsList="nodownload"
 				preload="metadata"
-				// id={file.fullpath}
 				onLoadedMetadata={this.onVideoLoadedMetadata}
 				onTimeUpdate={this.onVideoTimeUpdate}
 				onPlay={this.onPlay}
@@ -345,25 +291,14 @@ export class KioskViewItem extends React.PureComponent<KioskViewItemProps> {
 				className={`position-absolute top-0 left-0 ${itemClass}`}
 			>
 				<source
-				// type={`video/${file.extension}`}
 					src={url}
 				/>
-				{/* <source
-				// type={`video/${file.extension}`}
-				src={`file://${file.fullpath}`}
-			/> */}
-				{/* <source type="video/webm" src="http://media.w3.org/2010/05/sintel/trailer.webm" id="webm"></source>
-			<source type="video/ogg" src="http://media.w3.org/2010/05/sintel/trailer.ogv" id="ogv"></source> */}
-				{/* <p>Your user agent does not support the HTML5 Video element.</p> */}
 			</video>
 		);
 	}
 
 	/** Событие после загрузки данных о видеофайле */
 	private readonly onVideoLoadedMetadata = (event: any): void => {
-	// private readonly onLoadedMetadata = (event: {target?: {duration?: number; currentTime?: number; };}): void => {
-		// console.dir(event);
-		// console.dir(event.target?.duration);
 		if (!event.target?.duration) {
 			return;
 		}
@@ -377,24 +312,15 @@ export class KioskViewItem extends React.PureComponent<KioskViewItemProps> {
 
 	/** Событие после загрузки данных о видеофайле */
 	private readonly onVideoTimeUpdate = (): void => {
-		// console.dir(event);
 		if (this.firstPlay && this.imageRef.current) {
 			const middleImage = this.getVideoFrame();
 			this.props.file.middleImage = middleImage;
-			// if (this.props.size !== SizeEnum.carousel
-			// 	&& this.props.size !== SizeEnum.column) {
 			this.imageRef.current.src = middleImage.data ?? '';
-			// } else {
-			// 	this.props.file.state = KioskItemStateEnum.Show;
-			// }
 		}
 	};
 
 	/** Событие при воспроизведении */
 	private readonly onPlay = (event: any): void => {
-	// private readonly onPlay = (event: {type?: 'play'; target?: {duration?: number; currentTime?: number; };}): void => {
-		// console.dir(event);
-		// console.dir(event.target?.duration);
 		if (!event.target || !event.type || event.type !== 'play' || !this.firstPlay) {
 			return;
 		}
@@ -406,23 +332,11 @@ export class KioskViewItem extends React.PureComponent<KioskViewItemProps> {
 	/** Получаем кадр из видео */
 	private getVideoFrame(): PrintSendingItemModel {
 		const video = this.videoRef.current!;
-		// const video = event.target;
 		const canvas = this.canvasRef.current!;
 		canvas.height = video.videoHeight;
 		canvas.width = video.videoWidth;
 		const context = canvas.getContext('2d');
-		// context!.drawImage(video, 0, 0);
 		context!.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
-		// context!.canvas.toBlob(
-		// 	blob => {
-		// 		resolve(blob);
-		// 	},
-		// 	'image/jpeg',
-		// 	0.75 /* quality */
-		// );
-		// image.src = canvas.toBlob();
-		// console.log(canvas);
-		// image.src = canvas.toDataURL('image/jpeg', 1);
 		const result = {
 			width: video.videoWidth,
 			height: video.videoHeight,
@@ -507,17 +421,4 @@ export class KioskViewItem extends React.PureComponent<KioskViewItemProps> {
 	private readonly onImageLoadedData = (_event: React.SyntheticEvent<HTMLImageElement>): void => {
 		this.props.file.state = KioskItemStateEnum.Show;
 	};
-
-
-	// /** */
-	// private readonly onEmailTestSend = async (_event: React.MouseEvent<HTMLButtonElement, MouseEvent>): Promise<void> => {
-	// 	const email = new EmailSecndingModel();
-	// 	email.server = this.email.server;
-	// 	email.login = this.email.login;
-	// 	email.password = this.email.password;
-	// 	email.to = this.email.login;
-	// 	email.subject = this.email.subject;
-	// 	email.content = this.email.content;
-	// 	await ipcRenderer.invoke(ElectronCommands.sendEmail, email);
-	// };
 }

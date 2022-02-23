@@ -9,7 +9,6 @@ import './content/style/index.css';
 
 import { StringHelper } from '../../helpers/StringHelper';
 import { DesignSettingsModel } from '../../models/DesignSettingsModel';
-// import ClipmakerView from '../../views/ClipmakerView';
 
 import { Loader } from '../../../elements/Loader';
 import { SettingsProxy } from '../../../helpers/proxy/SettingsProxy';
@@ -17,19 +16,6 @@ import { SettingsProxy } from '../../../helpers/proxy/SettingsProxy';
 /** Приложение */
 @observer
 export class ClipmakerFront extends React.PureComponent {
-
-	/** ctor */
-	// public constructor(props) {
-	// 	super(props);
-	// 	// todo при включении, при вводе в китовом инпуте каретка перескакивает в конец
-	// 	/*setTimeout(() => {
-	// 		configure({
-	// 				reactionScheduler: f => {
-	// 				setTimeout(f, MobXConsts.batchOperationsTimeout);
-	// 			}
-	// 		});
-	// 	}, 0);*/
-	// }
 
 	@observable
 	private loaded = false;
@@ -70,20 +56,8 @@ export class ClipmakerFront extends React.PureComponent {
 						horizontal: 'right'
 					}}
 				>
-					{/* <ClipmakerView
-						title={this.settings?.titleFrontPage}
-						backgroundToolbar={this.settings?.backgroundToolbar}
-						backgroundGroupName={this.settings?.backgroundGroupName}
-						backgroundFileCard={this.settings?.backgroundFileCard}
-						iconColor={this.settings?.iconColor}
-						// size={this.settings?.size}
-					/> */}
 				</SnackbarProvider>
 			</div>
 		);
 	}
 }
-
-// export default process.env.NODE_ENV === 'development'
-// 	? hot(module)(Application)
-// 	: Application;

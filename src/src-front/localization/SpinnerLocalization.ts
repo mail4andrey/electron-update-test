@@ -94,8 +94,7 @@ export class SpinnerLocalization {
 	public static timeLapseSettings = (language?: LanguageEnum): string =>
 		language !== LanguageEnum.rus ? 'Time Lapse Settings' : 'Настройки Time Lapse';
 
-	// /** */
-	// public static legendDescription = (language?: LanguageEnum, value?: GoProStateEnum): string => {
+	/** */
 	public static modeInfo = (language?: LanguageEnum, value?: ApplicationSourceModeEnum): string => {
 		if (language !== LanguageEnum.rus) {
 			switch (value) {
@@ -154,21 +153,6 @@ export class SpinnerLocalization {
 				return language !== LanguageEnum.rus ? 'Unknown' : 'Неизвестно';
 		}
 	}
-	// /** */
-	// public static photoResolutionItem = (language?: LanguageEnum, value?: PhotoResolution): string => {
-	// 	switch (value) {
-	// 		case PhotoResolution.Resolution12MPWide:
-	// 			return '12MP Wide';
-	// 		case PhotoResolution.Resolution5MPWide:
-	// 			return '5MP Wide';
-	// 		case PhotoResolution.Resolution7MPWide:
-	// 			return '7MP Wide';
-	// 		case PhotoResolution.Resolution7MPMedium:
-	// 			return '7MP Medium';
-	// 		default:
-	// 			return language !== LanguageEnum.rus ? 'Unknown' : 'Неизвестно';
-	// 	}
-	// }
 
 	/** */
 	public static isoLimit = (language?: LanguageEnum): string =>
@@ -412,7 +396,7 @@ export class SpinnerLocalization {
 	public static shuttlerStatusLabel = (language?: LanguageEnum): string =>
 		language !== LanguageEnum.rus ? 'Status' : 'Статус';
 
-	// /** */
+	/** */
 	public static shuttlerStatus = (language?: LanguageEnum, value?: StatusEnum, file?: string): string => {
 		const filename = file ?? '';
 		if (language !== LanguageEnum.rus) {
@@ -423,8 +407,6 @@ export class SpinnerLocalization {
 					return 'Delete file ' + filename;
 				case StatusEnum.DownloadFromCamera:
 					return 'Download file ' + filename;
-				// case StatusEnum.Pairing:
-				// 	return 'Pairing';
 				case StatusEnum.RecordVideo:
 					return 'Record video';
 				case StatusEnum.TakePhoto:
@@ -442,8 +424,6 @@ export class SpinnerLocalization {
 				return 'Удаление файла ' + filename;
 			case StatusEnum.DownloadFromCamera:
 				return 'Скачивание файла ' + filename;
-			// case StatusEnum.Pairing:
-			// 	return 'Pairing';
 			case StatusEnum.RecordVideo:
 				return 'Запись видео';
 			case StatusEnum.TakePhoto:
@@ -823,78 +803,4 @@ export class SpinnerLocalization {
 		public static preview = (language?: LanguageEnum): string =>
 			language !== LanguageEnum.rus ? 'Preview' : 'Предпросмотр';
 	};
-	/** */
-	// public static administration = (language?: LanguageEnum): string =>
-	// 	language !== LanguageEnum.rus ? 'Administration' : 'Администрирование';
-
-	// /** */
-	// public static sendEmailToError = (language?: LanguageEnum): string =>
-	// 	language !== LanguageEnum.rus ? 'Enter email' : 'Укажите куда отправить письмо';
-
-	// /** */
-	// public static selectedFilesError = (language?: LanguageEnum): string =>
-	// 	language !== LanguageEnum.rus ? 'Select files' : 'Выберите файл';
-
-	// /** */
-	// public static sendEmail = (language?: LanguageEnum): string =>
-	// 	language !== LanguageEnum.rus ? 'Send enail' : 'Отправить письмо';
-
-	// /** */
-	// public static sendEmailTo = (language?: LanguageEnum): string =>
-	// 	language !== LanguageEnum.rus ? 'Where to send email' : 'Куда отправить письмо';
-
-	// /** */
-	// // public static labelEmailTo = (language?: LanguageEnum): string =>
-	// // 	language !== LanguageEnum.rus ? 'Email' : 'Email';
-
-	// /** */
-	// public static print = (language?: LanguageEnum): string =>
-	// 	language !== LanguageEnum.rus ? 'Print' : 'Распечатать';
-
-	// /** */
-	// public static printMiddleFrame = (language?: LanguageEnum): string =>
-	// 	language !== LanguageEnum.rus ? 'Print middle frame' : 'Распечатать средний кадр';
-
-	// /** */
-	// public static printCurrentFrame = (language?: LanguageEnum): string =>
-	// 	language !== LanguageEnum.rus ? 'Print current frame' : 'Распечатать текущий кадр';
-
-	// /** */
-	// // public static languageTitle = (language?: LanguageEnum): string =>
-	// // 	language !== LanguageEnum.rus ? 'Change language' : 'Изменить язык';
-
-	// /** */
-	// public static languageDescription = (language?: LanguageEnum): string => {
-	// 	switch (language) {
-	// 		case LanguageEnum.rus:
-	// 			return 'Рус';
-	// 		case LanguageEnum.eng:
-	// 		default:
-	// 			return 'Eng';
-	// 	}
-	// };
-
-	// /** */
-	// public static notificationSendedByEmail = (count: number, language?: LanguageEnum): string => language !== LanguageEnum.rus ? `${count === 1 ? '1 file' : `${count} files`} sended to email` : `${plural(count, '%d файл', '%d файла', '%d файлов')} отправлено на почту`;
-
-	// /** */
-	// public static notificationSendedByEmailError = (count: number, language?: LanguageEnum): string => language !== LanguageEnum.rus ? `Error when sending ${count === 1 ? '1 file' : `${count} files`} to email` : `Ошибка при отправке ${plural(count, '%d файла', '%d файлов')} на почту`;
-
-	// /** */
-	// public static notificationSendingByEmail = (count: number, language?: LanguageEnum): string => language !== LanguageEnum.rus ? `${count === 1 ? '1 file' : `${count} files`} sending to email` : `${plural(count, '%d файл', '%d файла', '%d файлов')} отправляется на почту`;
-
-	// /** */
-	// public static notificationPrinted = (count: number, language?: LanguageEnum): string => language !== LanguageEnum.rus ? `${count === 1 ? '1 file' : `${count} files`} sended to print` : `${plural(count, '%d файл', '%d файла', '%d файлов')} отправлен на печать`;
-
-	// /** */
-	// public static notificationPrintedError = (count: number, language?: LanguageEnum): string => language !== LanguageEnum.rus ? `Error when sending ${count === 1 ? '1 file' : `${count} files`} to print` : `Ошибка при печати ${plural(count, '%d файла', '%d файлов')}`;
-
-	// /** */
-	// public static notificationPrinting = (count: number, language?: LanguageEnum): string => language !== LanguageEnum.rus ? `${count === 1 ? '1 file' : `${count} files`} sending to print` : `${plural(count, '%d файл', '%d файла', '%d файлов')} отправляется на печать`;
-
-	// /** */
-	// public static fileSizeInMb = (filesize?: number): string => `${((filesize ?? 0) / 1024 / 1024).toFixed(2)} Mb`;
-
-	// /** */
-	// public static fileResolution = (width: number, height: number): string => `${width}:${height}`;
 }

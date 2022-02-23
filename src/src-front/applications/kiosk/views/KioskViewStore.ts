@@ -16,12 +16,6 @@ export class KioskViewStore {
 	@observable
 	public groupsFiles: KioskViewFilesViewModel[] = [];
 
-	// @observable
-	// public openAlert?: string;
-
-	// @observable
-	// public alerts?: string;
-
 	@observable
 	public groupBy?: GroupByEnum;
 
@@ -33,9 +27,6 @@ export class KioskViewStore {
 
 	@observable
 	public language?: LanguageEnum;
-
-	// @observable
-	// public sending = false;
 
 	@observable
 	public currentItemSize? = VideoItemSizeEnum.small;

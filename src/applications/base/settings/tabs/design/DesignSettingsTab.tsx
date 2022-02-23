@@ -95,13 +95,8 @@ export class DesignSettingsTab extends React.PureComponent<DesignSettingsTabProp
 					<ColorPicker
 						floatingLabelText={SettingsLocalization.designTab.backgroundGroupName(language)}
 						TextFieldProps={{ value: backgroundGroupName }}
-						// internalValue={backgroundToolbar}
 						defaultValue={backgroundGroupName}
-						// defaultValue={color}
-						// defaultValue={SettingsLocalization.designTab.backgroundName}
-						// internalValue={color}
 						onChange={this.onBackgroundGroupNameChange}
-						// showPicker={true}
 					/>
 				</FormControl>
 				<FormControl

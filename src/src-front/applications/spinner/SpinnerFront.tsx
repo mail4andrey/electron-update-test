@@ -69,7 +69,6 @@ export class SpinnerFront extends React.PureComponent {
 						backgroundGroupName={this.settings?.backgroundGroupName}
 						backgroundFileCard={this.settings?.backgroundFileCard}
 						iconColor={this.settings?.iconColor}
-						// size={this.settings?.size}
 					/>
 				</SnackbarProvider>
 			</div>

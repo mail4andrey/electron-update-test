@@ -20,11 +20,9 @@ export class KioskSettingsViewModel extends KioskSettingsModel {
 	/** */
 	public serverSettings = new ServerSettingsViewModel();
 
-	// @observable
 	/** */
 	public emailSettings = new EmailSettingsViewModel();
 
-	// @observable
 	/** */
 	public printSettings = {} as PrintSettingsModel;
 

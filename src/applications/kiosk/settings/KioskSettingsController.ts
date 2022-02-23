@@ -94,7 +94,6 @@ export class KioskSettingsController {
 		this.store.settings.designSettings.backgroundGroupName = settings.backgroundGroupName ?? 'gray';
 		this.store.settings.designSettings.backgroundFileCard = settings.backgroundFileCard ?? 'gray';
 		this.store.settings.designSettings.iconColor = settings.iconColor ?? 'gray';
-		// this.store.settings.designSettings.size = settings.size;
 	};
 
 	/** */

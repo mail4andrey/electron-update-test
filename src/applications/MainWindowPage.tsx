@@ -38,12 +38,10 @@ export class MainWindowPage extends BaseRoutedComponent<IMainRoutedProps> {
 	@observable
 	private language?: LanguageEnum;
 
-	// private readonly settingsProxy = new SettingsProxy();
 	
 	/** */
 	public async componentDidMount(): Promise<void> {
 		const applicationController = new ApplicationSettingsController();
-		// const settings = await this.settingsProxy.getApplicationSettings();
 		const settings = applicationController.loadDefaultSettings<BaseApplicationSettingsModel>();
 		const port = settings.serverSettings?.port ?? Number(process.env.DEFAULTPORT);
 
@@ -51,7 +49,6 @@ export class MainWindowPage extends BaseRoutedComponent<IMainRoutedProps> {
 		this.hostname = `http://${UrlHelper.getHostName()}:${port}`;
 		UrlHelper.setport(port);
 		this.port = port;
-		// location.host = this.hostname;
 
 		const localSettings = LocalStorage.get<LanguageSettingsLocalStorage>(LocalStorageConsts.languageSettings) as LanguageSettingsLocalStorage | undefined;
 		this.language = localSettings?.language;

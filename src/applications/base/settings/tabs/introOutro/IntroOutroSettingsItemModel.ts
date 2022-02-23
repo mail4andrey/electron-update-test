@@ -4,8 +4,6 @@ import { IdGenerator } from '../../../../../helpers/IdGenerator';
 
 /** */
 export class IntroOutroSettingsItemModel {
-	// public id?: number = -1;
-
 	public guid?: string = IdGenerator.getNewGenericId();
 
 	public name?: string = 'New item';

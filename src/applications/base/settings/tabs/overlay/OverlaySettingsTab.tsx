@@ -22,22 +22,14 @@ import { CommonHelper } from '../../../../../src-front/helpers/CommonHelper';
 /** */
 export interface OverlaySettingsTabProps extends OverlaySettingsModel {
 	language?: LanguageEnum;
-
-	/** */
-	// settings?: OverlaySettingsModel;
-
 	onChange: (event: ITextFieldChangeEventProps, settings: OverlaySettingsModel) => void;
-	// onItemChange: (event: ITextFieldChangeEventProps, setting: OverlaySettingsItemModel) => void;
-	// onChange: (event: React.MouseEvent<Element, MouseEvent>, settings: OverlaySettingsModel) => void;
 
 	onAddClick?: (event: React.MouseEvent<Element, MouseEvent>) => void;
-	// onChange?: (event: ITextFieldChangeEventProps, id?: number) => void;
 	onDeleteClick?: (event: React.MouseEvent<Element, MouseEvent>, id?: number) => void;
 	onUpClick?: (event: React.MouseEvent<Element, MouseEvent>, id?: number) => void;
 	onDownClick?: (event: React.MouseEvent<Element, MouseEvent>, id?: number) => void;
 }
 
-// @provider(SettingsController, SettingsStore)
 @observer
 /** */
 export class OverlaySettingsTab extends React.PureComponent<OverlaySettingsTabProps> {
@@ -94,7 +86,6 @@ export class OverlaySettingsTab extends React.PureComponent<OverlaySettingsTabPr
 					{SettingsLocalization.overlayTab.title(language)}
 				</Typography>
 				<FormControl
-					// className='padding-right-12px-important'
 					fullWidth={true}
 					margin='dense'
 				>
@@ -204,7 +195,5 @@ export class OverlaySettingsTab extends React.PureComponent<OverlaySettingsTabPr
 
 		MapperHelper.mapValues(this.props, result);
 		MapperHelper.mapValues(value, result);
-
-		// this.props.onItemChange(event, result);
 	};
 }

@@ -1,10 +1,3 @@
-// import { HttpCodes } from 'consts';
-// import { ErrorTypeEnum } from 'core/enums';
-// import { BadGatewayException, UnAuthException, ServiceUnavailableException, GatewayTimeOutException } from 'core/exceptions';
-// import { ArrayHelper } from 'core/helpers/ArrayHelper';
-// import { ObjectHelper } from 'core/helpers/ObjectHelper';
-// import { CommonLocalization } from 'localization';
-
 import { ErrorTypeEnum } from './ErrorTypeEnum';
 import { HttpCodes } from './HttpCodes';
 import { ArrayHelper } from './ArrayHelper';
@@ -21,7 +14,6 @@ export class ErrorHelper {
 
 		if (error.isCustomException) {
 			const type = ErrorHelper.getErrorFromResponse(error);
-			// console.log('isCustomException - ' + type);
 			return type;
 		}
 

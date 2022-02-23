@@ -12,11 +12,8 @@ export enum ProcessFileEnum {
 }
 
 export enum StatusEnum {
-	// Pairing = 'Pairing',
 	TakePhoto = 'TakePhoto',
-	// TakePhotoDone = 'TakePhotoDone',
 	RecordVideo = 'RecordVideo',
-	// RecordVideoDone = 'RecordVideoDone',
 	GetLastFile = 'GetLastFile',
 	DownloadFromCamera = 'DownloadFromCamera',
 	DeleteFile = 'DeleteFile',
@@ -53,10 +50,4 @@ export class SpinnerViewStore {
 
 	@observable
 	public commonGroupsFiles: KioskViewFilesViewModel[] = [];
-
-	// @observable
-	// public goProPhotoOverlayedGroupsFiles: KioskViewFilesViewModel[] = [];
-
-	// @observable
-	// public goProVideoGroupsFiles: KioskViewFilesViewModel[] = [];
 }

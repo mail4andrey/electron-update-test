@@ -38,10 +38,6 @@ export class KioskSettingsComponent extends BaseRoutedComponent<IMainRoutedProps
 		this.controller.loadSettings();
 	}
 
-	/** */
-	// public componentWillUnmount(): void {
-	// }
-
 	/** Отображение */
 	public render(): React.ReactNode {
 
@@ -82,25 +78,18 @@ export class KioskSettingsComponent extends BaseRoutedComponent<IMainRoutedProps
 				<AppBar
 					position='static'
 					color='transparent'
-					// color="default"
 				>
 					<Tabs
-						// orientation='vertical'
 						variant='scrollable'
 						scrollButtons="on"
-						// variant="fullWidth"
 						indicatorColor="primary"
 						textColor="primary"
 						value={tabSelected}
-						// className={classes.tabs}
-						// className='tabs'
 						onChange={this.onTabChange}
 					>
 						<Tab
 							label={SettingsLocalization.pathSourcesTab.title(language)}
 							index={0}
-							// id = 'simple-tab-0'
-							// 'aria-controls'= 'simple-tabpanel-0'
 							icon={<Folder/>}
 						/>
 						<Tab
@@ -165,7 +154,6 @@ export class KioskSettingsComponent extends BaseRoutedComponent<IMainRoutedProps
 						<DesignSettingsTab
 							language={language}
 							titleFrontPage={settings.designSettings.titleFrontPage}
-							// size={settings.designSettings.size}
 							background={settings.designSettings.background}
 							backgroundToolbar={settings.designSettings.backgroundToolbar}
 							backgroundGroupName={settings.designSettings.backgroundGroupName}

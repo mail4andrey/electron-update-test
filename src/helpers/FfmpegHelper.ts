@@ -1,25 +1,15 @@
 import fs from 'fs';
 import path from 'path';
-import { app } from 'electron';
-// import ffmpeg from 'fluent-ffmpeg';
-// import ffmpegStatic from 'ffmpeg-static';
 import { ffmpegPath as ffmpegStatic, ffprobePath as ffprobeStatic} from '../bin/ffmpeg/index';
-// import ffprobeStatic from 'ffprobe-static';
-// import { ffmpegPath as ffmpegStatic, ffprobePath as ffprobeStatic } from 'ffmpeg-ffprobe-static';
-// import { ffmpegPath as ffmpegStatic } from 'ffmpeg-ffprobe-static';
-import appRootDir from 'app-root-dir';
 import { spawn, ChildProcessWithoutNullStreams } from 'child_process';
 import fg from 'fast-glob';
-// import { globby } from 'globby';
 import { SpinnerSettingsModel } from '../applications/spinner/settings/SpinnerSettingsModel';
 import { EventLogger } from './EventLogger';
-import { SortHelper } from './SortHelper';
 import { FitWithinEnum, RenderOnEnum } from '../applications/base/settings/tabs/video/VideoSettingsModel';
 import { AudioStartFromEnum, AudioStopToEnum } from '../applications/base/settings/tabs/audio/AudioSettingsItemModel';
 import { MultiplierEnum, SpinnerSettingsFrontItemModel } from '../src-front/applications/spinner/frontSettings/SpinnerSettingsFrontModel';
 import { AlignSettingEnum, OverlaySettingsItemModel } from '../applications/base/settings/tabs/overlay/OverlaySettingsItemModel';
 import { ZoomSettingsItemModel } from '../applications/base/settings/tabs/zoom/ZoomSettingsItemModel';
-import { IdGenerator } from './IdGenerator';
 import { FileHelper } from '../src-front/helpers/FileHelper';
 import { IntroOutroSettingsItemModel } from '../applications/base/settings/tabs/introOutro/IntroOutroSettingsItemModel';
 import { FileExtension } from '../applications/base/settings/tabs/pathSources/PathSourcesSettingsModel';
@@ -29,51 +19,28 @@ import os from 'os';
 export default class FfmpegHelper {
 	private static eventLogger = new EventLogger();
 
-	/** ff */
-	public static setup () {
-		// //require the ffmpeg package so we can use ffmpeg using JS
-		// //Get the paths to the packaged versions of the binaries we want to use
-		// const ffmpegPath = ffmpegStatic.replace(
-		// 	'app.asar',
-		// 	'app.asar.unpacked'
-		// );
-		// const ffprobePath = ffprobeStatic.path.replace(
-		// 	'app.asar',
-		// 	'app.asar.unpacked'
-		// );
-		// //tell the ffmpeg package where it can find the needed binaries.
-		// ffmpeg.setFfmpegPath(ffmpegPath);
-		// ffmpeg.setFfprobePath(ffprobePath);
-		// this.eventLogger.info(ffmpegPath);
-		// this.eventLogger.info(ffprobePath);
-		const platform = os.platform();
-		const arch = os.arch();
-		this.eventLogger.info(platform + ' ' + arch);
-	}
-	
 	public static async GetVideoInfo(file: string | undefined, traceId: string): Promise<videoInfo | undefined>
 	{
 		if (!file || !fs.existsSync(file)) {
 			return undefined;
 		}
 
+		const platform = os.platform();
+		const arch = os.arch();
+		this.eventLogger.info(platform + ' ' + arch);
+
 		let videoInfoRaw;
 		const videoInfo = {} as videoInfo;
 		try {
-			// const rootDir = appRootDir.get();
-			// const ffprobepath = rootDir + '/node_modules/ffprobe-static/ffprobe';
-			// const ffprobepath = ffprobeStatic.path;
 			const ffprobepath = ffprobeStatic ?? '';
 			this.eventLogger.info(ffprobepath);
 			const ffprobeArgs = [
 				'-i', file
 			];
 			const ffprobeArgsString = ffprobeArgs.map(item => (item?.indexOf(' ') ?? 0) >= 0 ? `"${item}"` : item).reduce((a, b) => a + ' ' + b);
-			// const ffmpegpath = appRootDir + '/bin/ffmpeg';
 			this.eventLogger.info(ffprobepath + ' ' + ffprobeArgsString, 'ffprobe run process ' + traceId + ' ');
 			const process = spawn( ffprobepath, ffprobeArgs);
 			videoInfoRaw = await FfmpegHelper.waitProcess(process, FfmpegHelper.eventLogger, traceId);
-			// this.eventLogger.info(videoInfoRaw);
 		} catch (error) {
 			this.eventLogger.error(error, 'ffprobe run process ' + traceId + ' ');
 		}
@@ -170,17 +137,11 @@ export default class FfmpegHelper {
 		const inputFile = inputFiles.find(file => file.fileType === inputFileType.input)!;
 		const sourceFile = inputFile.file;
 
-		// const tempPingPongFolder = path.join(app.getPath('temp'), 'pingpong');
 		const fileNamePattern = settings.pathSources?.fileNamePattern ?? '';
 		const pathDestination = settings.pathSources?.pathDestination ?? '';
 		const destinationFile = await FfmpegHelper.getFilenameByPattern(fullname, fileNamePattern, pathDestination, fileExtension);
 		const resultFile = await FfmpegHelper.slowMotion(inputFiles, settings, traceId, destinationFile);
 
-		// inputFile.file = pingPongFile;
-		// const tempintroOutroFolder = path.join(app.getPath('temp'), 'introOutro');
-		// const introOutroFile = await FfmpegHelper.addIntroOutroAudio(inputFiles, settings, traceId, tempintroOutroFolder);
-		// const resultFile = await FfmpegHelper.moveFileWithRename(pingPongFile, settings.pathSources?.pathDestination, settings.pathSources?.fileNamePattern, traceId);
-		
 		if (resultFile && fs.existsSync(resultFile)) {
 			this.eventLogger.success('File created: ' + resultFile);
 		} else {
@@ -194,26 +155,7 @@ export default class FfmpegHelper {
 			const pathForSourceFile = path.join(settings.pathSources?.pathSource ?? '', date + ' ' + time ).replace(/\\/g, '/');
 			await FfmpegHelper.moveFile(sourceFile, pathForSourceFile, traceId);
 		}
-
-		// await FfmpegHelper.deleteFiles(slowedFile, pingPongFile, resultFile);
 	}
-	// private static async moveFileWithRename(sourceFile: string | undefined, pathDestination: string | undefined, fileNamePattern: string | undefined, traceId: string):  Promise<string | undefined> {
-	// 	if (!sourceFile || !pathDestination) {
-	// 		return;
-	// 	}
-		
-	// 	if (!fs.existsSync(pathDestination)) {
-	// 		fs.mkdirSync(pathDestination);
-	// 	}
-
-	// 	const newFilename = await FfmpegHelper.getFilenameByPattern(sourceFile, fileNamePattern ?? '', pathDestination ?? '');
-	// 	try {
-	// 		await FileHelper.moveFile(sourceFile, newFilename);
-	// 		return newFilename;
-	// 	} catch (error) {
-	// 		this.eventLogger.error(error, 'Error when move file - "' + newFilename + '"');
-	// 	}
-	// }
 
 	private static async moveFile(sourceFile: string | undefined, pathDestination: string | undefined, traceId: string):  Promise<string | undefined> {
 		if (!sourceFile || !pathDestination) {
@@ -233,66 +175,6 @@ export default class FfmpegHelper {
 			this.eventLogger.error(error, 'Error when move file - "' + sourceFile + '" to "' + newFilename + '"');
 		}
 	}
-
-	// private static async addIntroOutroAudio(inputFiles: inputFile[], settings: SpinnerSettingsModel, traceId: string, tempintroOutroFolder: string) {
-	// 	const selectedGuid = settings?.frontSettings?.selectedPresetGuid;
-	// 	const selectedPreset = settings?.frontSettings?.presets?.find(preset => preset.guid === selectedGuid);
-
-	// 	const videoInfo: videoInfo = {width: 1920, height: 1080, frames: 100};
-	// 	const blackScreenIndex = inputFiles.findIndex(file => file.fileType === inputFileType.blackscreen)!;
-	// 	const inputFileIndex = inputFiles.findIndex(file => file.fileType === inputFileType.input)!;
-
-	// 	// const zoomSettingsAfterPingPongFilter = FfmpegHelper.getZoomFilter(selectedPreset, settings);
-
-	// 	const { filter: fitWithinFilter, endChain: fitWithinResultChain } = FfmpegHelper.getFitWithinFilter(inputFiles, settings, videoInfo, zoomSettingsAfterPingPongFilter);
-
-	// 	// overlaysAfterPingPong
-	// 	const overlayGuidsAfterPingPong = selectedPreset?.overlays?.filter(item => item.afterPingPong && !item.disable).map(item => item.guid) ?? [];
-	// 	const overlaysAfterPingPong = settings?.overlaySettings?.items?.filter(item => overlayGuidsAfterPingPong.some(guid => guid === item.guid)) ?? [];
-	// 	const { filter: overlaysAfterPingPongFilter, endChain: overlayAfterPingPongResultChain } = FfmpegHelper.getOverlaysFilter(
-	// 		inputFiles,
-	// 		settings,
-	// 		overlaysAfterPingPong,
-	// 		fitWithinResultChain,
-	// 		'overlayAfterPingPongTemp'
-	// 	);
-
-	// 	// const licensed = true;
-	// 	const { filter: slowFilter, endChain: slowResultChain } = FfmpegHelper.getSlowFilter(licensed, overlayAfterPingPongResultChain, selectedPreset);
-
-	// 	// overlaysAfterSlow
-	// 	const overlayGuidsAfterSlow = selectedPreset?.overlays?.filter(item => item.afterSlow && !item.disable).map(item => item.guid) ?? [];
-	// 	const overlaysAfterSlow = settings?.overlaySettings?.items?.filter(item => overlayGuidsAfterSlow.some(guid => guid === item.guid)) ?? [];
-	// 	const { filter: overlaysAfterSlowFilter, endChain: overlayAfterSlowResultChain } = FfmpegHelper.getOverlaysFilter(
-	// 		inputFiles,
-	// 		settings,
-	// 		overlaysAfterSlow,
-	// 		slowResultChain,
-	// 		'overlayAfterSlowTemp'
-	// 	);
-
-	// 	const { filter: pingPongFilter, endChain: pingPongResultChain } = FfmpegHelper.getPingPongFilter(selectedPreset, overlayAfterSlowResultChain);
-
-	// 	// const smoothFilter = enableSmoothing ? "[b]; [b] minterpolate = 'mi_mode=mci:mc_mode=aobmc:vsbmc=1:fps={framePerSeconds}'" : "") +
-		
-	// 	var { filter: fadeFilter, endChain: fadeOutResultChain } = FfmpegHelper.getFadeFilter(pingPongResultChain, settings, videoInfo);
-
-
-	// 	const fps = Number(settings.videoSettings?.fps ?? '30');
-	// 	const filter = fitWithinFilter
-	// 		+ overlaysAfterPingPongFilter
-	// 		+ slowFilter
-	// 		+ overlaysAfterSlowFilter
-	// 		+ pingPongFilter
-	// 		// + smoothFilter
-	// 		// + "setsar=1"
-	// 		+ fadeFilter
-	// 		+ `[${fadeOutResultChain}]fps=fps=${fps}[out]`;
-
-	// 	const inputFile = inputFiles.find(file => file.fileType === inputFileType.input)?.file;
-	// 	const result = await FfmpegHelper.runFfmpeg(inputFile, settings, traceId, filter, destinationPath);
-	// 	return result;
-	// }
 
 	private static getFfmpegMultiplier(slowerMultiplier?: MultiplierEnum): number
 	{
@@ -326,19 +208,12 @@ export default class FfmpegHelper {
 		}
 
 		return '';
-		//zoompan=z='min(max(zoom,pzoom)+0.0015,1.5)':d=1:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':fps=100:s=120x120
-		//zoompan=z='if(lte(in,10),1,if(lte(in,60),(1+(in-10)*0.02),if(lte(in,110),(2-(in-60)*0.02),1)))':d=1:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)'
-
-		//":s={resolutionWidth}x{resolutionHeight}";
 	}
 
 	private static async slowMotion(inputFiles: inputFile[], settings: SpinnerSettingsModel, traceId: string, destinationFile: string): Promise<string | undefined> {
 		const selectedGuid = settings?.frontSettings?.selectedPresetGuid;
 		const selectedPreset = settings?.frontSettings?.presets?.find(preset => preset.guid === selectedGuid);
 
-		// const videoInfo: videoInfo = {width: 1920, height: 1080, frames: 100};
-		const blackScreenIndex = inputFiles.findIndex(file => file.fileType === inputFileType.blackscreen)!;
-		const inputFileIndex = inputFiles.findIndex(file => file.fileType === inputFileType.input)!;
 		const inputFile = inputFiles.find(file => file.fileType === inputFileType.input)?.file;
 		const inputVideoInfo = await FfmpegHelper.GetVideoInfo(inputFile, traceId);
 
@@ -444,9 +319,6 @@ export default class FfmpegHelper {
 			const resultDuration = inputNewDuration
 				- Number(audioSetting.startFromSeconds ?? 0)
 				+ introDuration
-				// + (audioSetting.startFrom === AudioStartFromEnum.fromIntro && introFile
-				// 	? introDuration
-				// 	: 0)
 				+ (audioSetting.stopTo === AudioStopToEnum.toOutro && outroFile
 					? outroDuration
 					: 0);
@@ -455,12 +327,10 @@ export default class FfmpegHelper {
 			audioResultChain = 'audio';
 			audioFilter = `[${audioIndex}:a]` +
 				`atrim=start=${audioSetting.startFromSeconds}:duration=${resultDuration.toFixed(2)}` +
-				// `atrim=start=${audioSetting.startFromSeconds}:duration=${resultDuration.toFixed(2)},asetpts=PTS-STARTPTS` +
 				(audioSetting.fadeIn ? `,afade=t=in:d=${audioSetting.fadeInDuration}` : ``) +
 				(audioSetting.fadeOut ? `,areverse,afade=t=in:d=${audioSetting.fadeOutDuration},areverse` : ``) +
 				(audioSetting.startFrom === AudioStartFromEnum.fromMovie && introFile ? `,adelay=delays=${(introDuration*1000).toFixed(0)}:all=1` : '') +
 				',asetpts=PTS-STARTPTS' +
-				// (audioSetting.startFrom === AudioStartFromEnum.fromMovie && introFile ? `,apad=pad_dur=${introDuration.toFixed(2)}` : '') +
 				`[${audioResultChain}];`;
 		}
 
@@ -510,7 +380,6 @@ export default class FfmpegHelper {
 			const resolutionHeight = Number(settings.videoSettings?.resolutionHeight);
 			const fps = Number(settings.videoSettings?.fps ?? '30');
 			const imageDuration = Number(introOutro.imageDuration);
-			// introResultChain = '';
 			introOutroFilter = `[${introOutroFileIndex}:v]` +
 				`scale=${resolutionWidth}:${resolutionHeight}` +
 				`,setsar=1` +
@@ -529,20 +398,14 @@ export default class FfmpegHelper {
 			&& settings.videoSettings?.fadeInDuration) {
 			fadeInResultChain = 'fadeIn';
 			fadeInFilter = `[${pingPongResultChain}]fade=t=in:d=${settings.videoSettings?.fadeInDuration}[${fadeInResultChain}];`;
-			// fadeInFilter = "[outBeforeFadeIn];[outBeforeFadeIn]fade=t=in:d=" + settings.videoSettings?.fadeInDuration
 		}
 
-		// const frames = videoInfo?.frames ?? 0;
-		// const allFrames = frames;
 		let fadeOutFilter = '';
 		let fadeOutResultChain = fadeInResultChain;
 		if (settings.videoSettings?.fadeOut
 			&& settings.videoSettings?.fadeOutDuration) {
 			fadeOutResultChain = 'fadeOut';
-			// const fps = Number(settings.videoSettings?.fps ?? '30');
-			// const fadeOutStart = allFrames - Number(settings.videoSettings.fadeOutDuration) * fps;
 			fadeOutFilter = `[${fadeInResultChain}]reverse,fade=t=in:d=${settings.videoSettings.fadeOutDuration},reverse[${fadeOutResultChain}];`;
-			// fadeOutFilter = `[${fadeInResultChain}]fade=t=out:d=${settings.videoSettings.fadeOutDuration}:s=${(!fadeOutStart || fadeOutStart < 0 ? 0 : fadeOutStart).toFixed(2)}`;
 		}
 		const fadeFilter = fadeInFilter + fadeOutFilter;
 		
@@ -563,31 +426,12 @@ export default class FfmpegHelper {
 				+ '[forward] setpts = 1.00 * PTS[forwardPts];'
 				+ '[reversed] setpts = 1.00 * PTS[reversedPts];'
 				+ `[forwardPts][reversedPts]concat=n=2:v=1,setsar=1[${pingPongResultChain}];`;
-			// + '[pingpong]fps=fps=' + fps +'[out]';
 		}
 		return {
 			filter: pingPongFilter,
 			endChain: pingPongResultChain
 		};
 	}
-
-	// private static async slowMotion00(inputFiles: inputFile[], settings: SpinnerSettingsModel, traceId: string): Promise<string | undefined> {
-
-
-	// 	const fps = Number(settings.videoSettings?.fps ?? '30');
-	// 	const audioIndex = inputFiles.findIndex(file => file.fileType === inputFileType.audio)!;
-	// 	const introIndex = inputFiles.findIndex(file => file.fileType === inputFileType.intro)!;
-	// 	const outroIndex = inputFiles.findIndex(file => file.fileType === inputFileType.outro)!;
-	// 	// const overlaysIndex = inputFiles.findIndex(file => file.fileType === inputFileType.overlay)!;
-	// 	if (settings.audioSettings?.enable && selectedPreset?.selectedAudioGuid) {
-	// 		const selectedAudio = settings.audioSettings.items?.find(item => item.guid === selectedPreset.selectedAudioGuid);
-	// 		if (selectedAudio?.startFrom === AudioStartFromEnum.fromMovie
-	// 			&& selectedAudio?.stopTo === AudioStopToEnum.toMovie) {
-	// 			;
-	// 		}
-	// 	}
-	// }
-	
 
 	private static getFitWithinFilter(inputFiles: inputFile[], settings: SpinnerSettingsModel, videoInfo: videoInfo, zoomSettingsBeforeSlowFilter: string) {
 		const fitWithinResultChain = 'fitted';
@@ -705,11 +549,9 @@ export default class FfmpegHelper {
 		settings: SpinnerSettingsModel,
 		overlaysItems: OverlaySettingsItemModel[],
 		startOverlaysChain: string,
-		// endOverlaysChain: string,
 		tempChainPrefix: string): {filter: string, endChain: string} {
 
 		let overlaysResultFilter = '';
-		// let endOverlaysChain = startOverlaysChain;
 		let tempOverlaysResultChain = startOverlaysChain;
 		const resolutionWidth = Number(settings.videoSettings?.resolutionWidth);
 		const resolutionHeight = Number(settings.videoSettings?.resolutionHeight);
@@ -731,7 +573,6 @@ export default class FfmpegHelper {
 				const tempOverlayScaleChain = tempChainPrefix + 'Scale' + overlayIndex;
 				const tempOverlayResultChain = tempChainPrefix + overlayIndex;
 
-				// const endChainInternal = index === overlaysItems.length - 1 ? endOverlaysChain : tempOverlayResultChain;
 				const overlayFilter = `[${overlayIndex}:v]scale=${resolutionWidth}:${overlayHeight}[${tempOverlayScaleChain}];`
 					+ `[${tempOverlaysResultChain}][${tempOverlayScaleChain}]overlay=${repeateCountForVideoCommand}x=0:y=${overlayTop}[${tempOverlayResultChain}];`;
 				tempOverlaysResultChain = tempOverlayResultChain;
@@ -746,133 +587,6 @@ export default class FfmpegHelper {
 	}
 
 	/** */
-	// private static async addOverlay(files: inputFile[], settings: SpinnerSettingsModel, traceId: string): Promise<string | undefined> {
-	// 	if (!settings.overlaySettings?.enable) {
-	// 		const inputFile = files.find(file => file.fileType === inputFileType.input)?.file;
-	// 		return inputFile;
-	// 	}
-
-	// 	const overlaysSelected = ['','1']
-	// 	const t = settings.overlaySettings?.items
-	// 		?.filter(item => overlaysSelected.some(overlaySelected => item.guid === overlaySelected))
-	// 		?.sort(SortHelper.dynamicSort('name'));
-	// 	const fps = Number(settings.overlaySettings ?? '30');
-	// 	const filter = '[0:v]split[forward][reverse];'
-	// 		+ '[reverse]reverse,fifo[reversed];'
-	// 		+ '[forward] setpts = 1.00 * PTS[forwardPts];'
-	// 		+ '[reversed] setpts = 1.00 * PTS[reversedPts];'
-	// 		+ '[forwardPts][reversedPts]concat=n=2:v=1,setsar=1[pingpong];'
-	// 		+ '[pingpong]fps=fps=' + fps +'[out]';
-
-	// 	const result = await FfmpegHelper.runFfmpeg(fullname, settings, traceId, filter);
-	// 	return result;
-	// }
-
-	/** */
-	// public static async pingPong(inputFiles: inputFile[], settings: SpinnerSettingsModel, traceId: string): Promise<string | undefined> {
-	// 	;
-
-
-	// 	const fps = Number(settings.videoSettings?.fps ?? '30');
-	// 	const filter = '[0:v]split[forward][reverse];'
-	// 		+ '[reverse]reverse,fifo[reversed];'
-	// 		+ '[forward] setpts = 1.00 * PTS[forwardPts];'
-	// 		+ '[reversed] setpts = 1.00 * PTS[reversedPts];'
-	// 		+ '[forwardPts][reversedPts]concat=n=2:v=1,setsar=1[pingpong];'
-	// 		+ '[pingpong]fps=fps=' + fps +'[out]';
-
-	// 	const result = await FfmpegHelper.runFfmpeg(fullname, settings, traceId, filter);
-	// 	return result;
-	// }
-
-	/** */
-	// public static async pingPong0(fullname: string | undefined, settings: SpinnerSettingsModel, traceId: string): Promise<string | undefined> {
-	// 	const fps = Number(settings.videoSettings?.fps ?? '30');
-	// 	const filter = '[0:v]split[forward][reverse];'
-	// 		+ '[reverse]reverse,fifo[reversed];'
-	// 		+ '[forward] setpts = 1.00 * PTS[forwardPts];'
-	// 		+ '[reversed] setpts = 1.00 * PTS[reversedPts];'
-	// 		+ '[forwardPts][reversedPts]concat=n=2:v=1,setsar=1[pingpong];'
-	// 		+ '[pingpong]fps=fps=' + fps +'[out]';
-
-	// 	const result = await FfmpegHelper.runFfmpeg(fullname, settings, traceId, filter);
-	// 	return result;
-
-		// const fileNamePattern = settings.pathSources?.fileNamePattern ?? '';
-		// const newFilename = await FfmpegHelper.getFilenameByPattern(fullname, fileNamePattern);
-		
-		// try {
-		// 	const maxBitrate = Number(settings.videoSettings?.maxBitrate ?? '8000');
-		// 	const fps = Number(settings.videoSettings?.fps ?? '30');
-		// 	const filter = '[0:v]split[forward][reverse];'
-		// 		+ '[reverse]reverse,fifo[reversed];'
-		// 		+ '[forward] setpts = 1.00 * PTS[forwardPts];'
-		// 		+ '[reversed] setpts = 1.00 * PTS[reversedPts];'
-		// 		+ '[forwardPts][reversedPts]concat=n=2:v=1,setsar=1[pingpong];'
-		// 		+ '[pingpong]fps=fps=' + fps +'[out]';
-		// 	const rootDir = appRootDir.get();
-		// 	const ffmpegpath = rootDir + '/node_modules/ffmpeg-static/ffmpeg';
-		// 	const ffmpegArgs = [
-		// 		'-loglevel', 'error',
-		// 		'-i', fullname,
-		// 		// '-r ' + fps,
-		// 		'-maxrate', maxBitrate + 'k',
-		// 		'-bufsize', maxBitrate * 2 + 'k',
-		// 		'-c:v', 'libx264',
-		// 		'-pix_fmt', 'yuv420p',
-		// 		'-crf', '23',
-		// 		'-profile:v', 'baseline',
-		// 		'-level', '3.0',
-		// 		'-filter_complex', filter,
-		// 		'-map', '[out]',
-		// 		newFilename
-		// 	];
-		// 	const ffmpegArgsString = ffmpegArgs.reduce((a, b) => a + ' ' + b);
-		// 	// const ffmpegpath = appRootDir + '/bin/ffmpeg';
-		// 	this.eventLogger.info(ffmpegpath + ' ' + ffmpegArgsString, 'ffmpeg run process ' + traceId + ' ');
-		// 	const process = spawn( ffmpegpath, ffmpegArgs);
-		// 	await FfmpegHelper.waitProcess(process, FfmpegHelper.eventLogger, traceId);
-		// } catch (error) {
-		// 	this.eventLogger.error(error, 'ffmpeg run process ' + traceId + ' ');
-		// }
-
-		// if (!fs.existsSync(newFilename)) {
-		// 	return undefined;
-		// }
-		// // var fs = require('fs');
-		// // var ffmpeg = require('fluent-ffmpeg');
-		// // // Setting ffmpeg path to ffmpeg binary for os x so that ffmpeg can be packaged with the app.
-		// // ffmpeg.setFfmpegPath("./bin/ffmpeg")
-		// // //because of the nature of ffmpeg, this can take both audio or video files as input
-		// // function convertToWav(file,output, cb) {
-		// //   var  audioBitRateFor100mbSize='2';
-		// //   var aud_file =  output;
-		// //   var comand = ffmpeg(file)
-		// // 				.noVideo()
-		// // 				.audioCodec('pcm_s16le')
-		// // 				.audioChannels(1)
-		// // 				.audioFrequency(16000)
-		// // 				.audioBitrate(audioBitRateFor100mbSize, true)
-		// // 				// .videoBitrate(audioBitRateFor100mbSize, true)
-		// // 				.output(aud_file)
-		// // 				.on('progress', function(progress) {
-		// // 				  //  progress // {"frames":null,"currentFps":null,"currentKbps":256,"targetSize":204871,"timemark":"01:49:15.90"}
-		// // 				  console.log('Processing: ' + progress.timemark + ' done ' + progress.targetSize+' kilobytes');
-		// // 				})
-		// // 				.on('end',
-		// // 				//listener must be a function, so to return the callback wrapping it inside a function
-		// // 				  function(){
-		// // 					cb(aud_file)
-		// // 				  }
-		// // 				  || function() {ж0
-		// // 					   console.log('Finished processing');
-		// // 					}
-		// // 				).run();
-		// return newFilename;
-	// }
-
-	/** */
-	// public static async addOverlay(fullname: string | undefined, settings: SpinnerSettingsModel, traceId: string): Promise<string | undefined> {
 	public static async runFfmpeg(
 		inputFiles: inputFile[],
 		settings: SpinnerSettingsModel,
@@ -886,10 +600,6 @@ export default class FfmpegHelper {
 		const inputCommands = inputFiles.map(item => (item.commands?.split(' ') ?? (['-i', item.file?.replace(/\\/g, '/') ?? '']))).flat();
 		const maxBitrate = Number(settings.videoSettings?.maxBitrate ?? '8000');
 
-		// "Cpu": "-c:v libx264 -crf 23 -profile:v baseline -level 3.0",
-		// "NvidiaQsv": "-c:v h264_qsv -preset slow -b:v 8000k",
-		// "NvidiaNvenc": "-c:v nvenc_h264 -preset slow -b:v 8000k",
-		// "Radeon": "-c:v h264_amf -b:v 8000k"
 		let render = '';
 		switch (settings.videoSettings?.renderOn) {
 			case RenderOnEnum.nvidiaH264:
@@ -907,16 +617,6 @@ export default class FfmpegHelper {
 				break;
 		}
 		const renderFormat = render.split(' ');
-		// if (!fullname
-		// 	|| !fs.existsSync(fullname)) {
-		// 	this.eventLogger.warn('File ' + fullname + ' not found');
-		// 	return;
-		// }
-
-		// const newFileName = IdGenerator.getNewNotificationId() + '.mp4';
-		// const newFileNameFull = path.join(destinationPath, newFileName).replace(/\\/g, '/');
-		// const fileNamePattern = settings.pathSources?.fileNamePattern ?? '';
-		// const newFilename = await FfmpegHelper.getFilenameByPattern(fullname, fileNamePattern, destinationPath);
 		const newFileNameFull = destinationFile.replace(/\\/g, '/');
 
 		const mapResult = [
@@ -928,29 +628,19 @@ export default class FfmpegHelper {
 			mapResult.push(`[${audioResultChain}]`);
 		}
 		try {
-			// const rootDir = appRootDir.get();
-			// const ffmpegpath = rootDir + '/node_modules/ffmpeg-static/ffmpeg';
 			const ffmpegpath = ffmpegStatic ?? '';
 			this.eventLogger.info(ffmpegpath);
 			const ffmpegArgs = [
 				'-loglevel', 'error',
 				... inputCommands,
-				// '-i', fullname,
-				// '-r ' + fps,
 				'-maxrate', maxBitrate + 'k',
 				'-bufsize', maxBitrate * 2 + 'k',
 				... renderFormat,
-				// '-c:v', 'libx264',
-				// '-pix_fmt', 'yuv420p',
-				// '-crf', '23',
-				// '-profile:v', 'baseline',
-				// '-level', '3.0',
 				'-filter_complex', filter,
 				... mapResult,
 				newFileNameFull
 			];
 			const ffmpegArgsString = ffmpegArgs.map(item => (item?.indexOf(' ') ?? 0) >= 0 ? `"${item}"` : item).reduce((a, b) => a + ' ' + b);
-			// const ffmpegpath = appRootDir + '/bin/ffmpeg';
 			this.eventLogger.info(ffmpegpath + ' ' + ffmpegArgsString, 'ffmpeg run process ' + traceId + ' ');
 			const process = spawn( ffmpegpath, ffmpegArgs);
 			await FfmpegHelper.waitProcess(process, FfmpegHelper.eventLogger, traceId);
@@ -966,7 +656,6 @@ export default class FfmpegHelper {
 
 	private static async getFilenameByPattern(fullname: string, fileNamePattern: string, destinationPath: string, fileExtension: string): Promise<string> {
 		const filename = path.basename(fullname);
-		// const tempFile = path.join(tempFolder, filename);
 		this.eventLogger.info('fullname: ' + fullname + ' fillename: ' + filename);
 
 		if (!fs.existsSync(destinationPath)) {
@@ -975,13 +664,11 @@ export default class FfmpegHelper {
 
 		const templateFull = path.join(destinationPath, fileNamePattern + '_').replace(/\\/g, '/');
 		const searchPattern = `${templateFull}*.${fileExtension}`;
-		// const searchPattern = templateFull + '*.mp4';
 		this.eventLogger.info('searchpattern: ' + searchPattern);
 		const filesExist = await fg([searchPattern], { dot: true });
 		this.eventLogger.info('find files: ' + JSON.stringify(filesExist));
 		const fileNumbers = filesExist
 			.map(file => file.replace(templateFull, '').replace(`.${fileExtension}`, ''))
-			// .map(file => file.replace(templateFull, '').replace('.mp4', ''))
 			.filter(fileNumber => fileNumber)
 			.map(fileNumber => Number(fileNumber))
 			.filter(fileNumber => Number.isInteger(fileNumber));
@@ -989,7 +676,6 @@ export default class FfmpegHelper {
 		const nextFileNumber = maxFileNumber + 1;
 
 		const newFilename = `${templateFull}${nextFileNumber.toString().padStart(4, '0')}.${fileExtension}`;
-		// const newFilename = templateFull + nextFileNumber.toString().padStart(4, '0') + '.mp4';
 		this.eventLogger.info('newfilename: ' + newFilename);
 		return newFilename;
 	}
@@ -1021,9 +707,6 @@ export default class FfmpegHelper {
 				resolve(stdoutInfo ?? stdoutError);
 			});
 		});
-		// return new Promise((resolve, reject) => {
-		// 	setTimeout(resolve, milliseconds);
-		// });
 	}
 
 	private static async getInputFiles (fullname: string | undefined,
@@ -1039,15 +722,12 @@ export default class FfmpegHelper {
 		}
 
 		inputFiles.push({
-			// commands: ['-i', fullname],
 			file: fullname,
 			fileType: inputFileType.input,
-			// guid: '',
 		} as inputFile);
 		inputFiles.push({
 			commands: '-f lavfi -i color=black',
 			fileType: inputFileType.blackscreen,
-			// guid: '',
 		} as inputFile);
 
 		const selectedGuid = settings?.frontSettings?.selectedPresetGuid;
@@ -1059,10 +739,8 @@ export default class FfmpegHelper {
 			&& fs.existsSync(selectedIntro.file)
 		) {
 			inputFiles.push({
-				// commands: ['-i', selectedIntro.file],
 				file: selectedIntro.file,
 				fileType: inputFileType.intro,
-				// guid: '',
 			} as inputFile);
 		}
 
@@ -1072,10 +750,8 @@ export default class FfmpegHelper {
 			&& fs.existsSync(selectedOutro.file)
 		) {
 			inputFiles.push({
-				// commands: ['-i', selectedOutro.file],
 				file: selectedOutro.file,
 				fileType: inputFileType.outro,
-				// guid: '',
 			} as inputFile);
 		}
 
@@ -1085,15 +761,9 @@ export default class FfmpegHelper {
 			&& fs.existsSync(selectedAudio.file)
 		) {
 			inputFiles.push({
-				// commands: ['-i', selectedAudio.file],
 				file: selectedAudio.file,
 				fileType: inputFileType.audio,
-				// guid: '',
 			} as inputFile);
-			// inputFiles.push({
-			// 	commands: '-t 1 -i anullsrc=channel_layout=stereo:sample_rate=44100',
-			// 	fileType: inputFileType.silenceaudio,
-			// } as inputFile);
 		}
 
 		if (selectedPreset?.overlays) {
@@ -1104,7 +774,6 @@ export default class FfmpegHelper {
 					&& fs.existsSync(selectedOverlay.file)
 				) {
 					inputFiles.push({
-						// commands: ['-i', selectedOverlay.file],
 						file: selectedOverlay.file,
 						fileType: inputFileType.overlay,
 						guid: overlay.guid,
@@ -1113,21 +782,6 @@ export default class FfmpegHelper {
 			}
 		}
 
-		// if (selectedPreset?.zooms) {
-		// 	for (const zoom of selectedPreset.zooms.filter(item => !item.disable && (item.afterPingPong || item.afterSlow || item.beforeSlow))) {
-		// 		const selectedZoom = settings.zoomSettings?.items?.find(item => item.guid === zoom.guid);
-		// 		if (settings.zoomSettings?.enable
-		// 			&& selectedZoom?.file
-		// 			&& fs.existsSync(selectedZoom.file)
-		// 		) {
-		// 			inputFiles.push({
-		// 				file: selectedZoom.file,
-		// 				fileType: inputFileType.zoom,
-		// 				guid: zoom.guid,
-		// 			});
-		// 		}
-		// 	}
-		// }
 
 		return inputFiles;
 	}
@@ -1139,8 +793,6 @@ export enum inputFileType {
 	overlay,
 	blackscreen,
 	audio,
-	// silenceaudio,
-	// zoom
 }
 export interface inputFile {
 	fileType: inputFileType;
@@ -1158,5 +810,4 @@ export interface videoInfo {
 	videoFormat: string;
 	rawInfo: string;
 	fps: number;
-	// public decimal Frames => (decimal)Duration.TotalSeconds * Fps;
 }

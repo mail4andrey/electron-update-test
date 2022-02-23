@@ -22,7 +22,6 @@ export interface EmailSettingsTabProps {
 	onChange?: (event: ITextFieldChangeEventProps, settings: EmailSettingsModel) => void;
 }
 
-// @provider(SettingsController, SettingsStore)
 @observer
 /** */
 export class EmailSettingsTab extends React.PureComponent<EmailSettingsTabProps> {
@@ -181,13 +180,5 @@ export class EmailSettingsTab extends React.PureComponent<EmailSettingsTabProps>
 		} catch (error) {
 
 		}
-		// const email = new EmailSendingModel();
-		// email.server = this.email.server;
-		// email.login = this.email.login;
-		// email.password = this.email.password;
-		// email.to = this.email.login;
-		// email.subject = this.email.subject;
-		// email.content = this.email.content;
-		// await ipcRenderer.invoke(ElectronCommands.sendEmail, email);
 	};
 }

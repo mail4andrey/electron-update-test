@@ -8,7 +8,6 @@ export interface KioskSettingsLocalStorage {
 	groupBy?: GroupByEnum;
 	size?: VideoItemSizeEnum;
 	sortOrder?: SortOrderEnum;
-	// language?: LanguageEnum;
 	iconSize?: DesignSizeEnum;
 }
 

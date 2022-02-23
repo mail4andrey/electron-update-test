@@ -31,7 +31,6 @@ export class Spinner {
 							<Route
 								path='/'
 								exact={true}
-								// component={App}
 								render={getLayout}
 							/>
 							<Route

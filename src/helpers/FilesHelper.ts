@@ -53,7 +53,6 @@ export class FilesHelper {
 			result.push(pathSourceFilesModel);
 		}
 
-		// .sort((a: PathSourceFilesModel, b: PathSourceFilesModel) => a.filename.localeCompare(b.filename) * -1);
 		return result;
 	}
 }

@@ -12,7 +12,7 @@ import { ClipmakerFront } from '../../src-front/applications/clipmaker/Clipmaker
 import { MainWindowPage } from '../MainWindowPage';
 
 /** */
-export class Сlipmaker {
+export class Clipmaker {
 	/** */
 	public static render(): void {
 		/** */
@@ -31,7 +31,6 @@ export class Сlipmaker {
 							<Route
 								path='/'
 								exact={true}
-								// component={App}
 								render={getLayout}
 							/>
 							<Route

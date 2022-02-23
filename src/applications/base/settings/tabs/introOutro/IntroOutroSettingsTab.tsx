@@ -23,21 +23,14 @@ import { CommonHelper } from '../../../../../src-front/helpers/CommonHelper';
 export interface IntroOutroSettingsTabProps extends IntroOutroSettingsModel {
 	language?: LanguageEnum;
 
-	/** */
-	// settings?: IntroOutroSettingsModel;
-
 	onChange: (event: ITextFieldChangeEventProps, settings: IntroOutroSettingsModel) => void;
-	// onItemChange: (event: ITextFieldChangeEventProps, setting: IntroOutroSettingsItemModel) => void;
-	// onChange: (event: React.MouseEvent<Element, MouseEvent>, settings: IntroOutroSettingsModel) => void;
 
 	onAddClick?: (event: React.MouseEvent<Element, MouseEvent>) => void;
-	// onChange?: (event: ITextFieldChangeEventProps, id?: number) => void;
 	onDeleteClick?: (event: React.MouseEvent<Element, MouseEvent>, id?: number) => void;
 	onUpClick?: (event: React.MouseEvent<Element, MouseEvent>, id?: number) => void;
 	onDownClick?: (event: React.MouseEvent<Element, MouseEvent>, id?: number) => void;
 }
 
-// @provider(SettingsController, SettingsStore)
 @observer
 /** */
 export class IntroOutroSettingsTab extends React.PureComponent<IntroOutroSettingsTabProps> {
@@ -82,22 +75,6 @@ export class IntroOutroSettingsTab extends React.PureComponent<IntroOutroSetting
 							onChange={this.onSettingsItemChange}
 						/>
 					</ItemComponent>
-
-					{/* <PathSelectorComponent
-						id={index}
-						path={path}
-						removeButtonTitle={SettingsLocalization.introOutroTab.pathRemoveButtonTitle(language)}
-						selectButtonTitle={SettingsLocalization.introOutroTab.pathSelectButtonTitle(language)}
-						disableUpButton={disableUpButton}
-						disableDownButton={disableDownButton}
-						showUpButton={true}
-						showDownButton={true}
-						showDeleteButton={true}
-						onPathChange={this.props.onChange}
-						onUpClick={this.props.onUpClick}
-						onDownClick={this.props.onDownClick}
-						onDeleteClick={this.props.onDeleteClick}
-					/> */}
 				</div>
 			);
 		});
@@ -110,7 +87,6 @@ export class IntroOutroSettingsTab extends React.PureComponent<IntroOutroSetting
 					{SettingsLocalization.introOutroTab.title(language)}
 				</Typography>
 				<FormControl
-					// className='padding-right-12px-important'
 					fullWidth={true}
 					margin='dense'
 				>
@@ -220,7 +196,5 @@ export class IntroOutroSettingsTab extends React.PureComponent<IntroOutroSetting
 
 		MapperHelper.mapValues(this.props, result);
 		MapperHelper.mapValues(value, result);
-
-		// this.props.onItemChange(event, result);
 	};
 }

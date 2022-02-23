@@ -27,7 +27,6 @@ export class Timer implements ITimer {
 
 	/** Таймер */
 	private timer?: any;
-	// private timer?: NodeJS.Timeout;
 
 	/**
 	 * @param interval - промежуток в миллисекундах, через которое должна запускаться функция

@@ -29,8 +29,6 @@ export class SpinnerSettingsController {
 	@inject
 	private readonly store!: SpinnerSettingsStore;
 
-	// private readonly settingsController = new ApplicationSettingsController();
-
 	private readonly settingsProxy = new SettingsProxy();
 
 	/** */
@@ -38,12 +36,9 @@ export class SpinnerSettingsController {
 		const languageSettings = LocalStorage.get<LanguageSettingsLocalStorage>(LocalStorageConsts.languageSettings) as LanguageSettingsLocalStorage | undefined;
 		this.store.language = languageSettings?.language;
 
-		// const settings = this.settingsController.loadDefaultSettings<SpinnerSettingsModel>();
 		const settings = await this.settingsProxy.getApplicationSettings();
 		const settingsView = this.store.settings;
-		// const settingsView = new SpinnerSettingsViewModel();
 
-		// MapperHelper.mapValues(settings, settingsView);
 		MapperHelper.mapValues(settings.audioSettings, settingsView.audioSettings);
 		MapperHelper.mapValues(settings.designSettings, settingsView.designSettings);
 		MapperHelper.mapValues(settings.goProSettings, settingsView.goProSettings);
@@ -53,9 +48,6 @@ export class SpinnerSettingsController {
 		MapperHelper.mapValues(settings.serverSettings, settingsView.serverSettings);
 		MapperHelper.mapValues(settings.videoSettings, settingsView.videoSettings);
 		MapperHelper.mapValues(settings.zoomSettings, settingsView.zoomSettings);
-		// MapperHelper.mapValues(settings.frontSettings, settingsView.frontSettings);
-		// this.store.settings = settingsView;
-		// this.store.settings = MapperHelper.map(settings, SpinnerSettingsViewModel);
 	};
 
 	/** */
@@ -106,7 +98,6 @@ export class SpinnerSettingsController {
 	/** */
 	public readonly onSaveClick = async (): Promise<void> => {
 		const settings = await this.settingsProxy.getApplicationSettings();
-		// const settings = this.settingsController.loadDefaultSettings<SpinnerSettingsModel>();
 		const settingsView = this.store.settings;
 
 		MapperHelper.mapProperties(settingsView.audioSettings, settings.audioSettings);
@@ -118,8 +109,6 @@ export class SpinnerSettingsController {
 		MapperHelper.mapProperties(settingsView.serverSettings, settings.serverSettings);
 		MapperHelper.mapProperties(settingsView.videoSettings, settings.videoSettings);
 		MapperHelper.mapProperties(settingsView.zoomSettings, settings.zoomSettings);
-		// const settings = MapperHelper.map(this.store.settings, SpinnerSettingsModel);
-		// this.settingsController.saveDefaultSettings(settings);
 		await this.settingsProxy.saveApplicationSettings(settings);
 	};
 
