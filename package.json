@@ -100,7 +100,7 @@
     "node-abort-controller": "3.0.1",
     "node-fetch": "2.6.1",
     "node-gyp": "8.1.0",
-    "nodemailer": "6.4.16",
+    "nodemailer": "6.6.1",
     "notistack": "1.0.5",
     "plural-ru": "2.0.2",
     "qrcode.react": "1.0.1",
